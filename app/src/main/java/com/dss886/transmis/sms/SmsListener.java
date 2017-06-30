@@ -1,4 +1,4 @@
-package com.dss886.transmis.listener;
+package com.dss886.transmis.sms;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,8 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
 import com.dss886.transmis.mail.MailSender;
-import com.dss886.transmis.base.Settings;
+import com.dss886.transmis.utils.Settings;
 import com.dss886.transmis.utils.Logger;
+import com.dss886.transmis.utils.Tags;
 
 import java.util.Locale;
 
@@ -24,7 +25,7 @@ public class SmsListener extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Logger.d("SMS Received.");
-        if (!Settings.inst().isEnable()) {
+        if (!Settings.is(Tags.SP_GLOBAL_ENABLE, false)) {
             Logger.d("Transmis has been disable!");
             return;
         }

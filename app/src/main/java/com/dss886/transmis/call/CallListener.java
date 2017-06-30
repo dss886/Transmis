@@ -1,13 +1,14 @@
-package com.dss886.transmis.listener;
+package com.dss886.transmis.call;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
-import com.dss886.transmis.base.Settings;
+import com.dss886.transmis.utils.Settings;
 import com.dss886.transmis.mail.MailSender;
 import com.dss886.transmis.utils.Logger;
+import com.dss886.transmis.utils.Tags;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,7 +32,7 @@ public class CallListener extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Logger.d("Phone State Received.");
-        if (!Settings.inst().isEnable()) {
+        if (!Settings.is(Tags.SP_MISSED_CALL_ENABLE, false)) {
             Logger.d("Transmis has been disable!");
             return;
         }

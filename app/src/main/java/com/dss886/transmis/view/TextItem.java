@@ -13,7 +13,7 @@ import com.dss886.transmis.utils.DisplayUtil;
  * Created by dss886 on 2017/6/29.
  */
 
-public class TextItem extends LinearLayout {
+public class TextItem extends LinearLayout implements Resumable {
 
     private TextView mTitle;
     private TextView mContent;
@@ -53,5 +53,10 @@ public class TextItem extends LinearLayout {
 
     public void setContent(String content) {
         mContent.setText(content);
+    }
+
+    @Override
+    public void onResume() {
+
     }
 }
