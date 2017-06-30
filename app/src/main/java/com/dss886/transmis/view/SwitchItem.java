@@ -27,7 +27,7 @@ public class SwitchItem extends LinearLayout implements Resumable {
     private String mKey;
     private boolean mDefaultValue;
 
-    public SwitchItem(Context context , String title, String key, boolean defaultValue) {
+    public SwitchItem(Context context, String title, String key, boolean defaultValue) {
         super(context);
         this.mKey = key;
         this.mDefaultValue = defaultValue;

@@ -1,5 +1,8 @@
 package com.dss886.transmis.mail;
 
+import android.widget.Toast;
+import com.dss886.transmis.base.App;
+import com.dss886.transmis.utils.Tags;
 import com.sun.mail.util.MailSSLSocketFactory;
 
 import javax.mail.*;
@@ -16,32 +19,36 @@ import java.util.concurrent.Executors;
  */
 public class MailSender extends javax.mail.Authenticator {
 
-    private static final String MAIL_HOST = "smtp.qq.com";
     private static final String SENDER_NAME = "Transmis";
+
     private Executor mExecutor;
+    private String host;
     private String email;
     private String password;
     private String receiveAddress;
     private Session session;
 
-    public MailSender(String email, String password, String receiveAddress) {
-        this.email = email;
-        this.password = password;
-        this.receiveAddress = receiveAddress;
+    public MailSender() {
         this.mExecutor = Executors.newSingleThreadExecutor();
+        this.host = App.me().sp.getString(Tags.SP_MAIL_HOST, null);
+        String port = App.me().sp.getString(Tags.SP_MAIL_PORT, null);
+        this.email = App.me().sp.getString(Tags.SP_MAIL_SEND_MAIL, null);
+        this.password = App.me().sp.getString(Tags.SP_MAIL_SEND_PASSWORD, null);
+        this.receiveAddress = App.me().sp.getString(Tags.SP_MAIL_RECEIVE_MAIL, null);
 
         Properties props = new Properties();
         props.setProperty("mail.transport.protocol", "smtp");
-        props.setProperty("mail.host", MAIL_HOST);
+        props.setProperty("mail.host", host);
         props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", "465");
-        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.port", port);
+        props.put("mail.smtp.socketFactory.port", port);
         try {
             MailSSLSocketFactory sf = new MailSSLSocketFactory();
             sf.setTrustAllHosts(true);
             props.put("mail.smtp.ssl.enable", "true");
             props.put("mail.smtp.ssl.socketFactory", sf);
         } catch (GeneralSecurityException e) {
+            Toast.makeText(App.me(), e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
         session = Session.getDefaultInstance(props, this);
@@ -56,10 +63,11 @@ public class MailSender extends javax.mail.Authenticator {
                 msg.setFrom(new InternetAddress(email, SENDER_NAME));
 
                 Transport transport = session.getTransport();
-                transport.connect(MAIL_HOST, email, password);
+                transport.connect(host, email, password);
                 transport.sendMessage(msg, new Address[] { new InternetAddress(receiveAddress) });
                 transport.close();
             } catch (MessagingException | UnsupportedEncodingException e) {
+                Toast.makeText(App.me(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
         });

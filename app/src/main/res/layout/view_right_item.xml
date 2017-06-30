@@ -15,11 +15,10 @@
         android:textSize="16sp"
         android:textColor="@color/textColor" />
 
-    <TextView
-        android:id="@+id/content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="13sp"
-        android:textColor="@color/textHintColor" />
+    <ImageView
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:alpha="0.2"
+        android:src="@mipmap/arrow_right"/>
 
 </LinearLayout>

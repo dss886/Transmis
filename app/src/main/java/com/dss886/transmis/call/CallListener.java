@@ -66,11 +66,10 @@ public class CallListener extends BroadcastReceiver {
 
     private void sendMail() {
         long ringTime = (System.currentTimeMillis() - sRingTime) / 1000;
-        MailSender sender = new MailSender("notify@dss886.com", "reumcajaafoecagb", "dss886@qq.com");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
         String content = String.format(Locale.CHINA, TEMPLATE_CONTENT, sCallNumber, sdf.format(new Date(sRingTime)), ringTime);
         Logger.d("mail content: " + content);
-        sender.send(TEMPLATE_TITLE, content);
+        new MailSender().send(TEMPLATE_TITLE, content);
     }
 
 }

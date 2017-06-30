@@ -25,6 +25,7 @@
         </activity>
 
         <activity android:name=".sms.SmsActivity"/>
+        <activity android:name=".mail.MailActivity"/>
         <activity android:name=".call.CallActivity"/>
 
         <receiver

@@ -52,12 +52,11 @@ public class SmsListener extends BroadcastReceiver {
         if (messages == null || messages.length == 0) {
             return;
         }
-        MailSender sender = new MailSender("notify@dss886.com", "", "dss886@qq.com");
         StringBuilder sb = new StringBuilder();
         for (SmsMessage message : messages) {
             sb.append(String.format(Locale.CHINA, TEMPLATE_CONTENT,
                     message.getOriginatingAddress(), message.getMessageBody()));
         }
-        sender.send(TEMPLATE_TITLE, sb.toString());
+        new MailSender().send(TEMPLATE_TITLE, sb.toString());
     }
 }
