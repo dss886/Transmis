@@ -5,10 +5,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.LinearLayout;
 import com.dss886.transmis.R;
-import com.dss886.transmis.view.Resumable;
+import com.dss886.transmis.view.BaseItem;
+import com.dss886.transmis.view.SectionItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    private List<Resumable> mResumables = new ArrayList<>();
+    private List<BaseItem> mItems = new ArrayList<>();
 
     protected Toolbar mToolbar;
     protected LinearLayout mContainer;
@@ -35,12 +35,23 @@ public abstract class BaseActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(getToolbarTitle());
         addViews();
         setListeners();
+        build();
     }
 
-    protected void addView(View view) {
-        mContainer.addView(view);
-        if (view instanceof Resumable) {
-            mResumables.add((Resumable) view);
+    protected void addView(BaseItem item) {
+        mItems.add(item);
+    }
+
+    private void build() {
+        for (int i = 0; i < mItems.size(); i++) {
+            BaseItem item = mItems.get(i);
+            if (i == 0 && item instanceof SectionItem) {
+                ((SectionItem) item).hideTopPadding();
+            }
+            if (i > 0 && item instanceof SectionItem) {
+                mItems.get(i - 1).hideDivider();
+            }
+            mContainer.addView(item);
         }
     }
 
@@ -58,8 +69,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        for (Resumable resumable : mResumables) {
-            resumable.onResume();
+        for (BaseItem item : mItems) {
+            item.onResume();
         }
     }
 

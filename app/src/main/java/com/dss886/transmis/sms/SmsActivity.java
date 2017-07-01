@@ -7,6 +7,7 @@ import com.dss886.transmis.base.App;
 import com.dss886.transmis.base.BaseActivity;
 import com.dss886.transmis.utils.DialogBuilder;
 import com.dss886.transmis.utils.Tags;
+import com.dss886.transmis.view.SectionItem;
 import com.dss886.transmis.view.SwitchItem;
 import com.dss886.transmis.view.TextItem;
 
@@ -31,17 +32,19 @@ public class SmsActivity extends BaseActivity {
     protected void addViews() {
         mSmsSwitch = new SwitchItem(this, "短信提醒", Tags.SP_SMS_ENABLE, true);
         mMergeSwitch = new SwitchItem(this, "合并长短信", Tags.SP_SMS_MERGE_LONG_TEXT, true);
-        mTitleItem = new TextItem(this, "短信提醒标题").setCallback(sp -> {
+        mTitleItem = new TextItem(this, "邮件标题").setCallback(sp -> {
             String value = sp.getString(Tags.SP_SMS_TITLE_REGEX, "默认");
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
-        mContentItem = new TextItem(this, "短信提醒内容").setCallback(sp -> {
+        mContentItem = new TextItem(this, "邮件内容").setCallback(sp -> {
             String value = sp.getString(Tags.SP_SMS_CONTENT_REGEX, "默认");
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
 
         addView(mSmsSwitch);
+        addView(new SectionItem(this, "可选项"));
         addView(mMergeSwitch);
+        addView(new SectionItem(this, "提醒模版设置"));
         addView(mTitleItem);
         addView(mContentItem);
     }

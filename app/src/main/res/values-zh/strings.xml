@@ -2,8 +2,8 @@
 <resources>
     <string name="app_name">Transmis</string>
     <string name="main_title">Transmis 设置</string>
-    <string name="sms_title">短信提醒设置</string>
-    <string name="call_title">未接电话转发设置</string>
+    <string name="sms_title">短信提醒</string>
+    <string name="call_title">未接电话提醒</string>
     <string name="mail_title">邮件参数设置</string>
 
     <string name="sms_title_default">你的备用机收到了一条新短信</string>

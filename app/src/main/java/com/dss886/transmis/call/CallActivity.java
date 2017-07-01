@@ -7,6 +7,7 @@ import com.dss886.transmis.base.App;
 import com.dss886.transmis.base.BaseActivity;
 import com.dss886.transmis.utils.DialogBuilder;
 import com.dss886.transmis.utils.Tags;
+import com.dss886.transmis.view.SectionItem;
 import com.dss886.transmis.view.SwitchItem;
 import com.dss886.transmis.view.TextItem;
 
@@ -29,16 +30,17 @@ public class CallActivity extends BaseActivity {
     @Override
     protected void addViews() {
         mCallSwitch = new SwitchItem(this, "未接电话提醒", Tags.SP_MISSED_CALL_ENABLE, true);
-        mTitleItem = new TextItem(this, "未接电话提醒标题").setCallback(sp -> {
+        mTitleItem = new TextItem(this, "邮件标题").setCallback(sp -> {
             String value = sp.getString(Tags.SP_CALL_TITLE_REGEX, "默认");
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
-        mContentItem = new TextItem(this, "未接电话提醒内容").setCallback(sp -> {
+        mContentItem = new TextItem(this, "邮件内容").setCallback(sp -> {
             String value = sp.getString(Tags.SP_CALL_CONTENT_REGEX, "默认");
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
 
         addView(mCallSwitch);
+        addView(new SectionItem(this, "提醒模版设置"));
         addView(mTitleItem);
         addView(mContentItem);
     }

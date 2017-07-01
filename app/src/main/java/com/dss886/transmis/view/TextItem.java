@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.text.InputType;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.dss886.transmis.R;
 import com.dss886.transmis.base.App;
@@ -17,7 +16,7 @@ import com.dss886.transmis.utils.DisplayUtil;
  */
 
 @SuppressLint("ViewConstructor")
-public class TextItem extends LinearLayout implements Resumable {
+public class TextItem extends BaseItem {
 
     private TextView mContentView;
     private Callback mCallback;

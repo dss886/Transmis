@@ -6,6 +6,7 @@ import com.dss886.transmis.call.CallActivity;
 import com.dss886.transmis.mail.MailActivity;
 import com.dss886.transmis.sms.SmsActivity;
 import com.dss886.transmis.utils.Tags;
+import com.dss886.transmis.view.SectionItem;
 import com.dss886.transmis.view.SwitchItem;
 import com.dss886.transmis.view.TextItem;
 
@@ -36,8 +37,10 @@ public class MainActivity extends BaseActivity {
         mMailItem = new TextItem(this, "邮件参数设置").showRightArrow();
 
         addView(mGlobalSwitch);
+        addView(new SectionItem(this, "监听内容"));
         addView(mSmsItem);
         addView(mCallItem);
+        addView(new SectionItem(this, "参数设置"));
         addView(mMailItem);
     }
 
