@@ -40,7 +40,24 @@ public class DialogBuilder {
         return builder.show();
     }
 
+    public static AlertDialog showAlertDialog(BaseActivity activity, String content, AlertDialogCallback callback) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setMessage(content);
+        builder.setPositiveButton("确定", (dialog, which) -> {
+            if (callback != null) {
+                callback.onSuccess();
+            }
+        });
+        builder.setNegativeButton("取消", (dialog, which) -> dialog.dismiss());
+
+        return builder.show();
+    }
+
     public interface EditTextDialogCallback {
         void onSuccess(String content);
+    }
+
+    public interface AlertDialogCallback {
+        void onSuccess();
     }
 }

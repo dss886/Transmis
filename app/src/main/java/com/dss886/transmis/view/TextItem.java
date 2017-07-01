@@ -22,6 +22,10 @@ public class TextItem extends BaseItem {
     private Callback mCallback;
 
     public TextItem(Context context, String title) {
+        this(context, title, null);
+    }
+
+    public TextItem(Context context, String title, String content) {
         super(context);
         View.inflate(getContext(), R.layout.view_text_item, this);
         setMinimumHeight(DisplayUtil.dip2px(getContext(), 56));
@@ -29,6 +33,9 @@ public class TextItem extends BaseItem {
         TextView titleView = (TextView) findViewById(R.id.title);
         titleView.setText(title);
         mContentView = (TextView) findViewById(R.id.content);
+        if (content != null) {
+            mContentView.setText(content);
+        }
     }
 
     public TextItem showRightArrow() {

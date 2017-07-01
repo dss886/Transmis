@@ -5,6 +5,10 @@ package com.dss886.transmis.utils;
  */
 
 public class Tags {
+    public static final String URL_README = "https://github.com/dss886/Transmis/blob/master/README.md";
+    public static final String URL_LICENSE = "https://github.com/dss886/Transmis/blob/master/LICENSE";
+    public static final String URL_RELEASE = "https://github.com/dss886/Transmis/releases";
+
     public static final String SP_GLOBAL_ENABLE = "global_enable";
     public static final String SP_SMS_ENABLE = "sms_enable";
     public static final String SP_MISSED_CALL_ENABLE = "missed_call_enable";
