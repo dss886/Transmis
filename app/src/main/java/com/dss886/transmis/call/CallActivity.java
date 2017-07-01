@@ -7,6 +7,7 @@ import com.dss886.transmis.base.App;
 import com.dss886.transmis.base.BaseActivity;
 import com.dss886.transmis.utils.DialogBuilder;
 import com.dss886.transmis.utils.Tags;
+import com.dss886.transmis.view.InfoItem;
 import com.dss886.transmis.view.SectionItem;
 import com.dss886.transmis.view.SwitchItem;
 import com.dss886.transmis.view.TextItem;
@@ -34,7 +35,7 @@ public class CallActivity extends BaseActivity {
             String value = sp.getString(Tags.SP_CALL_TITLE_REGEX, "默认");
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
-        mContentItem = new TextItem(this, "邮件内容").setCallback(sp -> {
+        mContentItem = new TextItem(this, "邮件内容模版").setCallback(sp -> {
             String value = sp.getString(Tags.SP_CALL_CONTENT_REGEX, "默认");
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
@@ -43,13 +44,14 @@ public class CallActivity extends BaseActivity {
         addView(new SectionItem(this, "提醒模版设置"));
         addView(mTitleItem);
         addView(mContentItem);
+        addView(new InfoItem(this, getString(R.string.info_call_content)));
     }
 
     @Override
     protected void setListeners() {
         mCallSwitch.setOnClickListener(v -> {});
-        setTextItemListener(mTitleItem, Tags.SP_CALL_TITLE_REGEX, "设置提醒标题");
-        setTextItemListener(mContentItem, Tags.SP_CALL_CONTENT_REGEX, "设置提醒内容");
+        setTextItemListener(mTitleItem, Tags.SP_CALL_TITLE_REGEX, "设置标题");
+        setTextItemListener(mContentItem, Tags.SP_CALL_CONTENT_REGEX, "设置内容模版");
     }
 
     private void setTextItemListener(TextItem item, String key, String showTitle) {

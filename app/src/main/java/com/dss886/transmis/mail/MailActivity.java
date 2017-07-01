@@ -7,6 +7,7 @@ import com.dss886.transmis.base.App;
 import com.dss886.transmis.base.BaseActivity;
 import com.dss886.transmis.utils.DialogBuilder;
 import com.dss886.transmis.utils.Tags;
+import com.dss886.transmis.view.SectionItem;
 import com.dss886.transmis.view.TextItem;
 
 public class MailActivity extends BaseActivity {
@@ -55,11 +56,14 @@ public class MailActivity extends BaseActivity {
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
 
+        addView(new SectionItem(this, "服务器设置"));
         addView(mHostItem);
         addView(mPortItem);
+        addView(new SectionItem(this, "发件人设置"));
         addView(mSendNameItem);
         addView(mSendMailItem);
         addView(mSendPasswordItem);
+        addView(new SectionItem(this, "收件人设置"));
         addView(mReceiveItem);
     }
 
