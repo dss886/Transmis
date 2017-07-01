@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import com.dss886.transmis.R;
+import com.dss886.transmis.base.App;
 import com.dss886.transmis.utils.Settings;
 import com.dss886.transmis.mail.MailSender;
 import com.dss886.transmis.utils.Logger;
@@ -21,8 +23,6 @@ import java.util.Locale;
 public class CallListener extends BroadcastReceiver {
 
     private static final String ACTION_PHONE_STATE = "android.intent.action.PHONE_STATE";
-    private static final String TEMPLATE_TITLE = "你的备用机有一个未接电话";
-    private static final String TEMPLATE_CONTENT = "电话：%s \n时间：%s \n响铃：%d 秒";
 
     private static String sCallNumber = null;
     private static boolean sRing = false;
@@ -32,8 +32,9 @@ public class CallListener extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Logger.d("Phone State Received.");
-        if (!Settings.is(Tags.SP_MISSED_CALL_ENABLE, false)) {
-            Logger.d("Transmis has been disable!");
+        if (!Settings.is(Tags.SP_GLOBAL_ENABLE, false) ||
+                !Settings.is(Tags.SP_MISSED_CALL_ENABLE, true)) {
+            Logger.d("Call Transmis has been disable!");
             return;
         }
         if (intent.getAction().equals(ACTION_PHONE_STATE)) {
@@ -65,11 +66,13 @@ public class CallListener extends BroadcastReceiver {
     }
 
     private void sendMail() {
-        long ringTime = (System.currentTimeMillis() - sRingTime) / 1000;
+        String ringTime = String.valueOf((System.currentTimeMillis() - sRingTime) / 1000);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
-        String content = String.format(Locale.CHINA, TEMPLATE_CONTENT, sCallNumber, sdf.format(new Date(sRingTime)), ringTime);
+        String titleRegex = App.sp.getString(Tags.SP_CALL_TITLE_REGEX, App.me().getString(R.string.call_title_default));
+        String contentRegex = App.sp.getString(Tags.SP_CALL_CONTENT_REGEX, App.me().getString(R.string.call_content_default));
+        String content = String.format(Locale.CHINA, contentRegex, sCallNumber, sdf.format(new Date(sRingTime)), ringTime);
         Logger.d("mail content: " + content);
-        new MailSender().send(TEMPLATE_TITLE, content);
+        new MailSender().send(titleRegex, content);
     }
 
 }

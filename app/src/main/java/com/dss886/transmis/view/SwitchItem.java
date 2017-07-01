@@ -40,7 +40,7 @@ public class SwitchItem extends LinearLayout implements Resumable {
 
         mSwitchView = (Switch) findViewById(R.id.switcher);
         mSwitchView.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            SharedPreferences.Editor editor = App.me().sp.edit();
+            SharedPreferences.Editor editor = App.sp.edit();
             editor.putBoolean(key, isChecked);
             editor.apply();
             for (CompoundButton.OnCheckedChangeListener listener : mCheckedChangeListeners) {
@@ -63,6 +63,6 @@ public class SwitchItem extends LinearLayout implements Resumable {
 
     @Override
     public void onResume() {
-        mSwitchView.setChecked(App.me().sp.getBoolean(mKey, mDefaultValue));
+        mSwitchView.setChecked(App.sp.getBoolean(mKey, mDefaultValue));
     }
 }

@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
+import com.dss886.transmis.R;
+import com.dss886.transmis.base.App;
 import com.dss886.transmis.mail.MailSender;
-import com.dss886.transmis.utils.Settings;
 import com.dss886.transmis.utils.Logger;
+import com.dss886.transmis.utils.Settings;
 import com.dss886.transmis.utils.Tags;
 
 import java.util.Locale;
@@ -19,14 +21,13 @@ import java.util.Locale;
 public class SmsListener extends BroadcastReceiver {
 
     private static final String ACTION_SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
-    private static final String TEMPLATE_TITLE = "你的备用机收到了一条新短信";
-    private static final String TEMPLATE_CONTENT = "电话：%s: \n内容：%s \n\n";
 
     @Override
     public void onReceive(Context context, Intent intent) {
         Logger.d("SMS Received.");
-        if (!Settings.is(Tags.SP_GLOBAL_ENABLE, false)) {
-            Logger.d("Transmis has been disable!");
+        if (!Settings.is(Tags.SP_GLOBAL_ENABLE, false) ||
+                !Settings.is(Tags.SP_SMS_ENABLE, true)) {
+            Logger.d("SMS Transmis has been disable!");
             return;
         }
         if (intent.getAction().equals(ACTION_SMS_RECEIVED)) {
@@ -52,11 +53,21 @@ public class SmsListener extends BroadcastReceiver {
         if (messages == null || messages.length == 0) {
             return;
         }
+        String titleRegex = App.sp.getString(Tags.SP_SMS_TITLE_REGEX, App.me().getString(R.string.sms_title_default));
+        String contentRegex = App.sp.getString(Tags.SP_SMS_CONTENT_REGEX, App.me().getString(R.string.sms_content_default));
+        String content;
         StringBuilder sb = new StringBuilder();
-        for (SmsMessage message : messages) {
-            sb.append(String.format(Locale.CHINA, TEMPLATE_CONTENT,
-                    message.getOriginatingAddress(), message.getMessageBody()));
+        if (App.sp.getBoolean(Tags.SP_SMS_MERGE_LONG_TEXT, true)) {
+            for (SmsMessage message : messages) {
+                sb.append(message.getMessageBody());
+            }
+            content = String.format(Locale.CHINA, contentRegex, messages[0].getOriginatingAddress(), sb.toString());
+        } else {
+            for (SmsMessage message : messages) {
+                sb.append(String.format(Locale.CHINA, contentRegex, message.getOriginatingAddress(), message.getMessageBody()));
+            }
+            content = sb.toString();
         }
-        new MailSender().send(TEMPLATE_TITLE, sb.toString());
+        new MailSender().send(titleRegex, content);
     }
 }

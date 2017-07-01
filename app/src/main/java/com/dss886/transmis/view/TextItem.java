@@ -2,7 +2,10 @@ package com.dss886.transmis.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.text.InputType;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.dss886.transmis.R;
@@ -16,14 +19,11 @@ import com.dss886.transmis.utils.DisplayUtil;
 @SuppressLint("ViewConstructor")
 public class TextItem extends LinearLayout implements Resumable {
 
-    private final TextView mContentView;
-    private String mKey;
-    private OnValueChangeListener mListener;
+    private TextView mContentView;
+    private Callback mCallback;
 
-    public TextItem(Context context, String title, String key, OnValueChangeListener listener) {
+    public TextItem(Context context, String title) {
         super(context);
-        this.mKey = key;
-        this.mListener = listener;
         View.inflate(getContext(), R.layout.view_text_item, this);
         setMinimumHeight(DisplayUtil.dip2px(getContext(), 56));
 
@@ -32,15 +32,30 @@ public class TextItem extends LinearLayout implements Resumable {
         mContentView = (TextView) findViewById(R.id.content);
     }
 
+    public TextItem showRightArrow() {
+        findViewById(R.id.right_arrow).setVisibility(VISIBLE);
+        return this;
+    }
+
+    public TextItem asPassword() {
+        mContentView.setInputType(InputType.TYPE_CLASS_TEXT | EditorInfo.TYPE_TEXT_VARIATION_PASSWORD);
+        return this;
+    }
+
+    public TextItem setCallback(Callback callback) {
+        this.mCallback = callback;
+        return this;
+    }
+
     @Override
     public void onResume() {
-        if (mListener != null) {
-            mContentView.setText(mListener.onChange(App.me().sp.getString(mKey, null)));
+        if (mCallback != null) {
+            mContentView.setText(mCallback.onResume(App.sp));
         }
     }
 
-    public interface OnValueChangeListener {
-        String onChange(String value);
+    public interface Callback {
+        String onResume(SharedPreferences sp);
     }
 
 }

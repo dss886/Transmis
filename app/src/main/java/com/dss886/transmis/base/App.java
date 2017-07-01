@@ -11,7 +11,7 @@ import android.preference.PreferenceManager;
 public class App extends Application {
 
     private static App instance;
-    public SharedPreferences sp;
+    public static SharedPreferences sp;
 
     public static App me() {
         return instance;

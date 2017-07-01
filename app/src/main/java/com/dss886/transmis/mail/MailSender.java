@@ -1,6 +1,7 @@
 package com.dss886.transmis.mail;
 
 import android.widget.Toast;
+import com.dss886.transmis.R;
 import com.dss886.transmis.base.App;
 import com.dss886.transmis.utils.Tags;
 import com.sun.mail.util.MailSSLSocketFactory;
@@ -19,22 +20,22 @@ import java.util.concurrent.Executors;
  */
 public class MailSender extends javax.mail.Authenticator {
 
-    private static final String SENDER_NAME = "Transmis";
-
     private Executor mExecutor;
     private String host;
     private String email;
     private String password;
+    private String name;
     private String receiveAddress;
     private Session session;
 
     public MailSender() {
         this.mExecutor = Executors.newSingleThreadExecutor();
-        this.host = App.me().sp.getString(Tags.SP_MAIL_HOST, null);
-        String port = App.me().sp.getString(Tags.SP_MAIL_PORT, null);
-        this.email = App.me().sp.getString(Tags.SP_MAIL_SEND_MAIL, null);
-        this.password = App.me().sp.getString(Tags.SP_MAIL_SEND_PASSWORD, null);
-        this.receiveAddress = App.me().sp.getString(Tags.SP_MAIL_RECEIVE_MAIL, null);
+        this.host = App.sp.getString(Tags.SP_MAIL_HOST, null);
+        String port = App.sp.getString(Tags.SP_MAIL_PORT, null);
+        this.email = App.sp.getString(Tags.SP_MAIL_SEND_MAIL, null);
+        this.password = App.sp.getString(Tags.SP_MAIL_SEND_PASSWORD, null);
+        this.name = App.sp.getString(Tags.SP_MAIL_SEND_NAME, App.me().getString(R.string.app_name));
+        this.receiveAddress = App.sp.getString(Tags.SP_MAIL_RECEIVE_MAIL, null);
 
         Properties props = new Properties();
         props.setProperty("mail.transport.protocol", "smtp");
@@ -60,7 +61,7 @@ public class MailSender extends javax.mail.Authenticator {
                 Message msg = new MimeMessage(session);
                 msg.setSubject(title);
                 msg.setText(content);
-                msg.setFrom(new InternetAddress(email, SENDER_NAME));
+                msg.setFrom(new InternetAddress(email, name));
 
                 Transport transport = session.getTransport();
                 transport.connect(host, email, password);

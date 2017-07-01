@@ -9,10 +9,10 @@ import com.dss886.transmis.base.App;
 public class Settings {
 
     public static boolean is(String key, boolean defaultValue) {
-        return App.me().sp.getBoolean(key, defaultValue);
+        return App.sp.getBoolean(key, defaultValue);
     }
 
     public static String get(String key) {
-        return App.me().sp.getString(key, null);
+        return App.sp.getString(key, null);
     }
 }
