@@ -11,6 +11,6 @@
     <string name="call_title_default">你的备用机有一个未接电话</string>
     <string name="call_content_default">电话：%1$s \n时间：%2$s \n响铃：%3$s 秒\n\n</string>
 
-    <string name="info_sms_content">模版中需要使用"%s"表示号码和内容两个变量</string>
-    <string name="info_call_content">模版中需要使用"%s"表示号码、内容和响铃时间三个变量</string>
+    <string name="info_sms_content">模版中需要使用 "%s" 表示号码和内容等变量</string>
+    <string name="info_call_content">模版中需要使用 "%s" 表示号码、内容和响铃时间等变量</string>
 </resources>
