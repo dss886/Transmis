@@ -41,7 +41,7 @@ public class MainActivity extends BaseActivity {
         mMailItem = new TextItem(this, "邮件参数设置").showRightArrow();
         mHelpItem = new TextItem(this, "使用帮助");
         mVersionItem = new TextItem(this, "检查更新", "当前版本 v" + BuildConfig.VERSION_NAME);
-        mLicenseItem = new TextItem(this, "开源许可", "Apache 2.0");
+        mLicenseItem = new TextItem(this, "开源许可", "GNU v3.0");
 
         addView(mGlobalSwitch);
         addView(new SectionItem(this, "监听内容"));

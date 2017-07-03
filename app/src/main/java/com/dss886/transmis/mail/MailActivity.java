@@ -47,8 +47,9 @@ public class MailActivity extends BaseActivity {
             String value = sp.getString(Tags.SP_MAIL_SEND_MAIL, null);
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
-        mSendPasswordItem = new TextItem(this, "发件人密码/授权码").asPassword().setCallback(sp -> {
+        mSendPasswordItem = new TextItem(this, "发件人密码/授权码").setCallback(sp -> {
             String value = sp.getString(Tags.SP_MAIL_SEND_PASSWORD, null);
+            mSendPasswordItem.setIsPassword(!TextUtils.isEmpty(value));
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
         mReceiveItem = new TextItem(this, "收件人邮箱").setCallback(sp -> {

@@ -43,8 +43,12 @@ public class TextItem extends BaseItem {
         return this;
     }
 
-    public TextItem asPassword() {
-        mContentView.setInputType(InputType.TYPE_CLASS_TEXT | EditorInfo.TYPE_TEXT_VARIATION_PASSWORD);
+    public TextItem setIsPassword(boolean isPassword) {
+        if (isPassword) {
+            mContentView.setInputType(InputType.TYPE_CLASS_TEXT | EditorInfo.TYPE_TEXT_VARIATION_PASSWORD);
+        } else {
+            mContentView.setInputType(InputType.TYPE_CLASS_TEXT);
+        }
         return this;
     }
 
