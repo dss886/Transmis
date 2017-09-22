@@ -14,7 +14,8 @@ import com.dss886.transmis.view.TextItem;
 
 public class CallActivity extends BaseActivity {
 
-    private SwitchItem mCallSwitch;
+    private SwitchItem mMailSwitch;
+    private SwitchItem mDingSwitch;
     private TextItem mTitleItem;
     private TextItem mContentItem;
 
@@ -30,7 +31,8 @@ public class CallActivity extends BaseActivity {
 
     @Override
     protected void addViews() {
-        mCallSwitch = new SwitchItem(this, "未接电话提醒", Tags.SP_MISSED_CALL_ENABLE, true);
+        mMailSwitch = new SwitchItem(this, "邮件提醒", Tags.SP_MISSED_CALL_MAIL_ENABLE, true);
+        mDingSwitch = new SwitchItem(this, "钉钉提醒", Tags.SP_MISSED_CALL_DING_ENABLE, false);
         mTitleItem = new TextItem(this, "邮件标题").setCallback(sp -> {
             String value = sp.getString(Tags.SP_CALL_TITLE_REGEX, "默认");
             return TextUtils.isEmpty(value) ? "未设置" : value;
@@ -40,7 +42,8 @@ public class CallActivity extends BaseActivity {
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
 
-        addView(mCallSwitch);
+        addView(mMailSwitch);
+        addView(mDingSwitch);
         addView(new SectionItem(this, "提醒模版设置"));
         addView(mTitleItem);
         addView(mContentItem);
@@ -49,7 +52,8 @@ public class CallActivity extends BaseActivity {
 
     @Override
     protected void setListeners() {
-        mCallSwitch.setOnClickListener(v -> {});
+        mMailSwitch.setOnClickListener(v -> {});
+        mDingSwitch.setOnClickListener(v -> {});
         setTextItemListener(mTitleItem, Tags.SP_CALL_TITLE_REGEX, "设置标题");
         setTextItemListener(mContentItem, Tags.SP_CALL_CONTENT_REGEX, "设置内容模版");
     }

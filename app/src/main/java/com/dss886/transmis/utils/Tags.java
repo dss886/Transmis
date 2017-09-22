@@ -10,8 +10,10 @@ public class Tags {
     public static final String URL_RELEASE = "https://github.com/dss886/Transmis/releases";
 
     public static final String SP_GLOBAL_ENABLE = "global_enable";
-    public static final String SP_SMS_ENABLE = "sms_enable";
-    public static final String SP_MISSED_CALL_ENABLE = "missed_call_enable";
+    public static final String SP_SMS_MAIL_ENABLE = "sms_enable";
+    public static final String SP_SMS_DING_ENABLE = "sms_ding_enable";
+    public static final String SP_MISSED_CALL_MAIL_ENABLE = "missed_call_enable";
+    public static final String SP_MISSED_CALL_DING_ENABLE = "missed_call_ding_enable";
 
     public static final String SP_MAIL_HOST = "mail_host";
     public static final String SP_MAIL_PORT = "mail_port";
@@ -19,6 +21,8 @@ public class Tags {
     public static final String SP_MAIL_SEND_PASSWORD = "mail_send_password";
     public static final String SP_MAIL_SEND_NAME = "mail_send_name";
     public static final String SP_MAIL_RECEIVE_MAIL = "mail_receive_mail";
+
+    public static final String SP_DING_TOKEN = "ding_ding_token";
 
     public static final String SP_SMS_TITLE_REGEX = "sms_title_regex";
     public static final String SP_SMS_CONTENT_REGEX = "sms_content_regex";

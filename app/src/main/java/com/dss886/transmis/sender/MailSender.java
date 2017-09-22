@@ -1,4 +1,4 @@
-package com.dss886.transmis.mail;
+package com.dss886.transmis.sender;
 
 import android.widget.Toast;
 import com.dss886.transmis.R;

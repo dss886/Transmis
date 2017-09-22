@@ -14,7 +14,8 @@ import com.dss886.transmis.view.TextItem;
 
 public class SmsActivity extends BaseActivity {
 
-    private SwitchItem mSmsSwitch;
+    private SwitchItem mMailSwitch;
+    private SwitchItem mDingSwitch;
     private SwitchItem mMergeSwitch;
     private TextItem mTitleItem;
     private TextItem mContentItem;
@@ -31,18 +32,20 @@ public class SmsActivity extends BaseActivity {
 
     @Override
     protected void addViews() {
-        mSmsSwitch = new SwitchItem(this, "短信提醒", Tags.SP_SMS_ENABLE, true);
+        mMailSwitch = new SwitchItem(this, "邮件提醒", Tags.SP_SMS_MAIL_ENABLE, true);
+        mDingSwitch = new SwitchItem(this, "钉钉提醒", Tags.SP_SMS_DING_ENABLE, false);
         mMergeSwitch = new SwitchItem(this, "合并长短信", Tags.SP_SMS_MERGE_LONG_TEXT, true);
-        mTitleItem = new TextItem(this, "邮件标题").setCallback(sp -> {
+        mTitleItem = new TextItem(this, "提醒标题").setCallback(sp -> {
             String value = sp.getString(Tags.SP_SMS_TITLE_REGEX, "默认");
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
-        mContentItem = new TextItem(this, "邮件内容模版").setCallback(sp -> {
+        mContentItem = new TextItem(this, "提醒内容模版").setCallback(sp -> {
             String value = sp.getString(Tags.SP_SMS_CONTENT_REGEX, "默认");
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
 
-        addView(mSmsSwitch);
+        addView(mMailSwitch);
+        addView(mDingSwitch);
         addView(new SectionItem(this, "可选项"));
         addView(mMergeSwitch);
         addView(new SectionItem(this, "提醒模版设置"));
@@ -53,7 +56,8 @@ public class SmsActivity extends BaseActivity {
 
     @Override
     protected void setListeners() {
-        mSmsSwitch.setOnClickListener(v -> {});
+        mMailSwitch.setOnClickListener(v -> {});
+        mDingSwitch.setOnClickListener(v -> {});
         mMergeSwitch.setOnClickListener(v -> {});
         setTextItemListener(mTitleItem, Tags.SP_SMS_TITLE_REGEX, "设置标题");
         setTextItemListener(mContentItem, Tags.SP_SMS_CONTENT_REGEX, "设置内容模版");

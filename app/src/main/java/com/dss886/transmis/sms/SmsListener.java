@@ -7,7 +7,8 @@ import android.os.Bundle;
 import android.telephony.SmsMessage;
 import com.dss886.transmis.R;
 import com.dss886.transmis.base.App;
-import com.dss886.transmis.mail.MailSender;
+import com.dss886.transmis.sender.DingDingSender;
+import com.dss886.transmis.sender.MailSender;
 import com.dss886.transmis.utils.Logger;
 import com.dss886.transmis.utils.Settings;
 import com.dss886.transmis.utils.Tags;
@@ -25,8 +26,7 @@ public class SmsListener extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Logger.d("SMS Received.");
-        if (!Settings.is(Tags.SP_GLOBAL_ENABLE, false) ||
-                !Settings.is(Tags.SP_SMS_ENABLE, true)) {
+        if (!Settings.is(Tags.SP_GLOBAL_ENABLE, false)) {
             Logger.d("SMS Transmis has been disable!");
             return;
         }
@@ -40,7 +40,7 @@ public class SmsListener extends BroadcastReceiver {
                         messages[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
                     }
                     Logger.d("Try To Send Mail.");
-                    sendMail(messages);
+                    doNotify(messages);
                 } catch (Exception e) {
                     Logger.e(e.getMessage());
                     e.printStackTrace();
@@ -49,7 +49,7 @@ public class SmsListener extends BroadcastReceiver {
         }
     }
 
-    private void sendMail(SmsMessage[] messages) {
+    private void doNotify(SmsMessage[] messages) {
         if (messages == null || messages.length == 0) {
             return;
         }
@@ -68,6 +68,11 @@ public class SmsListener extends BroadcastReceiver {
             }
             content = sb.toString();
         }
-        new MailSender().send(titleRegex, content);
+        if (Settings.is(Tags.SP_SMS_MAIL_ENABLE, false)) {
+            new MailSender().send(titleRegex, content);
+        }
+        if (Settings.is(Tags.SP_SMS_DING_ENABLE, false)) {
+            new DingDingSender().send(titleRegex, content);
+        }
     }
 }

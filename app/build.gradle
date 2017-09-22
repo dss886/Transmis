@@ -27,4 +27,5 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:25.3.1'
     implementation 'com.sun.mail:android-mail:1.5.5'
     implementation 'com.sun.mail:android-activation:1.5.5'
+    implementation 'com.squareup.okhttp3:okhttp:3.9.0'
 }
