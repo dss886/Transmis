@@ -1,4 +1,4 @@
-package com.dss886.transmis.mail;
+package com.dss886.transmis.listen.mail;
 
 import android.content.SharedPreferences;
 import android.text.TextUtils;

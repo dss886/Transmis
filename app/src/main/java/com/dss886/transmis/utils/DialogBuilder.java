@@ -17,10 +17,10 @@ import com.dss886.transmis.base.BaseActivity;
 public class DialogBuilder {
 
     @SuppressLint("InflateParams")
-    public static AlertDialog showEditTextDialog(BaseActivity activity, String title, String content,
+    public static void showEditTextDialog(BaseActivity activity, String title, String content,
                                                  boolean isPassword, EditTextDialogCallback callback) {
         View layout = LayoutInflater.from(activity).inflate(R.layout.view_dialog_edit_text, null);
-        EditText input = (EditText) layout.findViewById(R.id.edit_text);
+        EditText input = layout.findViewById(R.id.edit_text);
         input.setText(content);
         if (isPassword) {
             input.setInputType(InputType.TYPE_CLASS_TEXT | EditorInfo.TYPE_TEXT_VARIATION_PASSWORD);
@@ -36,8 +36,7 @@ public class DialogBuilder {
             }
         });
         builder.setNegativeButton("取消", (dialog, which) -> dialog.dismiss());
-
-        return builder.show();
+        builder.show();
     }
 
     public static AlertDialog showAlertDialog(BaseActivity activity, String content, AlertDialogCallback callback) {

@@ -16,7 +16,7 @@ public class InfoItem extends BaseItem {
     public InfoItem(Context context, String content) {
         super(context);
         View.inflate(getContext(), R.layout.view_info_item, this);
-        TextView contentView = (TextView) findViewById(R.id.content);
+        TextView contentView = findViewById(R.id.content);
         contentView.setText(content);
     }
 

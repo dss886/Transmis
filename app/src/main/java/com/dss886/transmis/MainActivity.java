@@ -7,8 +7,8 @@ import android.text.TextUtils;
 import com.dss886.transmis.base.App;
 import com.dss886.transmis.base.BaseActivity;
 import com.dss886.transmis.call.CallActivity;
-import com.dss886.transmis.mail.MailActivity;
-import com.dss886.transmis.sms.SmsActivity;
+import com.dss886.transmis.listen.sms.SmsActivity;
+import com.dss886.transmis.listen.mail.MailActivity;
 import com.dss886.transmis.utils.DialogBuilder;
 import com.dss886.transmis.utils.Tags;
 import com.dss886.transmis.view.SectionItem;
@@ -28,7 +28,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected int getToolbarTitle() {
-        return R.string.main_title;
+        return R.string.app_name;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void addViews() {
         mGlobalSwitch = new SwitchItem(this, "总开关", Tags.SP_GLOBAL_ENABLE, false);
-        mSmsItem = new TextItem(this, "短信提醒").showRightArrow()
+        mSmsItem = new TextItem(this, "短信").showRightArrow()
                 .setCallback(sp -> {
                     if (sp.getBoolean(Tags.SP_SMS_MAIL_ENABLE, true) ||
                             sp.getBoolean(Tags.SP_SMS_DING_ENABLE, false)) {
@@ -47,7 +47,7 @@ public class MainActivity extends BaseActivity {
                     }
                     return "关";
                 });
-        mCallItem = new TextItem(this, "未接电话提醒").showRightArrow()
+        mCallItem = new TextItem(this, "未接电话").showRightArrow()
                 .setCallback(sp -> {
                     if (sp.getBoolean(Tags.SP_MISSED_CALL_MAIL_ENABLE, true) ||
                             sp.getBoolean(Tags.SP_MISSED_CALL_DING_ENABLE, false)) {
@@ -55,11 +55,11 @@ public class MainActivity extends BaseActivity {
                     }
                     return "关";
                 });
-        mDingDingItem = new TextItem(this, "钉钉机器人设置").setCallback(sp -> {
+        mDingDingItem = new TextItem(this, "钉钉提醒").setCallback(sp -> {
             String value = sp.getString(Tags.SP_DING_TOKEN, null);
             return TextUtils.isEmpty(value) ? "未设置" : "已设置";
         });
-        mMailItem = new TextItem(this, "邮件参数设置").showRightArrow();
+        mMailItem = new TextItem(this, "邮件提醒").showRightArrow();
         mHelpItem = new TextItem(this, "使用帮助");
         mVersionItem = new TextItem(this, "检查更新", "当前版本 v" + BuildConfig.VERSION_NAME);
         mLicenseItem = new TextItem(this, "开源许可", "GNU v3.0");
@@ -68,7 +68,7 @@ public class MainActivity extends BaseActivity {
         addView(new SectionItem(this, "监听内容"));
         addView(mSmsItem);
         addView(mCallItem);
-        addView(new SectionItem(this, "参数设置"));
+        addView(new SectionItem(this, "提醒插件"));
         addView(mMailItem);
         addView(mDingDingItem);
         addView(new SectionItem(this, "关于"));

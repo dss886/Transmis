@@ -28,11 +28,13 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mContainer = (LinearLayout) findViewById(R.id.container);
+        mToolbar = findViewById(R.id.toolbar);
+        mContainer = findViewById(R.id.container);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(showToolbarBackIcon());
-        getSupportActionBar().setTitle(getToolbarTitle());
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(showToolbarBackIcon());
+            getSupportActionBar().setTitle(getToolbarTitle());
+        }
         addViews();
         setListeners();
         build();

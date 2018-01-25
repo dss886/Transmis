@@ -1,8 +1,7 @@
-package com.dss886.transmis.sender;
+package com.dss886.transmis.nofity;
 
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 import com.dss886.transmis.base.App;
 import com.dss886.transmis.utils.Tags;
 import okhttp3.*;
@@ -45,7 +44,10 @@ public class DingDingSender {
                 RequestBody body = RequestBody.create(mMediaType, message.toString());
                 Request request = new Request.Builder().url(url).post(body).build();
                 Response response = mClient.newCall(request).execute();
-                Log.d("DingDingSender", response.body().string());
+                ResponseBody responseBody = response.body();
+                if (responseBody != null) {
+                    Log.d("DingDingSender", responseBody.string());
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

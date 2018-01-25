@@ -21,12 +21,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".sms.SmsActivity"/>
-        <activity android:name=".mail.MailActivity"/>
+        <activity android:name=".listen.sms.SmsActivity"/>
+        <activity android:name=".listen.mail.MailActivity"/>
         <activity android:name=".call.CallActivity"/>
 
         <receiver
-            android:name=".sms.SmsListener"
+            android:name=".listen.sms.SmsListener"
             android:permission="android.permission.BROADCAST_SMS">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED"/>

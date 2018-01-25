@@ -7,9 +7,9 @@ import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import com.dss886.transmis.R;
 import com.dss886.transmis.base.App;
-import com.dss886.transmis.sender.DingDingSender;
+import com.dss886.transmis.nofity.DingDingSender;
 import com.dss886.transmis.utils.Settings;
-import com.dss886.transmis.sender.MailSender;
+import com.dss886.transmis.nofity.MailSender;
 import com.dss886.transmis.utils.Logger;
 import com.dss886.transmis.utils.Tags;
 
@@ -37,10 +37,10 @@ public class CallListener extends BroadcastReceiver {
             Logger.d("Call Transmis has been disable!");
             return;
         }
-        if (intent.getAction().equals(ACTION_PHONE_STATE)) {
+        if (ACTION_PHONE_STATE.equals(intent.getAction())) {
             String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
-            if (state != null) {
-                Bundle bundle = intent.getExtras();
+            Bundle bundle = intent.getExtras();
+            if (state != null && bundle != null) {
                 String callNumber = bundle.getString("incoming_number");
                 if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
                     sRing = true;

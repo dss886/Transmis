@@ -1,4 +1,4 @@
-package com.dss886.transmis.sender;
+package com.dss886.transmis.nofity;
 
 import com.dss886.transmis.R;
 import com.dss886.transmis.base.App;

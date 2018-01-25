@@ -27,10 +27,10 @@ public class SwitchItem extends BaseItem {
 
         View.inflate(getContext(), R.layout.view_switch_item, this);
 
-        TextView titleView = (TextView) findViewById(R.id.title);
+        TextView titleView = findViewById(R.id.title);
         titleView.setText(title);
 
-        mSwitchView = (Switch) findViewById(R.id.switcher);
+        mSwitchView = findViewById(R.id.switcher);
         mSwitchView.setOnCheckedChangeListener((buttonView, isChecked) -> {
             SharedPreferences.Editor editor = App.sp.edit();
             editor.putBoolean(key, isChecked);

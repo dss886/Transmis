@@ -30,9 +30,9 @@ public class TextItem extends BaseItem {
         View.inflate(getContext(), R.layout.view_text_item, this);
         setMinimumHeight(DisplayUtil.dip2px(getContext(), 56));
 
-        TextView titleView = (TextView) findViewById(R.id.title);
+        TextView titleView = findViewById(R.id.title);
         titleView.setText(title);
-        mContentView = (TextView) findViewById(R.id.content);
+        mContentView = findViewById(R.id.content);
         if (content != null) {
             mContentView.setText(content);
         }
