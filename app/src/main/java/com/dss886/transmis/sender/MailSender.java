@@ -1,6 +1,5 @@
 package com.dss886.transmis.sender;
 
-import android.widget.Toast;
 import com.dss886.transmis.R;
 import com.dss886.transmis.base.App;
 import com.dss886.transmis.utils.Tags;
@@ -49,7 +48,6 @@ public class MailSender extends javax.mail.Authenticator {
             props.put("mail.smtp.ssl.enable", "true");
             props.put("mail.smtp.ssl.socketFactory", sf);
         } catch (GeneralSecurityException e) {
-            Toast.makeText(App.me(), e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
         session = Session.getDefaultInstance(props, this);
@@ -68,7 +66,6 @@ public class MailSender extends javax.mail.Authenticator {
                 transport.sendMessage(msg, new Address[] { new InternetAddress(receiveAddress) });
                 transport.close();
             } catch (MessagingException | UnsupportedEncodingException e) {
-                Toast.makeText(App.me(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
         });

@@ -47,7 +47,6 @@ public class DingDingSender {
                 Response response = mClient.newCall(request).execute();
                 Log.d("DingDingSender", response.body().string());
             } catch (Exception e) {
-                Toast.makeText(App.me(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
         });
