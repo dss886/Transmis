@@ -2,6 +2,7 @@ package com.dss886.transmis.listen.sms;
 
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+
 import com.dss886.transmis.R;
 import com.dss886.transmis.base.App;
 import com.dss886.transmis.base.BaseActivity;
@@ -16,6 +17,8 @@ public class SmsActivity extends BaseActivity {
 
     private SwitchItem mMailSwitch;
     private SwitchItem mDingSwitch;
+    private TextItem mSenderItem;
+    private TextItem mKeyWordItem;
     private SwitchItem mMergeSwitch;
     private TextItem mTitleItem;
     private TextItem mContentItem;
@@ -31,9 +34,11 @@ public class SmsActivity extends BaseActivity {
     }
 
     @Override
-    protected void addViews() {
+    protected void addItems() {
         mMailSwitch = new SwitchItem(this, "邮件提醒", Tags.SP_SMS_MAIL_ENABLE, true);
         mDingSwitch = new SwitchItem(this, "钉钉提醒", Tags.SP_SMS_DING_ENABLE, false);
+        mSenderItem = new TextItem(this, "发件人过滤").showRightArrow();
+        mKeyWordItem = new TextItem(this, "关键词过滤").showRightArrow();
         mMergeSwitch = new SwitchItem(this, "合并长短信", Tags.SP_SMS_MERGE_LONG_TEXT, true);
         mTitleItem = new TextItem(this, "提醒标题").setCallback(sp -> {
             String value = sp.getString(Tags.SP_SMS_TITLE_REGEX, "默认");
@@ -44,21 +49,23 @@ public class SmsActivity extends BaseActivity {
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
 
-        addView(mMailSwitch);
-        addView(mDingSwitch);
-        addView(new SectionItem(this, "可选项"));
-        addView(mMergeSwitch);
-        addView(new SectionItem(this, "提醒模版设置"));
-        addView(mTitleItem);
-        addView(mContentItem);
-        addView(new InfoItem(this, getString(R.string.info_sms_content)));
+        addItem(mMailSwitch);
+        addItem(mDingSwitch);
+        addItem(new SectionItem(this, "过滤"));
+        addItem(mSenderItem);
+        addItem(mKeyWordItem);
+        addItem(new SectionItem(this, "可选项"));
+        addItem(mMergeSwitch);
+        addItem(new SectionItem(this, "提醒模版设置"));
+        addItem(mTitleItem);
+        addItem(mContentItem);
+        addItem(new InfoItem(this, getString(R.string.info_sms_content)));
     }
 
     @Override
     protected void setListeners() {
-        mMailSwitch.setOnClickListener(v -> {});
-        mDingSwitch.setOnClickListener(v -> {});
-        mMergeSwitch.setOnClickListener(v -> {});
+        mSenderItem.setOnClickListener(v -> {});
+        mKeyWordItem.setOnClickListener(v -> {});
         setTextItemListener(mTitleItem, Tags.SP_SMS_TITLE_REGEX, "设置标题");
         setTextItemListener(mContentItem, Tags.SP_SMS_CONTENT_REGEX, "设置内容模版");
     }

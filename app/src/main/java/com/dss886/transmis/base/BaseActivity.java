@@ -1,12 +1,15 @@
 package com.dss886.transmis.base;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import com.dss886.transmis.R;
+import com.dss886.transmis.utils.DisplayUtil;
 import com.dss886.transmis.view.BaseItem;
 import com.dss886.transmis.view.SectionItem;
 
@@ -27,20 +30,25 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle extra = getIntent().getExtras();
+        if (extra != null) {
+            resolveIntentExtra(extra);
+        }
         setContentView(R.layout.activity_base);
-        mToolbar = findViewById(R.id.toolbar);
         mContainer = findViewById(R.id.container);
+        mToolbar = findViewById(R.id.toolbar);
+        ViewCompat.setElevation(mToolbar, DisplayUtil.dip2px(this, 4));
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(showToolbarBackIcon());
             getSupportActionBar().setTitle(getToolbarTitle());
         }
-        addViews();
+        addItems();
         setListeners();
         build();
     }
 
-    protected void addView(BaseItem item) {
+    protected void addItem(BaseItem item) {
         mItems.add(item);
     }
 
@@ -76,11 +84,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    protected void resolveIntentExtra(@NonNull Bundle bundle) {}
+
     protected abstract int getToolbarTitle();
 
     protected abstract boolean showToolbarBackIcon();
 
-    protected abstract void addViews();
+    protected abstract void addItems();
 
     protected abstract void setListeners();
 }

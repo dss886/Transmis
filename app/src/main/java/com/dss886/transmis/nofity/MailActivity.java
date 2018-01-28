@@ -1,4 +1,4 @@
-package com.dss886.transmis.listen.mail;
+package com.dss886.transmis.nofity;
 
 import android.content.SharedPreferences;
 import android.text.TextUtils;
@@ -30,7 +30,7 @@ public class MailActivity extends BaseActivity {
     }
 
     @Override
-    protected void addViews() {
+    protected void addItems() {
         mHostItem = new TextItem(this, "SMTP服务器").setCallback(sp -> {
             String value = sp.getString(Tags.SP_MAIL_HOST, null);
             return TextUtils.isEmpty(value) ? "未设置" : value;
@@ -57,15 +57,15 @@ public class MailActivity extends BaseActivity {
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
 
-        addView(new SectionItem(this, "服务器设置"));
-        addView(mHostItem);
-        addView(mPortItem);
-        addView(new SectionItem(this, "发件人设置"));
-        addView(mSendNameItem);
-        addView(mSendMailItem);
-        addView(mSendPasswordItem);
-        addView(new SectionItem(this, "收件人设置"));
-        addView(mReceiveItem);
+        addItem(new SectionItem(this, "服务器设置"));
+        addItem(mHostItem);
+        addItem(mPortItem);
+        addItem(new SectionItem(this, "发件人设置"));
+        addItem(mSendNameItem);
+        addItem(mSendMailItem);
+        addItem(mSendPasswordItem);
+        addItem(new SectionItem(this, "收件人设置"));
+        addItem(mReceiveItem);
     }
 
     @Override

@@ -6,9 +6,9 @@ import android.net.Uri;
 import android.text.TextUtils;
 import com.dss886.transmis.base.App;
 import com.dss886.transmis.base.BaseActivity;
-import com.dss886.transmis.call.CallActivity;
+import com.dss886.transmis.listen.call.CallActivity;
 import com.dss886.transmis.listen.sms.SmsActivity;
-import com.dss886.transmis.listen.mail.MailActivity;
+import com.dss886.transmis.nofity.MailActivity;
 import com.dss886.transmis.utils.DialogBuilder;
 import com.dss886.transmis.utils.Tags;
 import com.dss886.transmis.view.SectionItem;
@@ -17,7 +17,6 @@ import com.dss886.transmis.view.TextItem;
 
 public class MainActivity extends BaseActivity {
 
-    private SwitchItem mGlobalSwitch;
     private TextItem mSmsItem;
     private TextItem mCallItem;
     private TextItem mMailItem;
@@ -37,8 +36,7 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected void addViews() {
-        mGlobalSwitch = new SwitchItem(this, "总开关", Tags.SP_GLOBAL_ENABLE, false);
+    protected void addItems() {
         mSmsItem = new TextItem(this, "短信").showRightArrow()
                 .setCallback(sp -> {
                     if (sp.getBoolean(Tags.SP_SMS_MAIL_ENABLE, true) ||
@@ -64,22 +62,21 @@ public class MainActivity extends BaseActivity {
         mVersionItem = new TextItem(this, "检查更新", "当前版本 v" + BuildConfig.VERSION_NAME);
         mLicenseItem = new TextItem(this, "开源许可", "GNU v3.0");
 
-        addView(mGlobalSwitch);
-        addView(new SectionItem(this, "监听内容"));
-        addView(mSmsItem);
-        addView(mCallItem);
-        addView(new SectionItem(this, "提醒插件"));
-        addView(mMailItem);
-        addView(mDingDingItem);
-        addView(new SectionItem(this, "关于"));
-        addView(mHelpItem);
-        addView(mVersionItem);
-        addView(mLicenseItem);
+        addItem(new SwitchItem(this, "总开关", Tags.SP_GLOBAL_ENABLE, false));
+        addItem(new SectionItem(this, "监听内容"));
+        addItem(mSmsItem);
+        addItem(mCallItem);
+        addItem(new SectionItem(this, "提醒插件"));
+        addItem(mMailItem);
+        addItem(mDingDingItem);
+        addItem(new SectionItem(this, "关于"));
+        addItem(mHelpItem);
+        addItem(mVersionItem);
+        addItem(mLicenseItem);
     }
 
     @Override
     protected void setListeners() {
-        mGlobalSwitch.setOnClickListener(v -> {});
         mSmsItem.setOnClickListener(v -> startActivity(new Intent(this, SmsActivity.class)));
         mCallItem.setOnClickListener(v -> startActivity(new Intent(this, CallActivity.class)));
         mMailItem.setOnClickListener(v -> startActivity(new Intent(this, MailActivity.class)));

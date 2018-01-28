@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import com.dss886.transmis.R;
@@ -16,9 +17,11 @@ import com.dss886.transmis.base.App;
 @SuppressLint("ViewConstructor")
 public class SwitchItem extends BaseItem {
 
+    private TextView mTitle;
     private Switch mSwitchView;
     private String mKey;
     private boolean mDefaultValue;
+    private CompoundButton.OnCheckedChangeListener mOnCheckedChangeListener;
 
     public SwitchItem(Context context, String title, String key, boolean defaultValue) {
         super(context);
@@ -27,19 +30,34 @@ public class SwitchItem extends BaseItem {
 
         View.inflate(getContext(), R.layout.view_switch_item, this);
 
-        TextView titleView = findViewById(R.id.title);
-        titleView.setText(title);
+        mTitle = findViewById(R.id.title);
+        mTitle.setText(title);
 
         mSwitchView = findViewById(R.id.switcher);
         mSwitchView.setOnCheckedChangeListener((buttonView, isChecked) -> {
             SharedPreferences.Editor editor = App.sp.edit();
             editor.putBoolean(key, isChecked);
             editor.apply();
+            if (mOnCheckedChangeListener != null) {
+                mOnCheckedChangeListener.onCheckedChanged(mSwitchView, isChecked);
+            }
         });
     }
 
     @Override
     public void onResume() {
-        mSwitchView.setChecked(App.sp.getBoolean(mKey, mDefaultValue));
+        boolean isChecked = App.sp.getBoolean(mKey, mDefaultValue);
+        mSwitchView.setChecked(isChecked);
+        if (mOnCheckedChangeListener != null) {
+            mOnCheckedChangeListener.onCheckedChanged(mSwitchView, isChecked);
+        }
+    }
+
+    public void setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener listener) {
+        mOnCheckedChangeListener = listener;
+    }
+
+    public void setTitle(String title) {
+        mTitle.setText(title);
     }
 }

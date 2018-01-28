@@ -1,7 +1,8 @@
-package com.dss886.transmis.call;
+package com.dss886.transmis.listen.call;
 
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+
 import com.dss886.transmis.R;
 import com.dss886.transmis.base.App;
 import com.dss886.transmis.base.BaseActivity;
@@ -16,6 +17,7 @@ public class CallActivity extends BaseActivity {
 
     private SwitchItem mMailSwitch;
     private SwitchItem mDingSwitch;
+    private TextItem mSenderItem;
     private TextItem mTitleItem;
     private TextItem mContentItem;
 
@@ -30,9 +32,10 @@ public class CallActivity extends BaseActivity {
     }
 
     @Override
-    protected void addViews() {
+    protected void addItems() {
         mMailSwitch = new SwitchItem(this, "邮件提醒", Tags.SP_MISSED_CALL_MAIL_ENABLE, true);
         mDingSwitch = new SwitchItem(this, "钉钉提醒", Tags.SP_MISSED_CALL_DING_ENABLE, false);
+        mSenderItem = new TextItem(this, "来电过滤").showRightArrow();
         mTitleItem = new TextItem(this, "邮件标题").setCallback(sp -> {
             String value = sp.getString(Tags.SP_CALL_TITLE_REGEX, "默认");
             return TextUtils.isEmpty(value) ? "未设置" : value;
@@ -42,18 +45,19 @@ public class CallActivity extends BaseActivity {
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
 
-        addView(mMailSwitch);
-        addView(mDingSwitch);
-        addView(new SectionItem(this, "提醒模版设置"));
-        addView(mTitleItem);
-        addView(mContentItem);
-        addView(new InfoItem(this, getString(R.string.info_call_content)));
+        addItem(mMailSwitch);
+        addItem(mDingSwitch);
+        addItem(new SectionItem(this, "过滤"));
+        addItem(mSenderItem);
+        addItem(new SectionItem(this, "提醒模版设置"));
+        addItem(mTitleItem);
+        addItem(mContentItem);
+        addItem(new InfoItem(this, getString(R.string.info_call_content)));
     }
 
     @Override
     protected void setListeners() {
-        mMailSwitch.setOnClickListener(v -> {});
-        mDingSwitch.setOnClickListener(v -> {});
+        mSenderItem.setOnClickListener(v -> {});
         setTextItemListener(mTitleItem, Tags.SP_CALL_TITLE_REGEX, "设置标题");
         setTextItemListener(mContentItem, Tags.SP_CALL_CONTENT_REGEX, "设置内容模版");
     }
