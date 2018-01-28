@@ -1,11 +1,13 @@
 package com.dss886.transmis.listen.sms;
 
 import android.content.SharedPreferences;
+import android.text.InputType;
 import android.text.TextUtils;
 
 import com.dss886.transmis.R;
 import com.dss886.transmis.base.App;
-import com.dss886.transmis.base.BaseActivity;
+import com.dss886.transmis.base.BaseSwitchActivity;
+import com.dss886.transmis.filter.FilterActivity;
 import com.dss886.transmis.utils.DialogBuilder;
 import com.dss886.transmis.utils.Tags;
 import com.dss886.transmis.view.InfoItem;
@@ -13,7 +15,7 @@ import com.dss886.transmis.view.SectionItem;
 import com.dss886.transmis.view.SwitchItem;
 import com.dss886.transmis.view.TextItem;
 
-public class SmsActivity extends BaseActivity {
+public class SmsActivity extends BaseSwitchActivity {
 
     private SwitchItem mMailSwitch;
     private SwitchItem mDingSwitch;
@@ -64,8 +66,8 @@ public class SmsActivity extends BaseActivity {
 
     @Override
     protected void setListeners() {
-        mSenderItem.setOnClickListener(v -> {});
-        mKeyWordItem.setOnClickListener(v -> {});
+        mSenderItem.setOnClickListener(v -> FilterActivity.start(this, FilterActivity.Type.SMS_SENDER));
+        mKeyWordItem.setOnClickListener(v -> FilterActivity.start(this, FilterActivity.Type.SMS_KEYWORD));
         setTextItemListener(mTitleItem, Tags.SP_SMS_TITLE_REGEX, "设置标题");
         setTextItemListener(mContentItem, Tags.SP_SMS_CONTENT_REGEX, "设置内容模版");
     }
@@ -73,7 +75,7 @@ public class SmsActivity extends BaseActivity {
     private void setTextItemListener(TextItem item, String key, String showTitle) {
         item.setOnClickListener(v -> {
             String value = App.sp.getString(key, null);
-            DialogBuilder.showEditTextDialog(this, showTitle, value, false, content -> {
+            DialogBuilder.showEditTextDialog(this, showTitle, value, InputType.TYPE_CLASS_TEXT, content -> {
                 SharedPreferences.Editor editor = App.sp.edit();
                 if (TextUtils.isEmpty(content)) {
                     editor.remove(key);

@@ -3,6 +3,9 @@
     <string name="sms_title">短信设置</string>
     <string name="call_title">未接电话设置</string>
     <string name="mail_title">邮件提醒插件</string>
+    <string name="sender_title">发件人过滤</string>
+    <string name="sender_call_title">来电过滤</string>
+    <string name="keyword_title">关键词过滤</string>
 
     <string name="sms_title_default">你的备用机收到了一条新短信</string>
     <string name="sms_content_default">电话：%1$s \n内容：%2$s \n\n</string>

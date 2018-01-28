@@ -1,16 +1,17 @@
 package com.dss886.transmis.nofity;
 
 import android.content.SharedPreferences;
+import android.text.InputType;
 import android.text.TextUtils;
 import com.dss886.transmis.R;
 import com.dss886.transmis.base.App;
-import com.dss886.transmis.base.BaseActivity;
+import com.dss886.transmis.base.BaseSwitchActivity;
 import com.dss886.transmis.utils.DialogBuilder;
 import com.dss886.transmis.utils.Tags;
 import com.dss886.transmis.view.SectionItem;
 import com.dss886.transmis.view.TextItem;
 
-public class MailActivity extends BaseActivity {
+public class MailActivity extends BaseSwitchActivity {
 
     private TextItem mHostItem;
     private TextItem mPortItem;
@@ -81,7 +82,11 @@ public class MailActivity extends BaseActivity {
     private void setTextItemListener(TextItem item, String key, String showTitle, boolean isPassword) {
         item.setOnClickListener(v -> {
             String value = App.sp.getString(key, null);
-            DialogBuilder.showEditTextDialog(this, showTitle, value, isPassword, content -> {
+            int inputType = InputType.TYPE_CLASS_TEXT;
+            if (isPassword) {
+                inputType |= InputType.TYPE_TEXT_VARIATION_PASSWORD;
+            }
+            DialogBuilder.showEditTextDialog(this, showTitle, value, inputType, content -> {
                 SharedPreferences.Editor editor = App.sp.edit();
                 if (TextUtils.isEmpty(content)) {
                     editor.remove(key);

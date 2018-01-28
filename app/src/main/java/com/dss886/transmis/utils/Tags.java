@@ -31,4 +31,12 @@ public class Tags {
     public static final String SP_CALL_TITLE_REGEX = "call_title_regex";
     public static final String SP_CALL_CONTENT_REGEX = "call_content_regex";
 
+    public static final String SP_FILTER_MODE_SMS_SENDER = "filter_mode_sms_sender";
+    public static final String SP_FILTER_MODE_SMS_KEYWORD = "filter_mode_sms_keyword";
+    public static final String SP_FILTER_MODE_CALL_SENDER = "filter_mode_call_sender";
+
+    public static final String SP_FILTER_VALUE_SMS_SENDER = "filter_value_sms_sender";
+    public static final String SP_FILTER_VALUE_SMS_KEYWORD = "filter_value_sms_keyword";
+    public static final String SP_FILTER_VALUE_CALL_SENDER = "filter_value_call_sender";
+
 }

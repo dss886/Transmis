@@ -23,25 +23,17 @@ public class SwitchItem extends BaseItem {
     private boolean mDefaultValue;
     private CompoundButton.OnCheckedChangeListener mOnCheckedChangeListener;
 
-    public SwitchItem(Context context, String title, String key, boolean defaultValue) {
+    public SwitchItem(Context context) {
         super(context);
-        this.mKey = key;
-        this.mDefaultValue = defaultValue;
-
         View.inflate(getContext(), R.layout.view_switch_item, this);
-
         mTitle = findViewById(R.id.title);
-        mTitle.setText(title);
-
         mSwitchView = findViewById(R.id.switcher);
-        mSwitchView.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            SharedPreferences.Editor editor = App.sp.edit();
-            editor.putBoolean(key, isChecked);
-            editor.apply();
-            if (mOnCheckedChangeListener != null) {
-                mOnCheckedChangeListener.onCheckedChanged(mSwitchView, isChecked);
-            }
-        });
+    }
+
+    public SwitchItem(Context context, String title, String key, boolean defaultValue) {
+        this(context);
+        mTitle.setText(title);
+        setSpInfo(key, defaultValue);
     }
 
     @Override
@@ -53,11 +45,24 @@ public class SwitchItem extends BaseItem {
         }
     }
 
-    public void setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener listener) {
-        mOnCheckedChangeListener = listener;
-    }
-
     public void setTitle(String title) {
         mTitle.setText(title);
+    }
+
+    public void setSpInfo(String key, boolean defaultValue) {
+        mKey = key;
+        mDefaultValue = defaultValue;
+        mSwitchView.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SharedPreferences.Editor editor = App.sp.edit();
+            editor.putBoolean(key, isChecked);
+            editor.apply();
+            if (mOnCheckedChangeListener != null) {
+                mOnCheckedChangeListener.onCheckedChanged(mSwitchView, isChecked);
+            }
+        });
+    }
+
+    public void setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener listener) {
+        mOnCheckedChangeListener = listener;
     }
 }

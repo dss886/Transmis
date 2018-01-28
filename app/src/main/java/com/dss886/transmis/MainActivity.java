@@ -3,9 +3,10 @@ package com.dss886.transmis;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.text.InputType;
 import android.text.TextUtils;
 import com.dss886.transmis.base.App;
-import com.dss886.transmis.base.BaseActivity;
+import com.dss886.transmis.base.BaseSwitchActivity;
 import com.dss886.transmis.listen.call.CallActivity;
 import com.dss886.transmis.listen.sms.SmsActivity;
 import com.dss886.transmis.nofity.MailActivity;
@@ -15,7 +16,7 @@ import com.dss886.transmis.view.SectionItem;
 import com.dss886.transmis.view.SwitchItem;
 import com.dss886.transmis.view.TextItem;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseSwitchActivity {
 
     private TextItem mSmsItem;
     private TextItem mCallItem;
@@ -82,7 +83,7 @@ public class MainActivity extends BaseActivity {
         mMailItem.setOnClickListener(v -> startActivity(new Intent(this, MailActivity.class)));
         mDingDingItem.setOnClickListener(v -> {
             String value = App.sp.getString(Tags.SP_DING_TOKEN, null);
-            DialogBuilder.showEditTextDialog(this, "请设置钉钉机器人的Token", value, false, content -> {
+            DialogBuilder.showEditTextDialog(this, "请设置钉钉机器人的Token", value, InputType.TYPE_CLASS_TEXT, content -> {
                 SharedPreferences.Editor editor = App.sp.edit();
                 if (TextUtils.isEmpty(content)) {
                     editor.remove(Tags.SP_DING_TOKEN);
