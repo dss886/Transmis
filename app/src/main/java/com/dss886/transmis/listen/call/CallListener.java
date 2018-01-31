@@ -5,16 +5,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
+
 import com.dss886.transmis.R;
 import com.dss886.transmis.base.App;
 import com.dss886.transmis.nofity.DingDingSender;
 import com.dss886.transmis.utils.Settings;
 import com.dss886.transmis.nofity.MailSender;
 import com.dss886.transmis.utils.Logger;
+import com.dss886.transmis.utils.StringUtils;
 import com.dss886.transmis.utils.Tags;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -53,8 +57,8 @@ public class CallListener extends BroadcastReceiver {
                     sReceived = true;
                 } else if (state.equals(TelephonyManager.EXTRA_STATE_IDLE)) {
                     if (sRing & !sReceived) {
-                        Logger.d("Phone missed, try to send mail.");
-                        sendMail();
+                        Logger.d("Phone missed, try to notify.");
+                        doNotify();
                         sRing = false;
                         sReceived = false;
                         sCallNumber = null;
@@ -65,7 +69,10 @@ public class CallListener extends BroadcastReceiver {
         }
     }
 
-    private void sendMail() {
+    private void doNotify() {
+        if (tryFilter()) {
+            return;
+        }
         String ringTime = String.valueOf((System.currentTimeMillis() - sRingTime) / 1000);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
         String titleRegex = App.sp.getString(Tags.SP_CALL_TITLE_REGEX, App.me().getString(R.string.call_title_default));
@@ -78,6 +85,18 @@ public class CallListener extends BroadcastReceiver {
         if (Settings.is(Tags.SP_MISSED_CALL_DING_ENABLE, false)) {
             new DingDingSender().send(titleRegex, content);
         }
+    }
+
+    private boolean tryFilter() {
+        String senderString = App.sp.getString(Tags.SP_FILTER_VALUE_CALL_SENDER, null);
+        List<String> senderList = StringUtils.parseToList(senderString);
+        for (String sender : senderList) {
+            if (TextUtils.equals(sender, sCallNumber)) {
+                Logger.d("Call has been filtered: " + sCallNumber);
+                return true;
+            }
+        }
+        return false;
     }
 
 }

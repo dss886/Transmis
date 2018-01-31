@@ -5,14 +5,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
+import android.text.TextUtils;
+
 import com.dss886.transmis.R;
 import com.dss886.transmis.base.App;
 import com.dss886.transmis.nofity.DingDingSender;
 import com.dss886.transmis.nofity.MailSender;
 import com.dss886.transmis.utils.Logger;
 import com.dss886.transmis.utils.Settings;
+import com.dss886.transmis.utils.StringUtils;
 import com.dss886.transmis.utils.Tags;
 
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -40,7 +44,7 @@ public class SmsListener extends BroadcastReceiver {
                     for (int i = 0; i < messages.length; i++) {
                         messages[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
                     }
-                    Logger.d("Try To Send Mail.");
+                    Logger.d("Try To Notify.");
                     doNotify(messages);
                 } catch (Exception e) {
                     Logger.e(e.getMessage());
@@ -62,12 +66,25 @@ public class SmsListener extends BroadcastReceiver {
             for (SmsMessage message : messages) {
                 sb.append(message.getMessageBody());
             }
-            content = String.format(Locale.CHINA, contentRegex, messages[0].getOriginatingAddress(), sb.toString());
+            String callNumber = messages[0].getOriginatingAddress();
+            String smsContent = sb.toString();
+            if (tryFilter(callNumber, smsContent)) {
+                return;
+            }
+            content = String.format(Locale.CHINA, contentRegex, callNumber, smsContent);
         } else {
             for (SmsMessage message : messages) {
-                sb.append(String.format(Locale.CHINA, contentRegex, message.getOriginatingAddress(), message.getMessageBody()));
+                String callNumber = message.getOriginatingAddress();
+                String smsContent = message.getMessageBody();
+                if (tryFilter(callNumber, smsContent)) {
+                    continue;
+                }
+                sb.append(String.format(Locale.CHINA, contentRegex, callNumber, smsContent));
             }
             content = sb.toString();
+        }
+        if (TextUtils.isEmpty(content)) {
+            return;
         }
         if (Settings.is(Tags.SP_SMS_MAIL_ENABLE, false)) {
             new MailSender().send(titleRegex, content);
@@ -75,5 +92,28 @@ public class SmsListener extends BroadcastReceiver {
         if (Settings.is(Tags.SP_SMS_DING_ENABLE, false)) {
             new DingDingSender().send(titleRegex, content);
         }
+    }
+
+    private boolean tryFilter(String callNumber, String content) {
+        if (TextUtils.isEmpty(callNumber) || TextUtils.isEmpty(content)) {
+            return true;
+        }
+        String senderString = App.sp.getString(Tags.SP_FILTER_VALUE_SMS_SENDER, null);
+        String wordString = App.sp.getString(Tags.SP_FILTER_VALUE_SMS_KEYWORD, null);
+        List<String> senderList = StringUtils.parseToList(senderString);
+        List<String> wordList = StringUtils.parseToList(wordString);
+        for (String number : senderList) {
+            if (callNumber.contains(number)) {
+                Logger.d("SMS has been filtered by sender: " + callNumber + ", " + content);
+                return true;
+            }
+        }
+        for (String word : wordList) {
+            if (content.contains(word)) {
+                Logger.d("SMS has been filtered by content: " + callNumber + ", " + content);
+                return true;
+            }
+        }
+        return false;
     }
 }

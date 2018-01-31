@@ -5,14 +5,17 @@ import com.dss886.transmis.base.App;
 import com.dss886.transmis.utils.Tags;
 import com.sun.mail.util.MailSSLSocketFactory;
 
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import javax.mail.Address;
+import javax.mail.Message;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 /**
  * Created by dss886 on 2017/6/28.
@@ -65,8 +68,8 @@ public class MailSender extends javax.mail.Authenticator {
                 transport.connect(host, email, password);
                 transport.sendMessage(msg, new Address[] { new InternetAddress(receiveAddress) });
                 transport.close();
-            } catch (MessagingException | UnsupportedEncodingException e) {
-                e.printStackTrace();
+            } catch (Throwable tr) {
+                tr.printStackTrace();
             }
         });
     }
