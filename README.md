@@ -46,6 +46,24 @@
 3. 复制自定义机器人的链接中的“access_token=”后面的内容
 4. 点击Transmis首页的钉钉机器人设置，输入复制的Token
 
+使用 MailGun 提醒时，需要执行下列步骤：
+
+1. 申请 mailgun 账号。
+2. 在 mailgun 中添加需要转发的邮件域名。
+3. 申请 key，并输入。
+4. 设置发件人和收件人信息。
+
+使用 Telegram 提醒时，需要执行下列步骤：
+
+1. 与 @BotFather 私聊，申请 Bot。 
+2. 拿到 apiToken 拼接 telegram 回调 url，如：https://api.telegram.org/bot{apiToken}/sendMessage。
+3. 拿到自己的 id 并输入。
+
+使用 Ifttt Webhooks 提醒时，需要执行下列步骤：
+
+1. 创建 ifttt webhooks 应用，并设定 event ，拿到 key。
+2. 输入 event 和 key。
+
 然后打开主界面的主开关，以及短信和电话相应提醒开关即可
 
 ### 其他可选项
