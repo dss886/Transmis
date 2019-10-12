@@ -10,7 +10,10 @@ import android.text.TextUtils;
 import com.dss886.transmis.R;
 import com.dss886.transmis.base.App;
 import com.dss886.transmis.nofity.DingDingSender;
+import com.dss886.transmis.nofity.IftttWebhooksSender;
+import com.dss886.transmis.nofity.MailGunSender;
 import com.dss886.transmis.nofity.MailSender;
+import com.dss886.transmis.nofity.TelegramSender;
 import com.dss886.transmis.utils.Logger;
 import com.dss886.transmis.utils.Settings;
 import com.dss886.transmis.utils.StringUtils;
@@ -91,6 +94,15 @@ public class SmsListener extends BroadcastReceiver {
         }
         if (Settings.is(Tags.SP_SMS_DING_ENABLE, false)) {
             new DingDingSender().send(titleRegex, content);
+        }
+        if (Settings.is(Tags.SP_SMS_MAILGUN_ENABLE, false)) {
+            new MailGunSender().send(titleRegex, content);
+        }
+        if (Settings.is(Tags.SP_SMS_TELEGRAM_ENABLE, false)) {
+            new TelegramSender().send(titleRegex, content);
+        }
+        if (Settings.is(Tags.SP_SMS_IFTTT_WEBHOOKS_ENABLE, false)) {
+            new IftttWebhooksSender().send(titleRegex, content);
         }
     }
 

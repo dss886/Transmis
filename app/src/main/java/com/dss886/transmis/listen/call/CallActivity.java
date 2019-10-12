@@ -20,6 +20,9 @@ public class CallActivity extends BaseSwitchActivity {
 
     private SwitchItem mMailSwitch;
     private SwitchItem mDingSwitch;
+    private SwitchItem mMailGunSwitch;
+    private SwitchItem mTelegramSwitch;
+    private SwitchItem mIftttWebhooksSwitch;
     private TextItem mSenderItem;
     private TextItem mTitleItem;
     private TextItem mContentItem;
@@ -38,6 +41,9 @@ public class CallActivity extends BaseSwitchActivity {
     protected void addItems() {
         mMailSwitch = new SwitchItem(this).setTitle("邮件提醒").setSpInfo(Tags.SP_MISSED_CALL_MAIL_ENABLE, true);
         mDingSwitch = new SwitchItem(this).setTitle("钉钉提醒").setSpInfo(Tags.SP_MISSED_CALL_DING_ENABLE, false);
+        mMailGunSwitch = new SwitchItem(this).setTitle("MailGun 提醒").setSpInfo(Tags.SP_MISSED_CALL_MAILGUN_ENABLE, false);
+        mTelegramSwitch = new SwitchItem(this).setTitle("Telegram 提醒").setSpInfo(Tags.SP_MISSED_CALL_TELEGRAM_ENABLE, false);
+        mIftttWebhooksSwitch = new SwitchItem(this).setTitle("IftttWebhooks 提醒").setSpInfo(Tags.SP_MISSED_CALL_IFTTT_WEBHOOKS_ENABLE, false);
         mSenderItem = new TextItem(this).setTitle("来电过滤").showRightArrow();
         mTitleItem = new TextItem(this).setTitle("邮件标题").setCallback(sp -> {
             String value = sp.getString(Tags.SP_CALL_TITLE_REGEX, "默认");
@@ -50,6 +56,9 @@ public class CallActivity extends BaseSwitchActivity {
 
         addItem(mMailSwitch);
         addItem(mDingSwitch);
+        addItem(mMailGunSwitch);
+        addItem(mTelegramSwitch);
+        addItem(mIftttWebhooksSwitch);
         addItem(new SectionItem(this).setTitle("过滤"));
         addItem(mSenderItem);
         addItem(new SectionItem(this).setTitle("提醒模版设置"));

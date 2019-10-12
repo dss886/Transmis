@@ -20,6 +20,9 @@ public class SmsActivity extends BaseSwitchActivity {
 
     private SwitchItem mMailSwitch;
     private SwitchItem mDingSwitch;
+    private SwitchItem mMailGunSwitch;
+    private SwitchItem mTelegramSwitch;
+    private SwitchItem mIftttWebhooksSwitch;
     private TextItem mSenderItem;
     private TextItem mKeyWordItem;
     private SwitchItem mMergeSwitch;
@@ -40,6 +43,9 @@ public class SmsActivity extends BaseSwitchActivity {
     protected void addItems() {
         mMailSwitch = new SwitchItem(this).setTitle("邮件提醒").setSpInfo(Tags.SP_SMS_MAIL_ENABLE, true);
         mDingSwitch = new SwitchItem(this).setTitle("钉钉提醒").setSpInfo(Tags.SP_SMS_DING_ENABLE, false);
+        mMailGunSwitch = new SwitchItem(this).setTitle("MailGun 提醒").setSpInfo(Tags.SP_SMS_MAILGUN_ENABLE, false);
+        mTelegramSwitch = new SwitchItem(this).setTitle("Telegram 提醒").setSpInfo(Tags.SP_SMS_TELEGRAM_ENABLE, false);
+        mIftttWebhooksSwitch = new SwitchItem(this).setTitle("IftttWebhooks 提醒").setSpInfo(Tags.SP_SMS_IFTTT_WEBHOOKS_ENABLE, false);
         mSenderItem = new TextItem(this).setTitle("发件人过滤").showRightArrow();
         mKeyWordItem = new TextItem(this).setTitle("关键词过滤").showRightArrow();
         mMergeSwitch = new SwitchItem(this).setTitle("合并长短信").setSpInfo(Tags.SP_SMS_MERGE_LONG_TEXT, true);
@@ -54,6 +60,9 @@ public class SmsActivity extends BaseSwitchActivity {
 
         addItem(mMailSwitch);
         addItem(mDingSwitch);
+        addItem(mMailGunSwitch);
+        addItem(mTelegramSwitch);
+        addItem(mIftttWebhooksSwitch);
         addItem(new SectionItem(this).setTitle("过滤"));
         addItem(mSenderItem);
         addItem(mKeyWordItem);

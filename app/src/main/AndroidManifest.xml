@@ -23,6 +23,9 @@
 
         <activity android:name=".listen.sms.SmsActivity"/>
         <activity android:name=".nofity.MailActivity"/>
+        <activity android:name=".nofity.MailGunActivity"/>
+        <activity android:name=".nofity.TelegramActivity"/>
+        <activity android:name=".nofity.IftttWebhooksActivity"/>
         <activity android:name=".listen.call.CallActivity"/>
         <activity android:name=".filter.FilterActivity"/>
 
