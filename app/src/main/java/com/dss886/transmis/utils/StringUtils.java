@@ -1,11 +1,12 @@
 package com.dss886.transmis.utils;
 
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by duansishu on 2018/1/28.

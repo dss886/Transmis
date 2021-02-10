@@ -1,7 +1,6 @@
 package com.dss886.transmis.filter;
 
 import android.content.SharedPreferences;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +15,8 @@ import com.dss886.transmis.view.SwitchItem;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 
 /**
