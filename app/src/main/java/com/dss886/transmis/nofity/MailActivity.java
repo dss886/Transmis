@@ -32,40 +32,40 @@ public class MailActivity extends BaseSwitchActivity {
 
     @Override
     protected void addItems() {
-        mHostItem = new TextItem(this, "SMTP服务器").setCallback(sp -> {
+        mHostItem = new TextItem(this).setTitle("SMTP服务器").setCallback(sp -> {
             String value = sp.getString(Tags.SP_MAIL_HOST, null);
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
-        mPortItem = new TextItem(this, "端口号").setCallback(sp -> {
+        mPortItem = new TextItem(this).setTitle("端口号").setCallback(sp -> {
             String value = sp.getString(Tags.SP_MAIL_PORT, null);
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
-        mSendNameItem = new TextItem(this, "发件人昵称").setCallback(sp -> {
+        mSendNameItem = new TextItem(this).setTitle("发件人昵称").setCallback(sp -> {
             String value = sp.getString(Tags.SP_MAIL_SEND_NAME, "默认");
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
-        mSendMailItem = new TextItem(this, "发件人邮箱").setCallback(sp -> {
+        mSendMailItem = new TextItem(this).setTitle("发件人邮箱").setCallback(sp -> {
             String value = sp.getString(Tags.SP_MAIL_SEND_MAIL, null);
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
-        mSendPasswordItem = new TextItem(this, "发件人密码/授权码").setCallback(sp -> {
+        mSendPasswordItem = new TextItem(this).setTitle("发件人密码/授权码").setCallback(sp -> {
             String value = sp.getString(Tags.SP_MAIL_SEND_PASSWORD, null);
             mSendPasswordItem.setIsPassword(!TextUtils.isEmpty(value));
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
-        mReceiveItem = new TextItem(this, "收件人邮箱").setCallback(sp -> {
+        mReceiveItem = new TextItem(this).setTitle("收件人邮箱").setCallback(sp -> {
             String value = sp.getString(Tags.SP_MAIL_RECEIVE_MAIL, null);
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
 
-        addItem(new SectionItem(this, "服务器设置"));
+        addItem(new SectionItem(this).setTitle("服务器设置"));
         addItem(mHostItem);
         addItem(mPortItem);
-        addItem(new SectionItem(this, "发件人设置"));
+        addItem(new SectionItem(this).setTitle("发件人设置"));
         addItem(mSendNameItem);
         addItem(mSendMailItem);
         addItem(mSendPasswordItem);
-        addItem(new SectionItem(this, "收件人设置"));
+        addItem(new SectionItem(this).setTitle("收件人设置"));
         addItem(mReceiveItem);
     }
 

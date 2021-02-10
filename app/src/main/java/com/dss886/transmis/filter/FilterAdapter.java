@@ -13,6 +13,8 @@ import com.dss886.transmis.utils.DialogBuilder;
 import com.dss886.transmis.utils.StringUtils;
 import com.dss886.transmis.view.SwitchItem;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +32,8 @@ public class FilterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private static final int HEADER_COUNT = 1;
 
-    private BaseActivity mActivity;
-    private FilterActivity.Type mType;
+    private final BaseActivity mActivity;
+    private final FilterActivity.Type mType;
     private List<String> mValueList;
 
     FilterAdapter(BaseActivity activity, FilterActivity.Type type) {
@@ -61,8 +63,9 @@ public class FilterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return position == 0 ? TYPE_SWITCH : TYPE_VALUE;
     }
 
+    @NotNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
         if (viewType == TYPE_SWITCH) {
             SwitchItem switchItem = new SwitchItem(parent.getContext());
             return new SwitchViewHolder(switchItem);
@@ -74,7 +77,7 @@ public class FilterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NotNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof SwitchViewHolder) {
             SwitchItem switchItem = ((SwitchViewHolder) holder).mSwitchItem;
             switchItem.setSpInfo(mType.modeSpKey, true);
@@ -117,7 +120,7 @@ public class FilterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return mValueList.size() - 1 - dataPosition;
     }
 
-    private class SwitchViewHolder extends RecyclerView.ViewHolder {
+    private static class SwitchViewHolder extends RecyclerView.ViewHolder {
         SwitchItem mSwitchItem;
         SwitchViewHolder(View itemView) {
             super(itemView);

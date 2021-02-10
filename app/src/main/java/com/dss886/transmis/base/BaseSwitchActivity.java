@@ -18,7 +18,7 @@ import androidx.annotation.Nullable;
 
 public abstract class BaseSwitchActivity extends BaseActivity {
 
-    private List<BaseItem> mItems = new ArrayList<>();
+    private final List<BaseItem> mItems = new ArrayList<>();
     protected LinearLayout mContainer;
 
     @Override

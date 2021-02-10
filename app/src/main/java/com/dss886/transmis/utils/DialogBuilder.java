@@ -37,6 +37,7 @@ public class DialogBuilder {
         builder.show();
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public static AlertDialog showAlertDialog(BaseActivity activity, String content, AlertDialogCallback callback) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setMessage(content);

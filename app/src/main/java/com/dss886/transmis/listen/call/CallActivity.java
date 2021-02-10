@@ -15,6 +15,7 @@ import com.dss886.transmis.view.SectionItem;
 import com.dss886.transmis.view.SwitchItem;
 import com.dss886.transmis.view.TextItem;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class CallActivity extends BaseSwitchActivity {
 
     private SwitchItem mMailSwitch;
@@ -35,26 +36,26 @@ public class CallActivity extends BaseSwitchActivity {
 
     @Override
     protected void addItems() {
-        mMailSwitch = new SwitchItem(this, "邮件提醒", Tags.SP_MISSED_CALL_MAIL_ENABLE, true);
-        mDingSwitch = new SwitchItem(this, "钉钉提醒", Tags.SP_MISSED_CALL_DING_ENABLE, false);
-        mSenderItem = new TextItem(this, "来电过滤").showRightArrow();
-        mTitleItem = new TextItem(this, "邮件标题").setCallback(sp -> {
+        mMailSwitch = new SwitchItem(this).setTitle("邮件提醒").setSpInfo(Tags.SP_MISSED_CALL_MAIL_ENABLE, true);
+        mDingSwitch = new SwitchItem(this).setTitle("钉钉提醒").setSpInfo(Tags.SP_MISSED_CALL_DING_ENABLE, false);
+        mSenderItem = new TextItem(this).setTitle("来电过滤").showRightArrow();
+        mTitleItem = new TextItem(this).setTitle("邮件标题").setCallback(sp -> {
             String value = sp.getString(Tags.SP_CALL_TITLE_REGEX, "默认");
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
-        mContentItem = new TextItem(this, "邮件内容模版").setCallback(sp -> {
+        mContentItem = new TextItem(this).setTitle("邮件内容模版").setCallback(sp -> {
             String value = sp.getString(Tags.SP_CALL_CONTENT_REGEX, "默认");
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
 
         addItem(mMailSwitch);
         addItem(mDingSwitch);
-        addItem(new SectionItem(this, "过滤"));
+        addItem(new SectionItem(this).setTitle("过滤"));
         addItem(mSenderItem);
-        addItem(new SectionItem(this, "提醒模版设置"));
+        addItem(new SectionItem(this).setTitle("提醒模版设置"));
         addItem(mTitleItem);
         addItem(mContentItem);
-        addItem(new InfoItem(this, getString(R.string.info_call_content)));
+        addItem(new InfoItem(this).setContent(getString(R.string.info_call_content)));
     }
 
     @Override

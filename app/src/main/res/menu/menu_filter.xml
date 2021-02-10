@@ -5,6 +5,6 @@
     <item
         android:id="@+id/action_add"
         android:icon="@mipmap/ic_add"
-        android:title="添加"
+        android:title="@string/action_add"
         app:showAsAction="always"/>
 </menu>

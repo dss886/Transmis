@@ -1,24 +1,25 @@
 package com.dss886.transmis.view;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.TextView;
+
 import com.dss886.transmis.R;
 import com.dss886.transmis.base.App;
+
+import androidx.appcompat.widget.SwitchCompat;
 
 /**
  * Created by dss886 on 2017/6/29.
  */
 
-@SuppressLint("ViewConstructor")
 public class SwitchItem extends BaseItem {
 
-    private TextView mTitle;
-    private Switch mSwitchView;
+    private final TextView mTitle;
+    private final SwitchCompat mSwitchView;
+
     private String mKey;
     private boolean mDefaultValue;
     private CompoundButton.OnCheckedChangeListener mOnCheckedChangeListener;
@@ -30,12 +31,6 @@ public class SwitchItem extends BaseItem {
         mSwitchView = findViewById(R.id.switcher);
     }
 
-    public SwitchItem(Context context, String title, String key, boolean defaultValue) {
-        this(context);
-        mTitle.setText(title);
-        setSpInfo(key, defaultValue);
-    }
-
     @Override
     public void onResume() {
         boolean isChecked = App.sp.getBoolean(mKey, mDefaultValue);
@@ -45,11 +40,12 @@ public class SwitchItem extends BaseItem {
         }
     }
 
-    public void setTitle(String title) {
+    public SwitchItem setTitle(String title) {
         mTitle.setText(title);
+        return this;
     }
 
-    public void setSpInfo(String key, boolean defaultValue) {
+    public SwitchItem setSpInfo(String key, boolean defaultValue) {
         mKey = key;
         mDefaultValue = defaultValue;
         mSwitchView.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -60,6 +56,7 @@ public class SwitchItem extends BaseItem {
                 mOnCheckedChangeListener.onCheckedChanged(mSwitchView, isChecked);
             }
         });
+        return this;
     }
 
     public void setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener listener) {
