@@ -45,7 +45,7 @@ public class MainActivity extends BaseSwitchActivity {
 
     @Override
     protected void addItems() {
-        mSmsItem = new TextItem(this, "短信").showRightArrow()
+        mSmsItem = new TextItem(this).setTitle("短信").showRightArrow()
                 .setCallback(sp -> {
                     if (
                             sp.getBoolean(Tags.SP_SMS_MAIL_ENABLE, true) ||
@@ -58,7 +58,7 @@ public class MainActivity extends BaseSwitchActivity {
                     }
                     return "关";
                 });
-        mCallItem = new TextItem(this, "未接电话").showRightArrow()
+        mCallItem = new TextItem(this).setTitle("未接电话").showRightArrow()
                 .setCallback(sp -> {
                     if (sp.getBoolean(Tags.SP_MISSED_CALL_MAIL_ENABLE, true) ||
                             sp.getBoolean(Tags.SP_MISSED_CALL_DING_ENABLE, false) ||
@@ -74,24 +74,33 @@ public class MainActivity extends BaseSwitchActivity {
             String value = sp.getString(Tags.SP_DING_TOKEN, null);
             return TextUtils.isEmpty(value) ? "未设置" : "已设置";
         });
-        mMailGunItem = new TextItem(this, "MailGun 提醒").showRightArrow();
-        mTelegramItem = new TextItem(this, "Telegram 提醒").showRightArrow();
-        mIftttWebhooksItem = new TextItem(this, "IftttWebhooks 提醒").showRightArrow();
+        
         mHelpItem = new TextItem(this, "使用帮助");
         mVersionItem = new TextItem(this, "检查更新", "当前版本 v" + BuildConfig.VERSION_NAME);
         mLicenseItem = new TextItem(this, "开源许可", "GNU v3.0");
+        mDingDingItem = new TextItem(this).setTitle("钉钉提醒").setCallback(sp -> {
+            String value = sp.getString(Tags.SP_DING_TOKEN, null);
+            return TextUtils.isEmpty(value) ? "未设置" : "已设置";
+        });
+        mMailGunItem = new TextItem(this).setTitle("MailGun 提醒").showRightArrow();
+        mTelegramItem = new TextItem(this).setTitle("Telegram 提醒").showRightArrow();
+        mIftttWebhooksItem = new TextItem(this).setTitle("IftttWebhooks 提醒").showRightArrow();
+        mMailItem = new TextItem(this).setTitle("邮件提醒").showRightArrow();
+        mHelpItem = new TextItem(this).setTitle("使用帮助");
+        mVersionItem = new TextItem(this).setTitle("检查更新").setContent("当前版本 v" + BuildConfig.VERSION_NAME);
+        mLicenseItem = new TextItem(this).setTitle("开源许可").setContent("GNU v3.0");
 
-        addItem(new SwitchItem(this, "总开关", Tags.SP_GLOBAL_ENABLE, false));
-        addItem(new SectionItem(this, "监听内容"));
+        addItem(new SwitchItem(this).setTitle("总开关").setSpInfo(Tags.SP_GLOBAL_ENABLE, false));
+        addItem(new SectionItem(this).setTitle("监听内容"));
         addItem(mSmsItem);
         addItem(mCallItem);
-        addItem(new SectionItem(this, "提醒插件"));
+        addItem(new SectionItem(this).setTitle("提醒插件"));
         addItem(mMailItem);
         addItem(mDingDingItem);
         addItem(mMailGunItem);
         addItem(mTelegramItem);
         addItem(mIftttWebhooksItem);
-        addItem(new SectionItem(this, "关于"));
+        addItem(new SectionItem(this).setTitle("关于"));
         addItem(mHelpItem);
         addItem(mVersionItem);
         addItem(mLicenseItem);

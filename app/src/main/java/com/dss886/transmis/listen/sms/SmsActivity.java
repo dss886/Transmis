@@ -15,6 +15,7 @@ import com.dss886.transmis.view.SectionItem;
 import com.dss886.transmis.view.SwitchItem;
 import com.dss886.transmis.view.TextItem;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class SmsActivity extends BaseSwitchActivity {
 
     private SwitchItem mMailSwitch;
@@ -40,19 +41,19 @@ public class SmsActivity extends BaseSwitchActivity {
 
     @Override
     protected void addItems() {
-        mMailSwitch = new SwitchItem(this, "邮件提醒", Tags.SP_SMS_MAIL_ENABLE, true);
-        mDingSwitch = new SwitchItem(this, "钉钉提醒", Tags.SP_SMS_DING_ENABLE, false);
-        mMailGunSwitch = new SwitchItem(this, "MailGun 提醒", Tags.SP_SMS_MAILGUN_ENABLE, false);
-        mTelegramSwitch = new SwitchItem(this, "Telegram 提醒", Tags.SP_SMS_TELEGRAM_ENABLE, false);
-        mIftttWebhooksSwitch = new SwitchItem(this, "IftttWebhooks 提醒", Tags.SP_SMS_IFTTT_WEBHOOKS_ENABLE, false);
-        mSenderItem = new TextItem(this, "发件人过滤").showRightArrow();
-        mKeyWordItem = new TextItem(this, "关键词过滤").showRightArrow();
-        mMergeSwitch = new SwitchItem(this, "合并长短信", Tags.SP_SMS_MERGE_LONG_TEXT, true);
-        mTitleItem = new TextItem(this, "提醒标题").setCallback(sp -> {
+        mMailSwitch = new SwitchItem(this).setTitle("邮件提醒").setSpInfo(Tags.SP_SMS_MAIL_ENABLE, true);
+        mDingSwitch = new SwitchItem(this).setTitle("钉钉提醒").setSpInfo(Tags.SP_SMS_DING_ENABLE, false);
+        mMailGunSwitch = new SwitchItem(this).setTitle("MailGun 提醒").setSpInfo(Tags.SP_SMS_MAILGUN_ENABLE, false);
+        mTelegramSwitch = new SwitchItem(this).setTitle("Telegram 提醒").setSpInfo(Tags.SP_SMS_TELEGRAM_ENABLE, false);
+        mIftttWebhooksSwitch = new SwitchItem(this).setTitle("IftttWebhooks 提醒").setSpInfo(Tags.SP_SMS_IFTTT_WEBHOOKS_ENABLE, false);
+        mSenderItem = new TextItem(this).setTitle("发件人过滤").showRightArrow();
+        mKeyWordItem = new TextItem(this).setTitle("关键词过滤").showRightArrow();
+        mMergeSwitch = new SwitchItem(this).setTitle("合并长短信").setSpInfo(Tags.SP_SMS_MERGE_LONG_TEXT, true);
+        mTitleItem = new TextItem(this).setTitle("提醒标题").setCallback(sp -> {
             String value = sp.getString(Tags.SP_SMS_TITLE_REGEX, "默认");
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
-        mContentItem = new TextItem(this, "提醒内容模版").setCallback(sp -> {
+        mContentItem = new TextItem(this).setTitle("提醒内容模版").setCallback(sp -> {
             String value = sp.getString(Tags.SP_SMS_CONTENT_REGEX, "默认");
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
@@ -62,15 +63,15 @@ public class SmsActivity extends BaseSwitchActivity {
         addItem(mMailGunSwitch);
         addItem(mTelegramSwitch);
         addItem(mIftttWebhooksSwitch);
-        addItem(new SectionItem(this, "过滤"));
+        addItem(new SectionItem(this).setTitle("过滤"));
         addItem(mSenderItem);
         addItem(mKeyWordItem);
-        addItem(new SectionItem(this, "可选项"));
+        addItem(new SectionItem(this).setTitle("可选项"));
         addItem(mMergeSwitch);
-        addItem(new SectionItem(this, "提醒模版设置"));
+        addItem(new SectionItem(this).setTitle("提醒模版设置"));
         addItem(mTitleItem);
         addItem(mContentItem);
-        addItem(new InfoItem(this, getString(R.string.info_sms_content)));
+        addItem(new InfoItem(this).setContent(getString(R.string.info_sms_content)));
     }
 
     @Override

@@ -22,13 +22,13 @@ import javax.mail.internet.MimeMessage;
  */
 public class MailSender extends javax.mail.Authenticator {
 
-    private Executor mExecutor;
-    private String host;
-    private String email;
-    private String password;
-    private String name;
-    private String receiveAddress;
-    private Session session;
+    private final Executor mExecutor;
+    private final String host;
+    private final String email;
+    private final String password;
+    private final String name;
+    private final String receiveAddress;
+    private final Session session;
 
     public MailSender() {
         this.mExecutor = Executors.newSingleThreadExecutor();

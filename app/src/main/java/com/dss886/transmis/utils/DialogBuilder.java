@@ -1,13 +1,14 @@
 package com.dss886.transmis.utils;
 
 import android.annotation.SuppressLint;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
 import com.dss886.transmis.R;
 import com.dss886.transmis.base.BaseActivity;
+
+import androidx.appcompat.app.AlertDialog;
 
 /**
  * Created by dss886 on 2017/7/1.
@@ -36,6 +37,7 @@ public class DialogBuilder {
         builder.show();
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public static AlertDialog showAlertDialog(BaseActivity activity, String content, AlertDialogCallback callback) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setMessage(content);

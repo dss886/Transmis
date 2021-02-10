@@ -10,6 +10,8 @@
     <string name="sender_call_title">来电过滤</string>
     <string name="keyword_title">关键词过滤</string>
 
+    <string name="action_add">添加</string>
+
     <string name="sms_title_default">你的备用机收到了一条新短信</string>
     <string name="sms_content_default">电话：%1$s \n内容：%2$s \n\n</string>
     <string name="call_title_default">你的备用机有一个未接电话</string>

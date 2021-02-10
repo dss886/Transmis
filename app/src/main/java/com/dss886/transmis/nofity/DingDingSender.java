@@ -18,9 +18,9 @@ public class DingDingSender {
 
     private static final String URL = "https://oapi.dingtalk.com/robot/send?access_token=";
 
-    private MediaType mMediaType = MediaType.parse("application/json; charset=utf-8");
-    private OkHttpClient mClient = new OkHttpClient();
-    private Executor mExecutor = Executors.newSingleThreadExecutor();
+    private final MediaType mMediaType = MediaType.parse("application/json; charset=utf-8");
+    private final OkHttpClient mClient = new OkHttpClient();
+    private final Executor mExecutor = Executors.newSingleThreadExecutor();
 
     public void send(String title, String content) {
         if (TextUtils.isEmpty(title) || TextUtils.isEmpty(content)) {

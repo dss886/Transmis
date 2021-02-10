@@ -1,7 +1,6 @@
 package com.dss886.transmis.base;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.widget.LinearLayout;
 
 import com.dss886.transmis.R;
@@ -11,13 +10,15 @@ import com.dss886.transmis.view.SectionItem;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.Nullable;
+
 /**
  * Created by duansishu on 2018/1/28.
  */
 
 public abstract class BaseSwitchActivity extends BaseActivity {
 
-    private List<BaseItem> mItems = new ArrayList<>();
+    private final List<BaseItem> mItems = new ArrayList<>();
     protected LinearLayout mContainer;
 
     @Override

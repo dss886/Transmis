@@ -1,10 +1,11 @@
 package com.dss886.transmis.base;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 
 import com.dss886.transmis.R;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by duansishu on 2018/1/28.

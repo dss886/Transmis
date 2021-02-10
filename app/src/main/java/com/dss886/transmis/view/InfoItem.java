@@ -1,23 +1,29 @@
 package com.dss886.transmis.view;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
+
 import com.dss886.transmis.R;
 
 /**
  * Created by dss886 on 2017/7/1.
  */
 
-@SuppressLint("ViewConstructor")
 public class InfoItem extends BaseItem {
 
-    public InfoItem(Context context, String content) {
+    private final TextView mContentView;
+
+    public InfoItem(Context context) {
         super(context);
         View.inflate(getContext(), R.layout.view_info_item, this);
-        TextView contentView = findViewById(R.id.content);
-        contentView.setText(content);
+        mContentView = findViewById(R.id.content);
+
+    }
+
+    public InfoItem setContent(String content) {
+        mContentView.setText(content);
+        return this;
     }
 
     @Override

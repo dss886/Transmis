@@ -1,6 +1,5 @@
 package com.dss886.transmis.view;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.InputType;
@@ -15,27 +14,29 @@ import com.dss886.transmis.utils.DisplayUtil;
  * Created by dss886 on 2017/6/29.
  */
 
-@SuppressLint("ViewConstructor")
 public class TextItem extends BaseItem {
 
-    private TextView mContentView;
+    private final TextView mTitleView;
+    private final TextView mContentView;
     private Callback mCallback;
 
-    public TextItem(Context context, String title) {
-        this(context, title, null);
-    }
-
-    public TextItem(Context context, String title, String content) {
+    public TextItem(Context context) {
         super(context);
         View.inflate(getContext(), R.layout.view_text_item, this);
         setMinimumHeight(DisplayUtil.dip2px(getContext(), 56));
 
-        TextView titleView = findViewById(R.id.title);
-        titleView.setText(title);
+        mTitleView = findViewById(R.id.title);
         mContentView = findViewById(R.id.content);
-        if (content != null) {
-            mContentView.setText(content);
-        }
+    }
+
+    public TextItem setTitle(String title) {
+        mTitleView.setText(title);
+        return this;
+    }
+
+    public TextItem setContent(String content) {
+        mContentView.setText(content);
+        return this;
     }
 
     public TextItem showRightArrow() {
@@ -43,6 +44,7 @@ public class TextItem extends BaseItem {
         return this;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public TextItem setIsPassword(boolean isPassword) {
         if (isPassword) {
             mContentView.setInputType(InputType.TYPE_CLASS_TEXT | EditorInfo.TYPE_TEXT_VARIATION_PASSWORD);
