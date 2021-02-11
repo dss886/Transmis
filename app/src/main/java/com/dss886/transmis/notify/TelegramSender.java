@@ -1,4 +1,4 @@
-package com.dss886.transmis.nofity;
+package com.dss886.transmis.notify;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -21,9 +21,7 @@ import okhttp3.ResponseBody;
 /**
  * Created by dray on 2019/10/13.
  */
-public class IftttWebhooksSender extends javax.mail.Authenticator {
-
-    private static final String URL = "https://maker.ifttt.com/trigger/";
+public class TelegramSender extends javax.mail.Authenticator {
 
     private OkHttpClient mClient = new OkHttpClient();
     private MediaType mediaType = MediaType.parse("application/json");
@@ -36,15 +34,19 @@ public class IftttWebhooksSender extends javax.mail.Authenticator {
         }
         mExecutor.execute(() -> {
             try {
-                String event = App.sp.getString(Tags.SP_IFTTT_WEBHOOKS_EVENT, null);
-                String key = App.sp.getString(Tags.SP_IFTTT_WEBHOOKS_KEY, null);
+                String url = App.sp.getString(Tags.SP_TELEGRAM_URL, null);
+                String chat_id = App.sp.getString(Tags.SP_TELEGRAM_CHAT_ID, null);
+
+                StringBuilder sb = new StringBuilder();
+                sb.append(title).append("\n\n");
+                for (String line : content.split("\n")) {
+                    sb.append("> ").append(line).append("\n\n");
+                }
 
                 JSONObject message = new JSONObject();
-                message.put("value1", "transmis");
-                message.put("value2", title);
-                message.put("value3", content);
-
-                String url = URL + event + "/with/key/" + key;
+                message.put("chat_id", chat_id);
+                message.put("text", sb.toString().trim());
+                message.put("parse_mode", "HTML");
 
                 RequestBody body = RequestBody.create(mediaType, message.toString());
                 Request request = new Request.Builder()
@@ -57,8 +59,8 @@ public class IftttWebhooksSender extends javax.mail.Authenticator {
                 Response response = mClient.newCall(request).execute();
                 ResponseBody responseBody = response.body();
                 if (responseBody != null) {
-                    Log.d("IftttWebhooksSender", url);
-                    Log.d("IftttWebhooksSender", responseBody.string());
+                    Log.d("TelegramSender", url);
+                    Log.d("TelegramSender", responseBody.string());
                 }
             } catch (Exception e) {
                 e.printStackTrace();

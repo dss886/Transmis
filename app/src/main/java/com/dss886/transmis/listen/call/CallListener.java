@@ -9,12 +9,12 @@ import android.text.TextUtils;
 
 import com.dss886.transmis.R;
 import com.dss886.transmis.base.App;
-import com.dss886.transmis.nofity.DingDingSender;
-import com.dss886.transmis.nofity.IftttWebhooksSender;
-import com.dss886.transmis.nofity.MailGunSender;
-import com.dss886.transmis.nofity.TelegramSender;
+import com.dss886.transmis.notify.DingDingSender;
+import com.dss886.transmis.notify.IftttWebhooksSender;
+import com.dss886.transmis.notify.MailGunSender;
+import com.dss886.transmis.notify.TelegramSender;
 import com.dss886.transmis.utils.Settings;
-import com.dss886.transmis.nofity.MailSender;
+import com.dss886.transmis.notify.MailSender;
 import com.dss886.transmis.utils.Logger;
 import com.dss886.transmis.utils.StringUtils;
 import com.dss886.transmis.utils.Tags;

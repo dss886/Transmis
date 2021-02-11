@@ -1,4 +1,4 @@
-package com.dss886.transmis.nofity;
+package com.dss886.transmis.notify;
 
 import android.text.TextUtils;
 import android.util.Log;

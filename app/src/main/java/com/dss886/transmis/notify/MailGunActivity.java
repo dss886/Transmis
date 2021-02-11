@@ -1,8 +1,9 @@
-package com.dss886.transmis.nofity;
+package com.dss886.transmis.notify;
 
 import android.content.SharedPreferences;
 import android.text.InputType;
 import android.text.TextUtils;
+
 import com.dss886.transmis.R;
 import com.dss886.transmis.base.App;
 import com.dss886.transmis.base.BaseSwitchActivity;
@@ -11,18 +12,21 @@ import com.dss886.transmis.utils.Tags;
 import com.dss886.transmis.view.SectionItem;
 import com.dss886.transmis.view.TextItem;
 
-public class MailActivity extends BaseSwitchActivity {
+/**
+ * Created by dray on 2019/10/13.
+ */
+public class MailGunActivity extends BaseSwitchActivity {
 
-    private TextItem mHostItem;
-    private TextItem mPortItem;
-    private TextItem mSendMailItem;
-    private TextItem mSendPasswordItem;
+    private TextItem mKeyItem;
+    private TextItem mDomainItem;
     private TextItem mSendNameItem;
+    private TextItem mSendMailItem;
     private TextItem mReceiveItem;
+    private TextItem mTestItem;
 
     @Override
     protected int getToolbarTitle() {
-        return R.string.mail_title;
+        return R.string.mailgum_title;
     }
 
     @Override
@@ -32,51 +36,50 @@ public class MailActivity extends BaseSwitchActivity {
 
     @Override
     protected void addItems() {
-        mHostItem = new TextItem(this).setTitle("SMTP服务器").setCallback(sp -> {
-            String value = sp.getString(Tags.SP_MAIL_HOST, null);
+        mKeyItem = new TextItem(this).setTitle("密钥 Key").setCallback(sp -> {
+            String value = sp.getString(Tags.SP_MAILGUN_KEY, null);
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
-        mPortItem = new TextItem(this).setTitle("端口号").setCallback(sp -> {
-            String value = sp.getString(Tags.SP_MAIL_PORT, null);
+        mDomainItem = new TextItem(this).setTitle("发件人邮箱域名 Domain").setCallback(sp -> {
+            String value = sp.getString(Tags.SP_MAILGUN_DOMAIN, null);
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
         mSendNameItem = new TextItem(this).setTitle("发件人昵称").setCallback(sp -> {
-            String value = sp.getString(Tags.SP_MAIL_SEND_NAME, "默认");
+            String value = sp.getString(Tags.SP_MAILGUN_SEND_NAME, "默认");
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
         mSendMailItem = new TextItem(this).setTitle("发件人邮箱").setCallback(sp -> {
-            String value = sp.getString(Tags.SP_MAIL_SEND_MAIL, null);
-            return TextUtils.isEmpty(value) ? "未设置" : value;
-        });
-        mSendPasswordItem = new TextItem(this).setTitle("发件人密码/授权码").setCallback(sp -> {
-            String value = sp.getString(Tags.SP_MAIL_SEND_PASSWORD, null);
-            mSendPasswordItem.setIsPassword(!TextUtils.isEmpty(value));
+            String value = sp.getString(Tags.SP_MAILGUN_SEND_MAIL, null);
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
         mReceiveItem = new TextItem(this).setTitle("收件人邮箱").setCallback(sp -> {
-            String value = sp.getString(Tags.SP_MAIL_RECEIVE_MAIL, null);
+            String value = sp.getString(Tags.SP_MAILGUN_RECEIVE_MAIL, null);
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
+        mTestItem = new TextItem(this).setTitle("点击发送测试邮件");
 
         addItem(new SectionItem(this).setTitle("服务器设置"));
-        addItem(mHostItem);
-        addItem(mPortItem);
+        addItem(mKeyItem);
+        addItem(mDomainItem);
         addItem(new SectionItem(this).setTitle("发件人设置"));
         addItem(mSendNameItem);
         addItem(mSendMailItem);
-        addItem(mSendPasswordItem);
         addItem(new SectionItem(this).setTitle("收件人设置"));
         addItem(mReceiveItem);
+        addItem(new SectionItem(this).setTitle("其他"));
+        addItem(mTestItem);
     }
 
     @Override
     protected void setListeners() {
-        setTextItemListener(mHostItem, Tags.SP_MAIL_HOST, "设置服务器", false);
-        setTextItemListener(mPortItem, Tags.SP_MAIL_PORT, "设置端口号", false);
-        setTextItemListener(mSendNameItem, Tags.SP_MAIL_SEND_NAME, "设置发件人昵称", false);
-        setTextItemListener(mSendMailItem, Tags.SP_MAIL_SEND_MAIL, "设置发件人邮箱", false);
-        setTextItemListener(mSendPasswordItem, Tags.SP_MAIL_SEND_PASSWORD, "设置发件人密码/授权码", true);
-        setTextItemListener(mReceiveItem, Tags.SP_MAIL_RECEIVE_MAIL, "设置收件人邮箱", false);
+        setTextItemListener(mKeyItem, Tags.SP_MAILGUN_KEY, "设置密钥 key", false);
+        setTextItemListener(mSendNameItem, Tags.SP_MAILGUN_SEND_NAME, "设置发件人昵称", false);
+        setTextItemListener(mDomainItem, Tags.SP_MAILGUN_DOMAIN, "设置发件人邮箱域名 Domain", false);
+        setTextItemListener(mSendMailItem, Tags.SP_MAILGUN_SEND_MAIL, "设置发件人邮箱", false);
+        setTextItemListener(mReceiveItem, Tags.SP_MAILGUN_RECEIVE_MAIL, "设置收件人邮箱", false);
+        mTestItem.setOnClickListener(v -> {
+            new MailGunSender().send("Title Test", "Content Test");
+        });
     }
 
     private void setTextItemListener(TextItem item, String key, String showTitle, boolean isPassword) {

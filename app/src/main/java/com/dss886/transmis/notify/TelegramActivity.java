@@ -1,4 +1,4 @@
-package com.dss886.transmis.nofity;
+package com.dss886.transmis.notify;
 
 import android.content.SharedPreferences;
 import android.text.InputType;
@@ -15,15 +15,15 @@ import com.dss886.transmis.view.TextItem;
 /**
  * Created by dray on 2019/10/13.
  */
-public class IftttWebhooksActivity extends BaseSwitchActivity {
+public class TelegramActivity extends BaseSwitchActivity {
 
-    private TextItem mKeyItem;
-    private TextItem mEventItem;
+    private TextItem mUrlItem;
+    private TextItem mChatIdItem;
     private TextItem mTestItem;
 
     @Override
     protected int getToolbarTitle() {
-        return R.string.ifttt_webhooks_title;
+        return R.string.telegram_title;
     }
 
     @Override
@@ -33,29 +33,30 @@ public class IftttWebhooksActivity extends BaseSwitchActivity {
 
     @Override
     protected void addItems() {
-        mKeyItem = new TextItem(this).setTitle("Key").setCallback(sp -> {
-            String value = sp.getString(Tags.SP_IFTTT_WEBHOOKS_KEY, null);
+        mUrlItem = new TextItem(this).setTitle("包含 token 的完整接口 url").setCallback(sp -> {
+            String value = sp.getString(Tags.SP_TELEGRAM_URL, null);
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
-        mEventItem = new TextItem(this).setTitle("Event").setCallback(sp -> {
-            String value = sp.getString(Tags.SP_IFTTT_WEBHOOKS_EVENT, null);
+        mChatIdItem = new TextItem(this).setTitle("发送到的 chat id").setCallback(sp -> {
+            String value = sp.getString(Tags.SP_TELEGRAM_CHAT_ID, null);
             return TextUtils.isEmpty(value) ? "未设置" : value;
         });
         mTestItem = new TextItem(this).setTitle("点击发送测试数据");
 
         addItem(new SectionItem(this).setTitle("服务器设置"));
-        addItem(mKeyItem);
-        addItem(mEventItem);
+        addItem(mUrlItem);
+        addItem(new SectionItem(this).setTitle("收件人设置"));
+        addItem(mChatIdItem);
         addItem(new SectionItem(this).setTitle("其他"));
         addItem(mTestItem);
     }
 
     @Override
     protected void setListeners() {
-        setTextItemListener(mKeyItem, Tags.SP_IFTTT_WEBHOOKS_KEY, "设置 Key", false);
-        setTextItemListener(mEventItem, Tags.SP_IFTTT_WEBHOOKS_EVENT, "设置 Event", false);
+        setTextItemListener(mUrlItem, Tags.SP_TELEGRAM_URL, "设置包含 token 的完整接口 url", false);
+        setTextItemListener(mChatIdItem, Tags.SP_TELEGRAM_CHAT_ID, "设置发送到的 chat id", false);
         mTestItem.setOnClickListener(v -> {
-            new IftttWebhooksSender().send("Title Test", "Content Test");
+            new TelegramSender().send("Title Test", "Content Test");
         });
     }
 

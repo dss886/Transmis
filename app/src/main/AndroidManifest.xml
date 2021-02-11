@@ -22,10 +22,10 @@
         </activity>
 
         <activity android:name=".listen.sms.SmsActivity"/>
-        <activity android:name=".nofity.MailActivity"/>
-        <activity android:name=".nofity.MailGunActivity"/>
-        <activity android:name=".nofity.TelegramActivity"/>
-        <activity android:name=".nofity.IftttWebhooksActivity"/>
+        <activity android:name=".notify.MailActivity"/>
+        <activity android:name=".notify.MailGunActivity"/>
+        <activity android:name=".notify.TelegramActivity"/>
+        <activity android:name=".notify.IftttWebhooksActivity"/>
         <activity android:name=".listen.call.CallActivity"/>
         <activity android:name=".filter.FilterActivity"/>
 
