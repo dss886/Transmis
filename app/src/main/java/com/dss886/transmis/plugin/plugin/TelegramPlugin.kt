@@ -34,11 +34,11 @@ class TelegramPlugin: IPlugin {
     }
 
     override fun getConfigs(): List<IConfig> {
-        return mutableListOf<IConfig>().apply {
-            add(SectionConfig("参数设置"))
-            add(mUrlConfig)
-            add(mChatIdConfig)
-        }
+        return listOf(
+                SectionConfig("参数设置"),
+                mUrlConfig,
+                mChatIdConfig,
+        )
     }
 
     override fun doNotify(title: String, content: String, tester: WeakReference<PluginTester>?) {

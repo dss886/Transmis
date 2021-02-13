@@ -39,11 +39,9 @@ class SmsActivity : BaseSwitchActivity() {
             add(SectionConfig("提醒设置"))
             add(EditTextConfig("提醒标题", Constants.SP_SMS_TITLE_REGEX).apply {
                 isRequired = false
-                hasDefault = true
             })
             add(EditTextConfig("提醒内容", Constants.SP_SMS_CONTENT_REGEX).apply {
                 isRequired = false
-                hasDefault = true
             })
             add(InfoConfig(getString(R.string.info_sms_content)))
         }

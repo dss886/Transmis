@@ -26,7 +26,6 @@ class MailGunPlugin: IPlugin {
     private val mDomainConfig = EditTextConfig("发件人邮箱域名", "mailgun_domain")
     private val mSendNameConfig = EditTextConfig("发件人昵称", "mailgun_name").apply {
         isRequired = false
-        hasDefault = true
     }
     private val mSendMailConfig = EditTextConfig("发件人邮箱", "mailgun_send_mail")
     private val mReceiveMailConfig = EditTextConfig("收件人邮箱", "mailgun_receive_mail")
@@ -40,16 +39,16 @@ class MailGunPlugin: IPlugin {
     }
 
     override fun getConfigs(): List<IConfig> {
-        return mutableListOf<IConfig>().apply {
-            add(SectionConfig("服务器设置"))
-            add(mKeyConfig)
-            add(mDomainConfig)
-            add(SectionConfig("发件人设置"))
-            add(mSendNameConfig)
-            add(mSendMailConfig)
-            add(SectionConfig("收件人设置"))
-            add(mReceiveMailConfig)
-        }
+        return listOf(
+                SectionConfig("服务器设置"),
+                mKeyConfig,
+                mDomainConfig,
+                SectionConfig("发件人设置"),
+                mSendNameConfig,
+                mSendMailConfig,
+                SectionConfig("收件人设置"),
+                mReceiveMailConfig,
+        )
     }
 
     override fun doNotify(title: String, content: String, tester: WeakReference<PluginTester>?) {

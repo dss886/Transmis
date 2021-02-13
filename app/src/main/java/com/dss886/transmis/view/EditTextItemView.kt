@@ -40,7 +40,7 @@ class EditTextItemView(context: Context): BaseItemView(context), OnClickListener
 
     override fun onClick(v: View?) {
         val content = mConfig.getSpValue(null)
-        val hint = if (mConfig.hasDefault) "默认" else ""
+        val hint = if (mConfig.isRequired) "" else "默认"
         (context as? BaseActivity)?.let { activity ->
             val editTitle = "设置" + mConfig.title
             DialogBuilder.showEditTextDialog(activity, editTitle, content, hint, inputType = mContentView.inputType) { content: String? ->
@@ -55,7 +55,7 @@ class EditTextItemView(context: Context): BaseItemView(context), OnClickListener
     }
 
     override fun onResume() {
-        val defaultContent = if (mConfig.hasDefault) "默认" else "未设置"
+        val defaultContent = if (mConfig.isRequired) "未设置" else "默认"
         mContentView.text = mConfig.getSpValue(defaultContent)
     }
 

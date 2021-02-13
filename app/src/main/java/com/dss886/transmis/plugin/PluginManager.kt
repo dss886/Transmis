@@ -19,6 +19,7 @@ object PluginManager {
     fun init() {
         registerPlugin(MailPlugin())
         registerPlugin(DingDingPlugin())
+        registerPlugin(BarkPlugin())
         registerPlugin(MailGunPlugin())
         registerPlugin(TelegramPlugin())
         registerPlugin(IFTTTPlugin())

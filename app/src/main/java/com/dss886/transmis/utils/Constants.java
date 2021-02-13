@@ -11,6 +11,7 @@ public class Constants {
     public static final String URL_DINGDING = "https://oapi.dingtalk.com/robot/send?access_token=";
     public static final String URL_MAILGUN = "https://api.mailgun.net/v3/";
     public static final String URL_IFTTT = "https://maker.ifttt.com/trigger/";
+    public static final String URL_BARK = "https://api.day.app/";
 
     public static final String BOUNDARY_WEBKIT = "----WebKitFormBoundary7MA4YWxkTrZu0gW";
 

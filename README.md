@@ -48,6 +48,11 @@
 3. 复制自定义机器人的链接中的“access_token=”后面的内容
 4. 点击Transmis首页的钉钉机器人设置，输入复制的Token
 
+#### Bark插件
+
+1. 下载iOS的Bark App，注册设备，将Device Key填写在插件设置中
+2. 由于默认的BarkServer以一种非标准的方式传递参数，如果你使用了自定义的BarkServer，开启「使用兼容的Post请求」选项将以完全的JSON格式来发起Post请求
+
 #### MailGun插件
 
 1. 申请 mailgun 账号。

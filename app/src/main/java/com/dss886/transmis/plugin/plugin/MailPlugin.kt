@@ -26,7 +26,6 @@ class MailPlugin: IPlugin {
     private val mPortConfig = EditTextConfig("端口号", "mail_port")
     private val mNameConfig = EditTextConfig("发件人昵称", "mail_send_name").apply {
         isRequired = false
-        hasDefault = true
     }
     private val mEmailConfig = EditTextConfig("发件人邮箱", "mail_send_mail")
     private val mPasswordConfig = EditTextConfig("发件人密码/授权码", "mail_send_password").apply {
@@ -43,17 +42,17 @@ class MailPlugin: IPlugin {
     }
 
     override fun getConfigs(): List<IConfig> {
-        return mutableListOf<IConfig>().apply {
-            add(SectionConfig("服务器设置"))
-            add(mHostConfig)
-            add(mPortConfig)
-            add(SectionConfig("发件人设置"))
-            add(mNameConfig)
-            add(mEmailConfig)
-            add(mPasswordConfig)
-            add(SectionConfig("收件人设置"))
-            add(mReceiverConfig)
-        }
+        return listOf(
+                SectionConfig("服务器设置"),
+                mHostConfig,
+                mPortConfig,
+                SectionConfig("发件人设置"),
+                mNameConfig,
+                mEmailConfig,
+                mPasswordConfig,
+                SectionConfig("收件人设置"),
+                mReceiverConfig,
+        )
     }
 
     override fun doNotify(title: String, content: String, tester: WeakReference<PluginTester>?) {
