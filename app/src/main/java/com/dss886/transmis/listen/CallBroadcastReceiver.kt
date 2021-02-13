@@ -73,10 +73,10 @@ class CallBroadcastReceiver : BroadcastReceiver() {
         }
         val ringTimeStr = ((System.currentTimeMillis() - ringTime) / 1000).toString()
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA)
-        val titleRegex = App.inst().sp.getString(Constants.SP_CALL_TITLE_REGEX, null) ?: App.inst().getString(R.string.call_title_default)
+        val title = App.inst().sp.getString(Constants.SP_CALL_TITLE_REGEX, null) ?: App.inst().getString(R.string.call_title_default)
         val contentRegex = App.inst().sp.getString(Constants.SP_CALL_CONTENT_REGEX, null) ?: App.inst().getString(R.string.call_content_default)
         val content = String.format(Locale.CHINA, contentRegex, callNumber, sdf.format(Date(ringTime)), ringTimeStr)
-        Logger.d(TAG, "Try to notify missing call. title=${titleRegex}, content=${content.replace("\n", " ")}")
+        Logger.d(TAG, "Try to notify missing call. title=${title}, content=${content.replace("\n", " ")}")
         PluginManager.plugins
                 .filter { it.isEnable() }
                 .apply {
@@ -84,7 +84,7 @@ class CallBroadcastReceiver : BroadcastReceiver() {
                             "enableCount=${this.size}: ${this.joinToString { it.getName() }}")
                 }
                 .forEach { plugin ->
-                    plugin.doNotify(titleRegex, content)
+                    plugin.doNotify(title, content)
                 }
     }
 

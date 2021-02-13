@@ -54,6 +54,7 @@ class TextButtonConfig(val title: String,
 class EditTextConfig(title: String, spKey: String) : StringSpConfig(title, spKey) {
     var isRequired: Boolean = true  // TODO: 2021/02/11 @duansishu to be done
     var isPassword: Boolean = false
+    var hasDefault: Boolean = false
 }
 
 class SwitchConfig(title: String, spKey: String) : BooleanSpConfig(title, spKey) {

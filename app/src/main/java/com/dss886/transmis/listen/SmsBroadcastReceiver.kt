@@ -55,7 +55,7 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
         if (messages == null || messages.isEmpty()) {
             return
         }
-        val titleRegex = App.inst().sp.getString(Constants.SP_SMS_TITLE_REGEX, null) ?: App.inst().getString(R.string.sms_title_default)
+        val title = App.inst().sp.getString(Constants.SP_SMS_TITLE_REGEX, null) ?: App.inst().getString(R.string.sms_title_default)
         val contentRegex = App.inst().sp.getString(Constants.SP_SMS_CONTENT_REGEX, null) ?: App.inst().getString(R.string.sms_content_default)
         val content: String
         val sb = StringBuilder()
@@ -83,7 +83,7 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
         if (TextUtils.isEmpty(content)) {
             return
         }
-        Logger.d(TAG, "Try to notify SMS. title=${titleRegex}, content=${content.replace("\n", " ")}")
+        Logger.d(TAG, "Try to notify SMS. title=${title}, content=${content.replace("\n", " ")}")
         PluginManager.plugins
                 .filter { it.isEnable() }
                 .apply {
@@ -91,7 +91,7 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
                             "enableCount=${this.size}: ${this.joinToString { it.getName() }}")
                 }
                 .forEach { plugin ->
-                    plugin.doNotify(titleRegex, content)
+                    plugin.doNotify(title, content)
                 }
     }
 

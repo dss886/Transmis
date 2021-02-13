@@ -36,9 +36,13 @@ class SmsActivity : BaseSwitchActivity() {
             })
             add(SectionConfig("可选项"))
             add(SwitchConfig("合并长短信", Constants.SP_SMS_MERGE_LONG_TEXT))
-            add(SectionConfig("提醒模版设置"))
-            add(EditTextConfig("提醒标题", Constants.SP_SMS_TITLE_REGEX))
-            add(EditTextConfig("提醒内容模版", Constants.SP_SMS_CONTENT_REGEX))
+            add(SectionConfig("提醒设置"))
+            add(EditTextConfig("提醒标题", Constants.SP_SMS_TITLE_REGEX).apply {
+                hasDefault = true
+            })
+            add(EditTextConfig("提醒内容", Constants.SP_SMS_CONTENT_REGEX).apply {
+                hasDefault = true
+            })
             add(InfoConfig(getString(R.string.info_sms_content)))
         }
     }

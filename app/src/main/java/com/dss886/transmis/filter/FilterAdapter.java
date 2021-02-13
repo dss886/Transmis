@@ -16,6 +16,7 @@ import com.dss886.transmis.view.SwitchItemView;
 import org.jetbrains.annotations.NotNull;
 
 import androidx.recyclerview.widget.RecyclerView;
+import kotlin.Unit;
 
 
 /**
@@ -76,6 +77,7 @@ public class FilterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     int nowPosition = holder.getAdapterPosition();
                     TransmisManager.INSTANCE.removeFilter(mType, getDataPosition(nowPosition));
                     notifyItemRemoved(nowPosition);
+                    return Unit.INSTANCE;
                 });
                 return false;
             });
