@@ -9,7 +9,6 @@ import com.dss886.transmis.utils.handleUnified
 import com.dss886.transmis.view.EditTextConfig
 import com.dss886.transmis.view.IConfig
 import com.dss886.transmis.view.SectionConfig
-import com.dss886.transmis.view.SwitchConfig
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Request
@@ -22,16 +21,11 @@ import org.json.JSONObject
  */
 class TelegramPlugin: IPlugin {
 
-    private val mEnableConfig = SwitchConfig("插件开关", "telegram_enable")
     private val mUrlConfig = EditTextConfig("完整的接口Url", "telegram_url")
     private val mChatIdConfig = EditTextConfig("Chat ID", "telegram_chat_id")
 
     override fun getName(): String {
         return "Telegram插件"
-    }
-
-    override fun isEnable(): Boolean {
-        return mEnableConfig.getSpValue(false)
     }
 
     override fun getKey(): String {
@@ -40,7 +34,6 @@ class TelegramPlugin: IPlugin {
 
     override fun getConfigs(): List<IConfig> {
         return mutableListOf<IConfig>().apply {
-            add(mEnableConfig)
             add(SectionConfig("参数设置"))
             add(mUrlConfig)
             add(mChatIdConfig)

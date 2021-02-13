@@ -14,14 +14,14 @@ class SwitchItemView(context: Context) : BaseItemView(context) {
         inflate(getContext(), R.layout.view_switch_item, this)
     }
 
-    private val mTitleView: TextView? = findViewById(R.id.title)
-    private val mSwitchView: SwitchCompat? = findViewById(R.id.switcher)
+    private val mTitleView: TextView = findViewById(R.id.title)
+    private val mSwitchView: SwitchCompat = findViewById(R.id.switcher)
     lateinit var mConfig: SwitchConfig
 
     fun bind(config: SwitchConfig): SwitchItemView {
         mConfig = config
-        mTitleView?.text = config.title
-        mSwitchView?.setOnCheckedChangeListener { _, isChecked: Boolean ->
+        mTitleView.text = config.title
+        mSwitchView.setOnCheckedChangeListener { _, isChecked ->
             mConfig.setSpValue(isChecked)
             onResume()
         }
@@ -31,8 +31,8 @@ class SwitchItemView(context: Context) : BaseItemView(context) {
     override fun onResume() {
         val isChecked = mConfig.getSpValue()
         mConfig.onCheckedChangeListener?.onCheckedChanged(mSwitchView, isChecked)
-        mSwitchView?.isChecked = isChecked
-        mTitleView?.text = mConfig.title
+        mSwitchView.isChecked = isChecked
+        mTitleView.text = mConfig.title
     }
 
 }

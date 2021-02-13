@@ -13,12 +13,12 @@ class SectionItemView(context: Context) : BaseItemView(context) {
         inflate(getContext(), R.layout.view_section_item, this)
     }
 
-    private val mTitleView = findViewById<TextView?>(R.id.title)
+    private val mTitleView: TextView = findViewById(R.id.title)
     private lateinit var mConfig: SectionConfig
 
     fun bind(config: SectionConfig): SectionItemView {
         mConfig = config
-        mTitleView?.text = config.title
+        mTitleView.text = config.title
         return this
     }
 

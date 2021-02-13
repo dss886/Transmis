@@ -1,6 +1,8 @@
 package com.dss886.transmis.plugin
 
+import com.dss886.transmis.BuildConfig
 import com.dss886.transmis.plugin.plugin.*
+import com.dss886.transmis.utils.toEnableSpKey
 import com.dss886.transmis.view.SpConfig
 
 /**
@@ -12,7 +14,7 @@ object PluginManager {
 
     private val mPluginKeySet = mutableSetOf<String>()
     private val mSpKeySet = mutableSetOf<String>()
-    private val mDisableKey = listOf("sms", "call", "missed_call", "filter");
+    private val mDisableKey = listOf("sms", "call", "missed_call", "filter")
 
     fun init() {
         registerPlugin(MailPlugin())
@@ -29,6 +31,10 @@ object PluginManager {
     }
 
     private fun checkPlugin(plugin: IPlugin): Boolean {
+        if (!BuildConfig.DEBUG) {
+            // Check only when we are developing
+            return true
+        }
         if (mDisableKey.contains(plugin.getKey())) {
             throw IllegalArgumentException("Plugin ${plugin.getName()} " +
                     "has illegal key ${plugin.getKey()}")
@@ -48,6 +54,11 @@ object PluginManager {
                 throw IllegalArgumentException("Plugin ${plugin.getName()} " +
                         "has an illegal config '${config.title}' which spKey(${config.spKey}) " +
                         "does not match the prefix ${plugin.getKey()}.")
+            }
+            if (config.spKey == config.spKey.toEnableSpKey()) {
+                throw IllegalArgumentException("Plugin ${plugin.getName()} " +
+                        "has an illegal config '${config.title}' which spKey(${config.spKey}) " +
+                        "is not allowed!")
             }
             if (!mSpKeySet.add(config.spKey)) {
                 throw IllegalArgumentException("Plugin ${plugin.getName()} " +

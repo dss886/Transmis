@@ -2,28 +2,21 @@ package com.dss886.transmis.plugin.plugin
 
 import android.text.TextUtils
 import com.dss886.transmis.plugin.IPlugin
-import com.dss886.transmis.utils.Logger
-import com.dss886.transmis.utils.OkHttp
-import com.dss886.transmis.utils.doAsync
-import com.dss886.transmis.utils.handleUnified
+import com.dss886.transmis.utils.*
 import com.dss886.transmis.view.EditTextConfig
 import com.dss886.transmis.view.IConfig
 import com.dss886.transmis.view.SectionConfig
-import com.dss886.transmis.view.SwitchConfig
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 
-private const val URL = "https://oapi.dingtalk.com/robot/send?access_token="
-
 /**
  * Created by dss886 on 2021/02/11.
  */
 class DingDingPlugin: IPlugin {
 
-    private val mEnableConfig = SwitchConfig("插件开关", "ding_ding_enable")
     private val mTokenConfig = EditTextConfig("钉钉机器人Token", "ding_ding_token").apply {
         isPassword = true
     }
@@ -32,17 +25,12 @@ class DingDingPlugin: IPlugin {
         return "钉钉插件"
     }
 
-    override fun isEnable(): Boolean {
-        return mEnableConfig.getSpValue(false)
-    }
-
     override fun getKey(): String {
         return "ding_ding"
     }
 
     override fun getConfigs(): List<IConfig> {
         return mutableListOf<IConfig>().apply {
-            add(mEnableConfig)
             add(SectionConfig("参数设置"))
             add(mTokenConfig)
         }
@@ -57,7 +45,7 @@ class DingDingPlugin: IPlugin {
 
         doAsync {
             try {
-                val url = URL + token
+                val url = Constants.URL_DINGDING + token
                 val sb = StringBuilder()
                 sb.append(title).append("\n\n")
                 for (line in content.split("\n").toTypedArray()) {

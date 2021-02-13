@@ -7,7 +7,6 @@ import com.dss886.transmis.utils.handleUnified
 import com.dss886.transmis.view.EditTextConfig
 import com.dss886.transmis.view.IConfig
 import com.dss886.transmis.view.SectionConfig
-import com.dss886.transmis.view.SwitchConfig
 import com.sun.mail.util.MailSSLSocketFactory
 import java.util.*
 import javax.mail.Address
@@ -22,10 +21,12 @@ import javax.mail.internet.MimeMessage
  */
 class MailPlugin: IPlugin {
 
-    private val mEnableConfig = SwitchConfig("插件开关", "mail_enable")
     private val mHostConfig = EditTextConfig("SMTP服务器", "mail_host")
     private val mPortConfig = EditTextConfig("端口号", "mail_port")
-    private val mNameConfig = EditTextConfig("发件人昵称", "mail_send_name")
+    private val mNameConfig = EditTextConfig("发件人昵称", "mail_send_name").apply {
+        isRequired = false
+        hasDefault = true
+    }
     private val mEmailConfig = EditTextConfig("发件人邮箱", "mail_send_mail")
     private val mPasswordConfig = EditTextConfig("发件人密码/授权码", "mail_send_password").apply {
         isPassword = true
@@ -36,17 +37,12 @@ class MailPlugin: IPlugin {
         return "邮件插件"
     }
 
-    override fun isEnable(): Boolean {
-        return mEnableConfig.getSpValue(false)
-    }
-
     override fun getKey(): String {
         return "mail"
     }
 
     override fun getConfigs(): List<IConfig> {
         return mutableListOf<IConfig>().apply {
-            add(mEnableConfig)
             add(SectionConfig("服务器设置"))
             add(mHostConfig)
             add(mPortConfig)
@@ -66,7 +62,7 @@ class MailPlugin: IPlugin {
 
         val host = mHostConfig.getSpValue(null)
         val port = mPortConfig.getSpValue(null)
-        val name = mNameConfig.getSpValue(null)
+        val name = mNameConfig.getSpValue(null) ?: "Transmis"
         val email = mEmailConfig.getSpValue(null)
         val password = mPasswordConfig.getSpValue(null)
         val receiver = mReceiverConfig.getSpValue(null)

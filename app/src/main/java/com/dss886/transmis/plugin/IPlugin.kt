@@ -1,5 +1,7 @@
 package com.dss886.transmis.plugin
 
+import com.dss886.transmis.base.App
+import com.dss886.transmis.utils.toEnableSpKey
 import com.dss886.transmis.view.IConfig
 import java.io.Serializable
 
@@ -10,7 +12,9 @@ interface IPlugin : Serializable {
 
     fun getName(): String
 
-    fun isEnable(): Boolean
+    fun isEnable(): Boolean {
+        return App.inst().sp.getBoolean(getKey().toEnableSpKey(), false)
+    }
 
     /**
      * The unique identifier of a plugin, which must be in [a-z][A-Z][0-9].

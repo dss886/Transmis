@@ -13,7 +13,7 @@ abstract class BaseItemView(context: Context) : LinearLayout(context) {
     abstract fun onResume()
 
     fun hideDivider() {
-        findViewById<View>(R.id.divider)?.visibility = View.GONE
+        findViewById<View>(R.id.divider).visibility = View.GONE
     }
 
 }

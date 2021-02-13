@@ -13,12 +13,12 @@ class InfoItemView(context: Context) : BaseItemView(context) {
         inflate(getContext(), R.layout.view_info_item, this)
     }
 
-    private val mContentView = findViewById<TextView?>(R.id.content)
+    private val mContentView: TextView = findViewById(R.id.content)
     private lateinit var mConfig: InfoConfig
 
     fun bind(config: InfoConfig): InfoItemView {
         mConfig = config
-        mContentView?.text = config.content
+        mContentView.text = config.content
         return this
     }
 

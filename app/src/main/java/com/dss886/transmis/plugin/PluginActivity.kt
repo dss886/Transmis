@@ -3,11 +3,12 @@ package com.dss886.transmis.plugin
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.CompoundButton
 import com.dss886.transmis.R
 import com.dss886.transmis.base.BaseSwitchActivity
-import com.dss886.transmis.view.IConfig
-import com.dss886.transmis.view.SectionConfig
-import com.dss886.transmis.view.TextButtonConfig
+import com.dss886.transmis.utils.DialogBuilder
+import com.dss886.transmis.utils.toEnableSpKey
+import com.dss886.transmis.view.*
 
 /**
  * Created by dss886 on 2021/02/11.
@@ -37,9 +38,24 @@ class PluginActivity: BaseSwitchActivity() {
 
     override fun getConfigs(): List<IConfig> {
         return mPlugin.getConfigs().toMutableList().apply {
+            add(0, SwitchConfig("插件开关", mPlugin.getKey().toEnableSpKey()).apply {
+                onCheckedChangeListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+                    if (isChecked && !checkConfigValid()) {
+                        DialogBuilder.showAlertDialog(this@PluginActivity, "请填写必填参数！", null)
+                        buttonView.postDelayed({
+                            buttonView.isChecked = false
+                        }, 180L)
+                    }
+                }
+            })
             add(SectionConfig("测试"))
+            // TODO: 2021/02/13 @duansishu support showing testing result
             add(TextButtonConfig("点击发送测试数据") {
-                mPlugin.doNotify("Test Title", "Test Content")
+                if (checkConfigValid()) {
+                    mPlugin.doNotify("Test Title", "Test Content")
+                } else {
+                    DialogBuilder.showAlertDialog(this@PluginActivity, "请填写必填参数！", null)
+                }
             })
         }
     }
@@ -50,6 +66,12 @@ class PluginActivity: BaseSwitchActivity() {
 
     override fun showToolbarBackIcon(): Boolean {
         return true
+    }
+
+    private fun checkConfigValid(): Boolean {
+        return mPlugin.getConfigs().none {
+            it is EditTextConfig && it.isRequired && it.getSpValue(null).isNullOrEmpty()
+        }
     }
 
 }

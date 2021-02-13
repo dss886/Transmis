@@ -42,12 +42,14 @@ object DialogBuilder {
     }
 
     @JvmStatic
-    fun showAlertDialog(activity: BaseActivity, content: String?, onPositive: (() -> Unit?)) {
-        AlertDialog.Builder(activity)
+    fun showAlertDialog(activity: BaseActivity, content: String?, onPositive: (() -> Unit?)?) {
+        val dialog = AlertDialog.Builder(activity)
                 .setMessage(content)
-                .setPositiveButton("确定") { _, _ -> onPositive.invoke() }
-                .setNegativeButton("取消") { dialog, _ -> dialog.dismiss() }
-                .show()
+                .setPositiveButton("确定") { _, _ -> onPositive?.invoke() }
+        if (onPositive != null) {
+            dialog.setNegativeButton("取消") { it, _ -> it.dismiss() }
+        }
+        dialog.show()
     }
 
 }

@@ -14,31 +14,30 @@ class TextButtonItemView(context: Context) : BaseItemView(context) {
         inflate(getContext(), R.layout.view_text_item, this)
     }
 
-    private val mTitleView = findViewById<TextView?>(R.id.title)
-    private val mContentView = findViewById<TextView?>(R.id.content)
-    private val mArrowView = findViewById<ImageView>(R.id.right_arrow)
+    private val mTitleView: TextView = findViewById(R.id.title)
+    private val mContentView: TextView = findViewById(R.id.content)
+    private val mArrowView: ImageView = findViewById(R.id.right_arrow)
     private lateinit var mConfig: TextButtonConfig
 
     fun bind(config: TextButtonConfig): TextButtonItemView {
         mConfig = config
-        mTitleView?.text = config.title
-        mContentView?.text = config.content
+        mTitleView.text = config.title
+        mContentView.text = config.content
         if (config.showRightArrow) {
-            mArrowView?.visibility = VISIBLE
+            mArrowView.visibility = VISIBLE
         }
         setOnClickListener {
             mConfig.clickAction?.invoke()
         }
-//        mConfig.resumeAction?.invoke()
         return this
     }
 
     override fun onResume() {
         mConfig.resumeAction?.invoke()
-        mTitleView?.text = mConfig.title
-        mContentView?.text = mConfig.content
+        mTitleView.text = mConfig.title
+        mContentView.text = mConfig.content
         if (mConfig.showRightArrow) {
-            mArrowView?.visibility = VISIBLE
+            mArrowView.visibility = VISIBLE
         }
     }
 

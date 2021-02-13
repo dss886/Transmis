@@ -30,9 +30,11 @@ class CallActivity : BaseSwitchActivity() {
             })
             add(SectionConfig("提醒设置"))
             add(EditTextConfig("提醒标题", Constants.SP_CALL_TITLE_REGEX).apply {
+                isRequired = false
                 hasDefault = true
             })
             add(EditTextConfig("提醒内容", Constants.SP_CALL_CONTENT_REGEX).apply {
+                isRequired = false
                 hasDefault = true
             })
             add(InfoConfig(getString(R.string.info_call_content)))

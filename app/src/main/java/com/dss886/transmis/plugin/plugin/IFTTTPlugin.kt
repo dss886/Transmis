@@ -2,14 +2,10 @@ package com.dss886.transmis.plugin.plugin
 
 import android.text.TextUtils
 import com.dss886.transmis.plugin.IPlugin
-import com.dss886.transmis.utils.Logger
-import com.dss886.transmis.utils.OkHttp
-import com.dss886.transmis.utils.doAsync
-import com.dss886.transmis.utils.handleUnified
+import com.dss886.transmis.utils.*
 import com.dss886.transmis.view.EditTextConfig
 import com.dss886.transmis.view.IConfig
 import com.dss886.transmis.view.SectionConfig
-import com.dss886.transmis.view.SwitchConfig
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Request
@@ -21,20 +17,13 @@ import org.json.JSONObject
  * Created by dss886 on 2021/02/11.
  */
 
-private const val URL: String = "https://maker.ifttt.com/trigger/"
-
 class IFTTTPlugin: IPlugin {
 
-    private val mEnableConfig = SwitchConfig("插件开关", "ifttt_webhooks__enable")
-    private val mKeyConfig = EditTextConfig("完整的接口Url", "ifttt_webhooks_key")
-    private val mEventConfig = EditTextConfig("完整的接口Url", "ifttt_webhooks_event")
+    private val mKeyConfig = EditTextConfig("Key", "ifttt_webhooks_key")
+    private val mEventConfig = EditTextConfig("Event", "ifttt_webhooks_event")
 
     override fun getName(): String {
         return "IFTTT插件"
-    }
-
-    override fun isEnable(): Boolean {
-        return mEnableConfig.getSpValue(false)
     }
 
     override fun getKey(): String {
@@ -43,7 +32,6 @@ class IFTTTPlugin: IPlugin {
 
     override fun getConfigs(): List<IConfig> {
         return mutableListOf<IConfig>().apply {
-            add(mEnableConfig)
             add(SectionConfig("参数设置"))
             add(mKeyConfig)
             add(mEventConfig)
@@ -65,7 +53,7 @@ class IFTTTPlugin: IPlugin {
                     put("value2", title)
                     put("value3", content)
                 }
-                val url = "$URL$event/with/key/$key"
+                val url = "${Constants.URL_IFTTT}$event/with/key/$key"
                 val mediaType: MediaType = "application/json".toMediaType()
                 val body = message.toString().toRequestBody(mediaType)
                 val request = Request.Builder()

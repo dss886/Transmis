@@ -8,6 +8,11 @@ public class Constants {
     public static final String URL_README = "https://github.com/dss886/Transmis/blob/master/README.md";
     public static final String URL_LICENSE = "https://github.com/dss886/Transmis/blob/master/LICENSE";
     public static final String URL_RELEASE = "https://github.com/dss886/Transmis/releases";
+    public static final String URL_DINGDING = "https://oapi.dingtalk.com/robot/send?access_token=";
+    public static final String URL_MAILGUN = "https://api.mailgun.net/v3/";
+    public static final String URL_IFTTT = "https://maker.ifttt.com/trigger/";
+
+    public static final String BOUNDARY_WEBKIT = "----WebKitFormBoundary7MA4YWxkTrZu0gW";
 
     public static final String SP_GLOBAL_ENABLE = "global_enable";
     public static final String SP_SMS_ENABLE = "sms_enable";

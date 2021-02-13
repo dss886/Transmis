@@ -94,6 +94,10 @@ fun String?.stringToList(): List<String> {
     return this.split(",").toTypedArray().toList()
 }
 
+fun String.toEnableSpKey(): String {
+    return this + "_enable"
+}
+
 fun Throwable.handleUnified() {
     if (BuildConfig.DEBUG) {
         App.inst().mainHandler.post {
