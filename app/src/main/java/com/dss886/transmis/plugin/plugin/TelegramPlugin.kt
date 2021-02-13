@@ -79,8 +79,8 @@ class TelegramPlugin: IPlugin {
                 val response: Response = OkHttp.client.newCall(request).execute()
                 val responseBody = response.body
                 if (responseBody != null) {
-                    Logger.d("TelegramPlugin: $url")
-                    Logger.d("TelegramPlugin: " + responseBody.string())
+                    Logger.d("TelegramPlugin", url)
+                    Logger.d("TelegramPlugin", responseBody.string())
                 }
             } catch (e: Exception) {
                 App.mainHandler.post {

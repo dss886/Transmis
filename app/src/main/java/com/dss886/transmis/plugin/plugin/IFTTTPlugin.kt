@@ -78,8 +78,8 @@ class IFTTTPlugin: IPlugin {
                 val response: Response = OkHttp.client.newCall(request).execute()
                 val responseBody = response.body
                 if (responseBody != null) {
-                    Logger.d("IftttWebhooksPlugin: $url")
-                    Logger.d("IftttWebhooksPlugin: " + responseBody.string())
+                    Logger.d("IftttWebhooksPlugin", url)
+                    Logger.d("IftttWebhooksPlugin", responseBody.string())
                 }
             } catch (e: Exception) {
                 App.mainHandler.post {

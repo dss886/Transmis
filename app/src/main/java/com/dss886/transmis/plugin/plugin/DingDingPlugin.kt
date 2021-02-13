@@ -77,7 +77,7 @@ class DingDingPlugin: IPlugin {
                 val response = OkHttp.client.newCall(request).execute()
                 val responseBody = response.body
                 if (responseBody != null) {
-                    Logger.d("DingDingPlugin: " + responseBody.string())
+                    Logger.d("DingDingPlugin", responseBody.string())
                 }
             } catch (e: Exception) {
                 // TODO: 2021/02/11 @duansishu Consider a universe error handler

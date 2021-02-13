@@ -22,6 +22,7 @@ class CallListener : BroadcastReceiver() {
 
     companion object {
         private const val ACTION_PHONE_STATE = "android.intent.action.PHONE_STATE"
+        private const val TAG = "CallListener"
         private var sCallNumber: String? = null
         private var sRing = false
         private var sReceived = false
@@ -29,9 +30,9 @@ class CallListener : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context, intent: Intent) {
-        Logger.d("Phone State Received.")
+        Logger.d(TAG, "Phone State Received.")
         if (!Settings.`is`(Tags.SP_GLOBAL_ENABLE, false)) {
-            Logger.d("Call Transmis has been disable!")
+            Logger.d(TAG, "Call Transmis has been disable!")
             return
         }
         if (ACTION_PHONE_STATE == intent.action) {
@@ -44,13 +45,13 @@ class CallListener : BroadcastReceiver() {
                     sReceived = false
                     sCallNumber = callNumber
                     sRingTime = System.currentTimeMillis()
-                    Logger.d("Call $sCallNumber is ringing.")
+                    Logger.d(TAG, "Call $sCallNumber is ringing.")
                 } else if (state == TelephonyManager.EXTRA_STATE_OFFHOOK) {
-                    Logger.d("Call $sCallNumber is off-hook.")
+                    Logger.d(TAG, "Call $sCallNumber is off-hook.")
                     sReceived = true
                 } else if (state == TelephonyManager.EXTRA_STATE_IDLE) {
                     if (sRing and !sReceived) {
-                        Logger.d("Phone missed, try to notify.")
+                        Logger.d(TAG, "Phone missed, try to notify.")
                         doNotify()
                         sRing = false
                         sReceived = false
@@ -71,11 +72,11 @@ class CallListener : BroadcastReceiver() {
         val titleRegex = App.sp.getString(Tags.SP_CALL_TITLE_REGEX, null) ?: App.me().getString(R.string.call_title_default)
         val contentRegex = App.sp.getString(Tags.SP_CALL_CONTENT_REGEX, null) ?: App.me().getString(R.string.call_content_default)
         val content = String.format(Locale.CHINA, contentRegex, sCallNumber, sdf.format(Date(sRingTime)), ringTime)
-        Logger.d("mail content: $content")
+        Logger.d(TAG, "mail content: $content")
         PluginManager.plugins
                 .filter { it.isEnable() }
                 .apply {
-                    Logger.d("Plugin enable count = ${this.size}: ${this.joinToString { it.getName() }}")
+                    Logger.d(TAG, "Plugin enable count = ${this.size}: ${this.joinToString { it.getName() }}")
                 }
                 .forEach { plugin ->
                     plugin.doNotify(titleRegex, content)
@@ -87,7 +88,7 @@ class CallListener : BroadcastReceiver() {
         val senderList = StringUtils.parseToList(senderString)
         for (sender in senderList) {
             if (TextUtils.equals(sender, sCallNumber)) {
-                Logger.d("Call has been filtered: $sCallNumber")
+                Logger.d(TAG, "Call has been filtered: $sCallNumber")
                 return true
             }
         }

@@ -21,12 +21,13 @@ class SmsListener : BroadcastReceiver() {
 
     companion object {
         private const val ACTION_SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED"
+        private const val TAG = "SmsListener"
     }
 
     override fun onReceive(context: Context, intent: Intent) {
-        Logger.d("SMS Received.")
+        Logger.d(TAG, "SMS Received.")
         if (!Settings.`is`(Tags.SP_GLOBAL_ENABLE, false)) {
-            Logger.d("SMS Transmis has been disable!")
+            Logger.d(TAG, "SMS Transmis has been disable!")
             return
         }
         if (ACTION_SMS_RECEIVED == intent.action) {
@@ -38,11 +39,10 @@ class SmsListener : BroadcastReceiver() {
                     for (i in messages.indices) {
                         messages[i] = SmsMessage.createFromPdu(pdus[i] as ByteArray)
                     }
-                    Logger.d("Try To Notify.")
+                    Logger.d(TAG, "Try To Notify.")
                     doNotify(messages)
                 } catch (e: Exception) {
-                    Logger.e(e.message)
-                    e.printStackTrace()
+                    Logger.e(TAG, e.message ?: "")
                 }
             }
         }
@@ -83,7 +83,7 @@ class SmsListener : BroadcastReceiver() {
         PluginManager.plugins
                 .filter { it.isEnable() }
                 .apply {
-                    Logger.d("Plugin enable count = ${this.size}: ${this.joinToString { it.getName() }}")
+                    Logger.d(TAG, "Plugin enable count = ${this.size}: ${this.joinToString { it.getName() }}")
                 }
                 .forEach { plugin ->
                     plugin.doNotify(titleRegex, content)
@@ -100,13 +100,13 @@ class SmsListener : BroadcastReceiver() {
         val wordList = StringUtils.parseToList(wordString)
         for (number in senderList) {
             if (callNumber?.contains(number) == true) {
-                Logger.d("SMS has been filtered by sender: $callNumber, $content")
+                Logger.d(TAG, "SMS has been filtered by sender: $callNumber, $content")
                 return true
             }
         }
         for (word in wordList) {
             if (content.contains(word)) {
-                Logger.d("SMS has been filtered by content: $callNumber, $content")
+                Logger.d(TAG, "SMS has been filtered by content: $callNumber, $content")
                 return true
             }
         }

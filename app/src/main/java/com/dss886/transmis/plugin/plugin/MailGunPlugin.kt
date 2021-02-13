@@ -99,8 +99,8 @@ class MailGunPlugin: IPlugin {
                 val response: Response = OkHttp.client.newCall(request).execute()
                 val responseBody = response.body
                 if (responseBody != null) {
-                    Logger.d("MailGunPlugin: $url")
-                    Logger.d("MailGunPlugin: " + responseBody.string())
+                    Logger.d("MailGunPlugin", url)
+                    Logger.d("MailGunPlugin", responseBody.string())
                 }
             } catch (e: Exception) {
                 App.mainHandler.post {
