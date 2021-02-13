@@ -3,6 +3,7 @@ package com.dss886.transmis.utils
 import android.annotation.SuppressLint
 import android.text.InputType
 import android.view.LayoutInflater
+import android.view.WindowManager
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import com.dss886.transmis.R
@@ -27,6 +28,7 @@ object DialogBuilder {
             this.hint = hint
             this.inputType = inputType
             setSelection(text.length)
+            requestFocus()
         }
         AlertDialog.Builder(activity)
                 .setTitle(title)
@@ -34,6 +36,9 @@ object DialogBuilder {
                 .setPositiveButton("确定") { _, _ -> onPositive.invoke(input.text.toString()) }
                 .setNegativeButton("取消") { dialog, _ -> dialog.dismiss() }
                 .show()
+                .apply {
+                    window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+                }
     }
 
     @JvmStatic
