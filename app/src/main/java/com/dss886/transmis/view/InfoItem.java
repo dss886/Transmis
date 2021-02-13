@@ -10,7 +10,7 @@ import com.dss886.transmis.R;
  * Created by dss886 on 2017/7/1.
  */
 
-public class InfoItem extends BaseItem {
+public class InfoItem extends BaseItemView {
 
     private final TextView mContentView;
 

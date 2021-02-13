@@ -8,13 +8,14 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import com.dss886.transmis.R;
 import com.dss886.transmis.base.App;
-import com.dss886.transmis.utils.DisplayUtil;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by dss886 on 2017/6/29.
  */
 
-public class TextItem extends BaseItem {
+public class TextItem extends BaseItemView {
 
     private final TextView mTitleView;
     private final TextView mContentView;
@@ -23,7 +24,6 @@ public class TextItem extends BaseItem {
     public TextItem(Context context) {
         super(context);
         View.inflate(getContext(), R.layout.view_text_item, this);
-        setMinimumHeight(DisplayUtil.dip2px(getContext(), 56));
 
         mTitleView = findViewById(R.id.title);
         mContentView = findViewById(R.id.content);
@@ -56,6 +56,11 @@ public class TextItem extends BaseItem {
 
     public TextItem setCallback(Callback callback) {
         this.mCallback = callback;
+        return this;
+    }
+
+    public TextItem setOnClick(@Nullable OnClickListener l) {
+        super.setOnClickListener(l);
         return this;
     }
 

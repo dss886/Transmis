@@ -64,8 +64,8 @@ public class FilterActivity extends BaseRecyclerViewActivity {
     }
 
     @Override
-    protected int getToolbarTitle() {
-        return mType.titleResId;
+    protected String getToolbarTitle() {
+        return getString(mType.titleResId);
     }
 
     @Override

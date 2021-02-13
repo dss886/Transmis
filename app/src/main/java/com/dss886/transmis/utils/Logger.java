@@ -8,6 +8,8 @@ import com.dss886.transmis.BuildConfig;
  */
 
 public class Logger {
+
+    // TODO: 2021/02/11 @duansishu add Tag argument
     public static void d(String message) {
         if (BuildConfig.DEBUG) {
             Log.d("Transmis", message);

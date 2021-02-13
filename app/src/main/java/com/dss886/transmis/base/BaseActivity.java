@@ -52,7 +52,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void resolveIntentExtra(@NonNull Bundle bundle) {}
 
-    protected abstract int getToolbarTitle();
+    protected abstract String getToolbarTitle();
 
     protected abstract boolean showToolbarBackIcon();
 }

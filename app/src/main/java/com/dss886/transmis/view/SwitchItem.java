@@ -15,7 +15,7 @@ import androidx.appcompat.widget.SwitchCompat;
  * Created by dss886 on 2017/6/29.
  */
 
-public class SwitchItem extends BaseItem {
+public class SwitchItem extends BaseItemView {
 
     private final TextView mTitle;
     private final SwitchCompat mSwitchView;

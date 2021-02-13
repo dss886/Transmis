@@ -3,13 +3,14 @@ package com.dss886.transmis.view;
 import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
+
 import com.dss886.transmis.R;
 
 /**
  * Created by dss886 on 2017/7/1.
  */
 
-public class SectionItem extends BaseItem {
+public class SectionItem extends BaseItemView {
 
     private final TextView mTitleView;
 
