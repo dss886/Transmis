@@ -22,13 +22,13 @@ class SmsActivity : BaseSwitchActivity() {
         return mutableListOf<IConfig>().apply {
             add(SwitchConfig("短信开关", Constants.SP_SMS_ENABLE))
             add(SectionConfig("过滤"))
-            add(TextButtonConfig("发件人过滤", showRightArrow = true).apply {
+            add(TextConfig("发件人过滤", showRightArrow = true).apply {
                 clickAction = {
                     FilterActivity.start(this@SmsActivity, FilterType.SMS_SENDER)
                 }
                 resumeAction = getResumeAction(this, FilterType.SMS_SENDER)
             })
-            add(TextButtonConfig("关键词过滤", showRightArrow = true).apply {
+            add(TextConfig("关键词过滤", showRightArrow = true).apply {
                 clickAction = {
                     FilterActivity.start(this@SmsActivity, FilterType.SMS_KEYWORD)
                 }
@@ -49,7 +49,7 @@ class SmsActivity : BaseSwitchActivity() {
         }
     }
 
-    private fun getResumeAction(config: TextButtonConfig, type: FilterType): () -> Unit {
+    private fun getResumeAction(config: TextConfig, type: FilterType): () -> Unit {
         val count = TransmisManager.getFilterCount(type)
         val text = if (count == 0) "无" else "$count 项"
         return {

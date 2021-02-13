@@ -8,6 +8,7 @@ import com.dss886.transmis.R
 import com.dss886.transmis.base.BaseSwitchActivity
 import com.dss886.transmis.utils.DialogBuilder
 import com.dss886.transmis.utils.toEnableSpKey
+import com.dss886.transmis.utils.weakRef
 import com.dss886.transmis.view.*
 
 /**
@@ -25,6 +26,7 @@ class PluginActivity: BaseSwitchActivity() {
     }
 
     private lateinit var mPlugin: IPlugin
+    private var mTester: PluginTester? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         mPlugin = intent?.getSerializableExtra("plugin") as? IPlugin
@@ -49,13 +51,8 @@ class PluginActivity: BaseSwitchActivity() {
                 }
             })
             add(SectionConfig("测试"))
-            // TODO: 2021/02/13 @duansishu support showing testing result
-            add(TextButtonConfig("点击发送测试数据") {
-                if (checkConfigValid()) {
-                    mPlugin.doNotify("Test Title", "Test Content")
-                } else {
-                    DialogBuilder.showAlertDialog(this@PluginActivity, "请填写必填参数！", null)
-                }
+            add(TestConfig("点击发送测试数据").apply {
+                onTest = { doTest(this) }
             })
         }
     }
@@ -66,6 +63,28 @@ class PluginActivity: BaseSwitchActivity() {
 
     override fun showToolbarBackIcon(): Boolean {
         return true
+    }
+
+    private fun doTest(config: TestConfig) {
+        if (!checkConfigValid()) {
+            config.onReset?.invoke()
+            DialogBuilder.showAlertDialog(this@PluginActivity, "请填写必填参数！", null)
+            return
+        }
+        config.content = "测试中"
+        val tester = PluginTester().apply {
+            onSuccess = {
+                config.content = "测试成功"
+                config.onSuccess?.invoke()
+            }
+            onFailure = { e ->
+                config.content = "测试失败"
+                config.reason = e
+                config.onFailure?.invoke()
+            }
+            mTester = this
+        }
+        mPlugin.doNotify("Test Title", "Test Content", tester.weakRef())
     }
 
     private fun checkConfigValid(): Boolean {

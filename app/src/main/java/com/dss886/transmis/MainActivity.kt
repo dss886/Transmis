@@ -12,7 +12,7 @@ import com.dss886.transmis.utils.TransmisManager
 import com.dss886.transmis.view.IConfig
 import com.dss886.transmis.view.SectionConfig
 import com.dss886.transmis.view.SwitchConfig
-import com.dss886.transmis.view.TextButtonConfig
+import com.dss886.transmis.view.TextConfig
 
 class MainActivity : BaseSwitchActivity() {
 
@@ -28,7 +28,7 @@ class MainActivity : BaseSwitchActivity() {
         return mutableListOf<IConfig>().apply {
             add(SwitchConfig("总开关", Constants.SP_GLOBAL_ENABLE))
             add(SectionConfig("监听内容"))
-            add(TextButtonConfig("短信", showRightArrow = true).apply {
+            add(TextConfig("短信", showRightArrow = true).apply {
                 clickAction = {
                     startActivity(Intent(this@MainActivity, SmsActivity::class.java))
                 }
@@ -36,7 +36,7 @@ class MainActivity : BaseSwitchActivity() {
                     content = if (TransmisManager.isSmsEnable()) "开" else "关"
                 }
             })
-            add(TextButtonConfig("未接电话", showRightArrow = true).apply {
+            add(TextConfig("未接电话", showRightArrow = true).apply {
                 clickAction = {
                     startActivity(Intent(this@MainActivity, CallActivity::class.java))
                 }
@@ -46,7 +46,7 @@ class MainActivity : BaseSwitchActivity() {
             })
             add(SectionConfig("提醒插件"))
             PluginManager.plugins.forEach { plugin ->
-                add(TextButtonConfig(plugin.getName(), showRightArrow = true).apply {
+                add(TextConfig(plugin.getName(), showRightArrow = true).apply {
                     clickAction = {
                         PluginActivity.start(this@MainActivity, plugin)
                     }
@@ -56,13 +56,13 @@ class MainActivity : BaseSwitchActivity() {
                 })
             }
             add(SectionConfig("关于"))
-            add(TextButtonConfig("使用帮助") {
+            add(TextConfig("使用帮助") {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.URL_README)))
             })
-            add(TextButtonConfig("检查更新", "当前版本 v" + BuildConfig.VERSION_NAME) {
+            add(TextConfig("检查更新", "当前版本 v" + BuildConfig.VERSION_NAME) {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.URL_RELEASE)))
             })
-            add(TextButtonConfig("开源许可", "GNU v3.0") {
+            add(TextConfig("开源许可", "GNU v3.0") {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.URL_LICENSE)))
             })
         }

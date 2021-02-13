@@ -44,11 +44,20 @@ class SectionConfig(val title: String) : IConfig
 
 class InfoConfig(val content: String) : IConfig
 
-class TextButtonConfig(val title: String,
-                       var content: String? = null,
-                       var showRightArrow: Boolean = false,
-                       var clickAction: (() -> Unit)? = null) : IConfig {
+class TextConfig(val title: String,
+                 var content: String? = null,
+                 var showRightArrow: Boolean = false,
+                 var clickAction: (() -> Unit)? = null) : IConfig {
     var resumeAction: (() -> Unit)? = null
+}
+
+class TestConfig(val title: String,
+                 var content: String? = null,
+                 var reason: Throwable? = null) : IConfig {
+    var onTest: (() -> Unit)? = null
+    var onReset: (() -> Unit)? = null
+    var onSuccess: (() -> Unit)? = null
+    var onFailure: (() -> Unit)? = null
 }
 
 class EditTextConfig(title: String, spKey: String) : StringSpConfig(title, spKey) {

@@ -2,10 +2,10 @@ package com.dss886.transmis.plugin.plugin
 
 import android.text.TextUtils
 import com.dss886.transmis.plugin.IPlugin
+import com.dss886.transmis.plugin.PluginTester
 import com.dss886.transmis.utils.Logger
 import com.dss886.transmis.utils.OkHttp
 import com.dss886.transmis.utils.doAsync
-import com.dss886.transmis.utils.handleUnified
 import com.dss886.transmis.view.EditTextConfig
 import com.dss886.transmis.view.IConfig
 import com.dss886.transmis.view.SectionConfig
@@ -15,6 +15,7 @@ import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import org.json.JSONObject
+import java.lang.ref.WeakReference
 
 /**
  * Created by dss886 on 2021/02/11.
@@ -40,7 +41,7 @@ class TelegramPlugin: IPlugin {
         }
     }
 
-    override fun doNotify(title: String, content: String) {
+    override fun doNotify(title: String, content: String, tester: WeakReference<PluginTester>?) {
         if (TextUtils.isEmpty(title) || TextUtils.isEmpty(content)) {
             return
         }
@@ -74,8 +75,9 @@ class TelegramPlugin: IPlugin {
                     Logger.d("TelegramPlugin", url)
                     Logger.d("TelegramPlugin", responseBody.string())
                 }
+                tester?.get()?.success()
             } catch (e: Exception) {
-                e.handleUnified()
+                tester?.get()?.failure(e)
             }
         }
     }

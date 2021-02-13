@@ -4,6 +4,7 @@ import com.dss886.transmis.base.App
 import com.dss886.transmis.utils.toEnableSpKey
 import com.dss886.transmis.view.IConfig
 import java.io.Serializable
+import java.lang.ref.WeakReference
 
 /**
  * Created by dss886 on 2021/02/11.
@@ -25,6 +26,6 @@ interface IPlugin : Serializable {
 
     fun getConfigs(): List<IConfig>
 
-    fun doNotify(title: String, content: String)
+    fun doNotify(title: String, content: String, tester: WeakReference<PluginTester>? = null)
 
 }

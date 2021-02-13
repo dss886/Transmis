@@ -5,8 +5,6 @@ import android.text.TextUtils
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import com.dss886.transmis.BuildConfig
 import com.dss886.transmis.base.App
 import com.dss886.transmis.view.*
 import java.lang.ref.WeakReference
@@ -45,6 +43,8 @@ val Int.sp: Float
 
 val Int.spInt: Int
     get() = this.toFloat().sp.toInt()
+
+fun <T> T.weakRef(): WeakReference<T> = WeakReference(this)
 
 class AsyncContext<T>(val weakRef: WeakReference<T>)
 
@@ -98,22 +98,14 @@ fun String.toEnableSpKey(): String {
     return this + "_enable"
 }
 
-fun Throwable.handleUnified() {
-    if (BuildConfig.DEBUG) {
-        App.inst().mainHandler.post {
-            Toast.makeText(App.inst(), this.toString(), Toast.LENGTH_SHORT).show()
-        }
-        this.printStackTrace()
-    }
-}
-
 fun IConfig.buildView(context: Context): BaseItemView {
     when (this) {
         is SectionConfig -> return SectionItemView(context).bind(this)
         is InfoConfig -> return InfoItemView(context).bind(this)
         is EditTextConfig -> return EditTextItemView(context).bind(this)
-        is TextButtonConfig -> return TextButtonItemView(context).bind(this)
+        is TextConfig -> return TextItemView(context).bind(this)
         is SwitchConfig -> return SwitchItemView(context).bind(this)
+        is TestConfig -> return TestItemView(context).bind(this)
     }
     throw IllegalStateException("Config ${this.javaClass.simpleName} does not specify a target View!")
 }

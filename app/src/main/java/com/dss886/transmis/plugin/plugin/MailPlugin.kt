@@ -2,12 +2,13 @@ package com.dss886.transmis.plugin.plugin
 
 import android.text.TextUtils
 import com.dss886.transmis.plugin.IPlugin
+import com.dss886.transmis.plugin.PluginTester
 import com.dss886.transmis.utils.doAsync
-import com.dss886.transmis.utils.handleUnified
 import com.dss886.transmis.view.EditTextConfig
 import com.dss886.transmis.view.IConfig
 import com.dss886.transmis.view.SectionConfig
 import com.sun.mail.util.MailSSLSocketFactory
+import java.lang.ref.WeakReference
 import java.util.*
 import javax.mail.Address
 import javax.mail.Message
@@ -55,7 +56,7 @@ class MailPlugin: IPlugin {
         }
     }
 
-    override fun doNotify(title: String, content: String) {
+    override fun doNotify(title: String, content: String, tester: WeakReference<PluginTester>?) {
         if (TextUtils.isEmpty(title) || TextUtils.isEmpty(content)) {
             return
         }
@@ -90,8 +91,9 @@ class MailPlugin: IPlugin {
                 transport.connect(host, email, password)
                 transport.sendMessage(msg, arrayOf<Address>(InternetAddress(receiver)))
                 transport.close()
+                tester?.get()?.success()
             } catch (e: Throwable) {
-                e.handleUnified()
+                tester?.get()?.failure(e)
             }
         }
     }

@@ -22,7 +22,7 @@ class CallActivity : BaseSwitchActivity() {
         return mutableListOf<IConfig>().apply {
             add(SwitchConfig("未接电话开关", Constants.SP_MISSED_CALL_ENABLE))
             add(SectionConfig("过滤"))
-            add(TextButtonConfig("来电过滤", showRightArrow = true).apply {
+            add(TextConfig("来电过滤", showRightArrow = true).apply {
                 clickAction = {
                     FilterActivity.start(this@CallActivity, FilterType.CALL_SENDER)
                 }
@@ -42,7 +42,7 @@ class CallActivity : BaseSwitchActivity() {
     }
 
     @Suppress("SameParameterValue")
-    private fun getResumeAction(config: TextButtonConfig, type: FilterType): () -> Unit {
+    private fun getResumeAction(config: TextConfig, type: FilterType): () -> Unit {
         val count = TransmisManager.getFilterCount(type)
         val text = if (count == 0) "无" else "$count 项"
         return {

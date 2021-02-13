@@ -8,7 +8,7 @@ import com.dss886.transmis.R
 /**
  * Created by dss886 on 2021/02/11.
  */
-class TextButtonItemView(context: Context) : BaseItemView(context) {
+class TextItemView(context: Context) : BaseItemView(context) {
 
     init {
         inflate(getContext(), R.layout.view_text_item, this)
@@ -17,9 +17,9 @@ class TextButtonItemView(context: Context) : BaseItemView(context) {
     private val mTitleView: TextView = findViewById(R.id.title)
     private val mContentView: TextView = findViewById(R.id.content)
     private val mArrowView: ImageView = findViewById(R.id.right_arrow)
-    private lateinit var mConfig: TextButtonConfig
+    private lateinit var mConfig: TextConfig
 
-    fun bind(config: TextButtonConfig): TextButtonItemView {
+    fun bind(config: TextConfig): TextItemView {
         mConfig = config
         mTitleView.text = config.title
         mContentView.text = config.content
