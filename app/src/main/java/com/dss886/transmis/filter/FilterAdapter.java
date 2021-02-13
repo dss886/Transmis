@@ -1,23 +1,19 @@
 package com.dss886.transmis.filter;
 
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dss886.transmis.R;
-import com.dss886.transmis.base.App;
 import com.dss886.transmis.base.BaseActivity;
 import com.dss886.transmis.utils.DialogBuilder;
 import com.dss886.transmis.utils.ExtentionsKt;
+import com.dss886.transmis.utils.TransmisManager;
 import com.dss886.transmis.view.SwitchConfig;
 import com.dss886.transmis.view.SwitchItemView;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,29 +30,16 @@ public class FilterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private static final int HEADER_COUNT = 1;
 
     private final BaseActivity mActivity;
-    private final FilterActivity.Type mType;
-    private List<String> mValueList;
+    private final FilterType mType;
 
-    FilterAdapter(BaseActivity activity, FilterActivity.Type type) {
+    FilterAdapter(BaseActivity activity, FilterType type) {
         mActivity = activity;
         mType = type;
-        String valueString = App.inst().sp.getString(mType.valueSpKey, null);
-        mValueList = ExtentionsKt.stringToList(valueString);
     }
 
     void add(String value) {
-        if (mValueList == null) {
-            mValueList = new ArrayList<>();
-        }
-        mValueList.add(value);
+        TransmisManager.INSTANCE.addFilter(mType, value);
         notifyItemInserted(HEADER_COUNT);
-        save();
-    }
-
-    private void save() {
-        SharedPreferences.Editor editor = App.inst().sp.edit();
-        editor.putString(mType.valueSpKey, ExtentionsKt.listToString(mValueList));
-        editor.apply();
     }
 
     @Override
@@ -68,7 +51,7 @@ public class FilterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
         if (viewType == TYPE_SWITCH) {
-            SwitchConfig config = new SwitchConfig("", mType.modeSpKey);
+            SwitchConfig config = new SwitchConfig("", mType.getModeSpKey());
             config.setDefaultValue(true);
             config.setOnCheckedChangeListener((buttonView, isChecked) ->
                     config.setTitle("过滤模式：" + (isChecked ? "黑名单" : "白名单")));
@@ -86,17 +69,13 @@ public class FilterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             ((SwitchItemView) holder.itemView).onResume();
         } else if (holder instanceof ValueViewHolder) {
             int dataPosition = getDataPosition(position);
-            if (mValueList == null || mValueList.size() <= dataPosition) {
-                return;
-            }
-            String value = mValueList.get(dataPosition);
+            String value = TransmisManager.INSTANCE.getFilters(mType).get(dataPosition);
             ((ValueViewHolder) holder).mTitle.setText(value);
             holder.itemView.setOnLongClickListener(v -> {
                 DialogBuilder.showAlertDialog(mActivity, "是否删除过滤项目？", () -> {
                     int nowPosition = holder.getAdapterPosition();
-                    mValueList.remove(getDataPosition(nowPosition));
+                    TransmisManager.INSTANCE.removeFilter(mType, getDataPosition(nowPosition));
                     notifyItemRemoved(nowPosition);
-                    save();
                 });
                 return false;
             });
@@ -105,19 +84,16 @@ public class FilterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public int getItemCount() {
-        return HEADER_COUNT + (mValueList == null ? 0 : mValueList.size());
+        return HEADER_COUNT + TransmisManager.INSTANCE.getFilterCount(mType);
     }
 
     private int getDataPosition(int position) {
         if (position <= 0) {
             throw new IllegalArgumentException("position must above zero!");
         }
-        if (mValueList == null) {
-            throw new IllegalArgumentException("mValueList must not be null!");
-        }
         int dataPosition = position - HEADER_COUNT;
         // reverse list
-        return mValueList.size() - 1 - dataPosition;
+        return TransmisManager.INSTANCE.getFilterCount(mType) - 1 - dataPosition;
     }
 
     private static class SwitchViewHolder extends RecyclerView.ViewHolder {

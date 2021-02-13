@@ -27,13 +27,19 @@ class TextButtonItemView(context: Context) : BaseItemView(context) {
             mArrowView?.visibility = VISIBLE
         }
         setOnClickListener {
-            mConfig.clickAction.invoke()
+            mConfig.clickAction?.invoke()
         }
+//        mConfig.resumeAction?.invoke()
         return this
     }
 
     override fun onResume() {
-        // do nothing
+        mConfig.resumeAction?.invoke()
+        mTitleView?.text = mConfig.title
+        mContentView?.text = mConfig.content
+        if (mConfig.showRightArrow) {
+            mArrowView?.visibility = VISIBLE
+        }
     }
 
 }

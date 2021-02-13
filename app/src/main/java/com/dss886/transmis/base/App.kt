@@ -6,6 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.preference.PreferenceManager
 import com.dss886.transmis.plugin.PluginManager
+import com.dss886.transmis.utils.TransmisManager
 
 /**
  * Created by dss886 on 2017/6/29.
@@ -29,6 +30,7 @@ class App : Application() {
         inst = this
         sp = PreferenceManager.getDefaultSharedPreferences(this)
         mainHandler = Handler(Looper.getMainLooper())
+        TransmisManager.init()
         PluginManager.init()
     }
 

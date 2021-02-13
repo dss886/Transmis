@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import com.dss886.transmis.R;
 import com.dss886.transmis.base.BaseActivity;
 import com.dss886.transmis.utils.DialogBuilder;
-import com.dss886.transmis.utils.Constants;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -27,22 +26,7 @@ public class FilterActivity extends BaseActivity {
 
     private static final String BUNDLE_TYPE = "type";
 
-    public enum Type {
-        SMS_SENDER(R.string.sender_title, Constants.SP_FILTER_MODE_SMS_SENDER, Constants.SP_FILTER_VALUE_SMS_SENDER),
-        SMS_KEYWORD(R.string.keyword_title, Constants.SP_FILTER_MODE_SMS_KEYWORD, Constants.SP_FILTER_VALUE_SMS_KEYWORD),
-        CALL_SENDER(R.string.sender_call_title, Constants.SP_FILTER_MODE_CALL_SENDER, Constants.SP_FILTER_VALUE_CALL_SENDER);
-
-        int titleResId;
-        String modeSpKey;
-        String valueSpKey;
-        Type(int titleResId, String modeSpKey, String valueSpKey) {
-            this.titleResId = titleResId;
-            this.modeSpKey = modeSpKey;
-            this.valueSpKey = valueSpKey;
-        }
-    }
-
-    public static void start(Context context, Type type) {
+    public static void start(Context context, FilterType type) {
         if (context == null || type == null) {
             return;
         }
@@ -51,7 +35,7 @@ public class FilterActivity extends BaseActivity {
         context.startActivity(starter);
     }
 
-    private Type mType;
+    private FilterType mType;
     private FilterAdapter mFilterAdapter;
 
     @Override
@@ -70,13 +54,13 @@ public class FilterActivity extends BaseActivity {
 
     @Override
     protected void resolveIntentExtra(@NonNull Bundle bundle) {
-        mType = (Type) bundle.getSerializable(BUNDLE_TYPE);
+        mType = (FilterType) bundle.getSerializable(BUNDLE_TYPE);
     }
 
     @NotNull
     @Override
     protected String getToolbarTitle() {
-        return getString(mType.titleResId);
+        return getString(mType.getTitleResId());
     }
 
     @Override
@@ -101,7 +85,7 @@ public class FilterActivity extends BaseActivity {
     }
 
     private void tryToAddFilterValue() {
-        int inputType = mType == Type.SMS_KEYWORD ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_CLASS_NUMBER;
+        int inputType = mType == FilterType.SMS_KEYWORD ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_CLASS_NUMBER;
         DialogBuilder.showEditTextDialog(this, "请添加过滤项", "", inputType,
                 content -> mFilterAdapter.add(content));
     }

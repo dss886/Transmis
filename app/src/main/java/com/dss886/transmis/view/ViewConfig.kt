@@ -47,7 +47,9 @@ class InfoConfig(val content: String) : IConfig
 class TextButtonConfig(val title: String,
                        var content: String? = null,
                        var showRightArrow: Boolean = false,
-                       val clickAction: () -> Unit) : IConfig
+                       var clickAction: (() -> Unit)? = null) : IConfig {
+    var resumeAction: (() -> Unit)? = null
+}
 
 class EditTextConfig(title: String, spKey: String) : StringSpConfig(title, spKey) {
     var isRequired: Boolean = true  // TODO: 2021/02/11 @duansishu to be done

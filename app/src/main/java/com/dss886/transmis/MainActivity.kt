@@ -8,6 +8,7 @@ import com.dss886.transmis.listen.SmsActivity
 import com.dss886.transmis.plugin.PluginActivity
 import com.dss886.transmis.plugin.PluginManager
 import com.dss886.transmis.utils.Constants
+import com.dss886.transmis.utils.TransmisManager
 import com.dss886.transmis.view.IConfig
 import com.dss886.transmis.view.SectionConfig
 import com.dss886.transmis.view.SwitchConfig
@@ -27,17 +28,31 @@ class MainActivity : BaseSwitchActivity() {
         return mutableListOf<IConfig>().apply {
             add(SwitchConfig("总开关", Constants.SP_GLOBAL_ENABLE))
             add(SectionConfig("监听内容"))
-            add(TextButtonConfig("短信", showRightArrow = true) {
-                startActivity(Intent(this@MainActivity, SmsActivity::class.java))
+            add(TextButtonConfig("短信", showRightArrow = true).apply {
+                clickAction = {
+                    startActivity(Intent(this@MainActivity, SmsActivity::class.java))
+                }
+                resumeAction = {
+                    content = if (TransmisManager.isSmsEnable()) "开" else "关"
+                }
             })
-            add(TextButtonConfig("未接电话", showRightArrow = true) {
-                startActivity(Intent(this@MainActivity, CallActivity::class.java))
+            add(TextButtonConfig("未接电话", showRightArrow = true).apply {
+                clickAction = {
+                    startActivity(Intent(this@MainActivity, CallActivity::class.java))
+                }
+                resumeAction = {
+                    content = if (TransmisManager.isMissingCallEnable()) "开" else "关"
+                }
             })
             add(SectionConfig("提醒插件"))
             PluginManager.plugins.forEach { plugin ->
-                // TODO: 2021/02/11 @duansishu show enable outside
-                add(TextButtonConfig(plugin.getName(), showRightArrow = true) {
-                    PluginActivity.start(this@MainActivity, plugin)
+                add(TextButtonConfig(plugin.getName(), showRightArrow = true).apply {
+                    clickAction = {
+                        PluginActivity.start(this@MainActivity, plugin)
+                    }
+                    resumeAction = {
+                        content = if (plugin.isEnable()) "开" else "关"
+                    }
                 })
             }
             add(SectionConfig("关于"))
