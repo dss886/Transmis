@@ -1,14 +1,13 @@
 package com.dss886.transmis.plugin.plugin
 
 import android.text.TextUtils
-import android.widget.Toast
-import com.dss886.transmis.base.App
 import com.dss886.transmis.plugin.IPlugin
 import com.dss886.transmis.utils.doAsync
-import com.dss886.transmis.viewnew.EditTextConfig
-import com.dss886.transmis.viewnew.IConfig
-import com.dss886.transmis.viewnew.SectionConfig
-import com.dss886.transmis.viewnew.SwitchConfig
+import com.dss886.transmis.utils.handleUnified
+import com.dss886.transmis.view.EditTextConfig
+import com.dss886.transmis.view.IConfig
+import com.dss886.transmis.view.SectionConfig
+import com.dss886.transmis.view.SwitchConfig
 import com.sun.mail.util.MailSSLSocketFactory
 import java.util.*
 import javax.mail.Address
@@ -41,8 +40,8 @@ class MailPlugin: IPlugin {
         return mEnableConfig.getSpValue(false)
     }
 
-    override fun getSpKeyPrefix(): String {
-        return "mail_"
+    override fun getKey(): String {
+        return "mail"
     }
 
     override fun getConfigs(): List<IConfig> {
@@ -96,9 +95,7 @@ class MailPlugin: IPlugin {
                 transport.sendMessage(msg, arrayOf<Address>(InternetAddress(receiver)))
                 transport.close()
             } catch (e: Throwable) {
-                App.mainHandler.post {
-                    Toast.makeText(App.me(), e.toString(), Toast.LENGTH_SHORT).show()
-                }
+                e.handleUnified()
             }
         }
     }

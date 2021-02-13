@@ -1,4 +1,4 @@
-package com.dss886.transmis.listen.sms
+package com.dss886.transmis.listen
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -8,38 +8,41 @@ import android.text.TextUtils
 import com.dss886.transmis.R
 import com.dss886.transmis.base.App
 import com.dss886.transmis.plugin.PluginManager
+import com.dss886.transmis.utils.Constants
 import com.dss886.transmis.utils.Logger
-import com.dss886.transmis.utils.Settings
-import com.dss886.transmis.utils.StringUtils
-import com.dss886.transmis.utils.Tags
+import com.dss886.transmis.utils.TransmisManager
+import com.dss886.transmis.utils.stringToList
 import java.util.*
 
 /**
  * Created by dss886 on 2017/6/29.
  */
-class SmsListener : BroadcastReceiver() {
+class SmsBroadcastReceiver : BroadcastReceiver() {
 
     companion object {
         private const val ACTION_SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED"
-        private const val TAG = "SmsListener"
+        private const val TAG = "SmsBroadcastReceiver"
     }
 
     override fun onReceive(context: Context, intent: Intent) {
         Logger.d(TAG, "SMS Received.")
-        if (!Settings.`is`(Tags.SP_GLOBAL_ENABLE, false)) {
-            Logger.d(TAG, "SMS Transmis has been disable!")
+        if (!TransmisManager.isGlobalEnable()) {
+            Logger.d(TAG, "SMS Transmis has been disable by the global switch!")
+            return
+        }
+        if (!TransmisManager.isSmsEnable()) {
+            Logger.d(TAG, "SMS Transmis has been disable by the sms switch!")
             return
         }
         if (ACTION_SMS_RECEIVED == intent.action) {
-            val bundle = intent.extras
-            if (bundle != null) {
+            intent.extras?.let { bundle ->
                 try {
-                    val pdus = (bundle["pdus"] as Array<Any>?)!!
+                    val pdus = (bundle["pdus"] as Array<*>)
                     val messages = arrayOfNulls<SmsMessage>(pdus.size)
+                    val format = bundle.getString("format")
                     for (i in messages.indices) {
-                        messages[i] = SmsMessage.createFromPdu(pdus[i] as ByteArray)
+                        messages[i] = SmsMessage.createFromPdu(pdus[i] as ByteArray, format)
                     }
-                    Logger.d(TAG, "Try To Notify.")
                     doNotify(messages)
                 } catch (e: Exception) {
                     Logger.e(TAG, e.message ?: "")
@@ -52,11 +55,11 @@ class SmsListener : BroadcastReceiver() {
         if (messages == null || messages.isEmpty()) {
             return
         }
-        val titleRegex = App.sp.getString(Tags.SP_SMS_TITLE_REGEX, null) ?: App.me().getString(R.string.sms_title_default)
-        val contentRegex = App.sp.getString(Tags.SP_SMS_CONTENT_REGEX, null) ?: App.me().getString(R.string.sms_content_default)
+        val titleRegex = App.inst().sp.getString(Constants.SP_SMS_TITLE_REGEX, null) ?: App.inst().getString(R.string.sms_title_default)
+        val contentRegex = App.inst().sp.getString(Constants.SP_SMS_CONTENT_REGEX, null) ?: App.inst().getString(R.string.sms_content_default)
         val content: String
         val sb = StringBuilder()
-        content = if (App.sp.getBoolean(Tags.SP_SMS_MERGE_LONG_TEXT, true)) {
+        content = if (App.inst().sp.getBoolean(Constants.SP_SMS_MERGE_LONG_TEXT, true)) {
             for (message in messages) {
                 sb.append(message?.messageBody)
             }
@@ -80,10 +83,12 @@ class SmsListener : BroadcastReceiver() {
         if (TextUtils.isEmpty(content)) {
             return
         }
+        Logger.d(TAG, "Try to notify SMS. title=${titleRegex}, content=${content.replace("\n", " ")}")
         PluginManager.plugins
                 .filter { it.isEnable() }
                 .apply {
-                    Logger.d(TAG, "Plugin enable count = ${this.size}: ${this.joinToString { it.getName() }}")
+                    Logger.d(TAG, "Plugin allCount=${PluginManager.plugins.size}, " +
+                            "enableCount=${this.size}: ${this.joinToString { it.getName() }}")
                 }
                 .forEach { plugin ->
                     plugin.doNotify(titleRegex, content)
@@ -94,10 +99,10 @@ class SmsListener : BroadcastReceiver() {
         if (TextUtils.isEmpty(callNumber) || TextUtils.isEmpty(content)) {
             return true
         }
-        val senderString = App.sp.getString(Tags.SP_FILTER_VALUE_SMS_SENDER, null)
-        val wordString = App.sp.getString(Tags.SP_FILTER_VALUE_SMS_KEYWORD, null)
-        val senderList = StringUtils.parseToList(senderString)
-        val wordList = StringUtils.parseToList(wordString)
+        val senderString = App.inst().sp.getString(Constants.SP_FILTER_VALUE_SMS_SENDER, null)
+        val wordString = App.inst().sp.getString(Constants.SP_FILTER_VALUE_SMS_KEYWORD, null)
+        val senderList = senderString?.stringToList() ?: emptyList()
+        val wordList = wordString?.stringToList() ?: emptyList()
         for (number in senderList) {
             if (callNumber?.contains(number) == true) {
                 Logger.d(TAG, "SMS has been filtered by sender: $callNumber, $content")

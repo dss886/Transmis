@@ -8,9 +8,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.dss886.transmis.R;
-import com.dss886.transmis.base.BaseRecyclerViewActivity;
+import com.dss886.transmis.base.BaseActivity;
 import com.dss886.transmis.utils.DialogBuilder;
-import com.dss886.transmis.utils.Tags;
+import com.dss886.transmis.utils.Constants;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,14 +23,14 @@ import androidx.recyclerview.widget.RecyclerView;
  * Created by duansishu on 2018/1/25.
  */
 
-public class FilterActivity extends BaseRecyclerViewActivity {
+public class FilterActivity extends BaseActivity {
 
     private static final String BUNDLE_TYPE = "type";
 
     public enum Type {
-        SMS_SENDER(R.string.sender_title, Tags.SP_FILTER_MODE_SMS_SENDER, Tags.SP_FILTER_VALUE_SMS_SENDER),
-        SMS_KEYWORD(R.string.keyword_title, Tags.SP_FILTER_MODE_SMS_KEYWORD, Tags.SP_FILTER_VALUE_SMS_KEYWORD),
-        CALL_SENDER(R.string.sender_call_title, Tags.SP_FILTER_MODE_CALL_SENDER, Tags.SP_FILTER_VALUE_CALL_SENDER);
+        SMS_SENDER(R.string.sender_title, Constants.SP_FILTER_MODE_SMS_SENDER, Constants.SP_FILTER_VALUE_SMS_SENDER),
+        SMS_KEYWORD(R.string.keyword_title, Constants.SP_FILTER_MODE_SMS_KEYWORD, Constants.SP_FILTER_VALUE_SMS_KEYWORD),
+        CALL_SENDER(R.string.sender_call_title, Constants.SP_FILTER_MODE_CALL_SENDER, Constants.SP_FILTER_VALUE_CALL_SENDER);
 
         int titleResId;
         String modeSpKey;
@@ -52,17 +55,25 @@ public class FilterActivity extends BaseRecyclerViewActivity {
     private FilterAdapter mFilterAdapter;
 
     @Override
-    protected void resolveIntentExtra(@NonNull Bundle bundle) {
-        mType = (Type) bundle.getSerializable(BUNDLE_TYPE);
-    }
-
-    @Override
-    protected void init(RecyclerView recyclerView) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mFilterAdapter = new FilterAdapter(this, mType);
         recyclerView.setAdapter(mFilterAdapter);
     }
 
+    @Override
+    protected int getLayout() {
+        return R.layout.activity_base_recycler_view;
+    }
+
+    @Override
+    protected void resolveIntentExtra(@NonNull Bundle bundle) {
+        mType = (Type) bundle.getSerializable(BUNDLE_TYPE);
+    }
+
+    @NotNull
     @Override
     protected String getToolbarTitle() {
         return getString(mType.titleResId);

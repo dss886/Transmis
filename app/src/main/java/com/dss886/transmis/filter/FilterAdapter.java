@@ -10,8 +10,9 @@ import com.dss886.transmis.R;
 import com.dss886.transmis.base.App;
 import com.dss886.transmis.base.BaseActivity;
 import com.dss886.transmis.utils.DialogBuilder;
-import com.dss886.transmis.utils.StringUtils;
-import com.dss886.transmis.view.SwitchItem;
+import com.dss886.transmis.utils.ExtentionsKt;
+import com.dss886.transmis.view.SwitchConfig;
+import com.dss886.transmis.view.SwitchItemView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -39,8 +40,8 @@ public class FilterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     FilterAdapter(BaseActivity activity, FilterActivity.Type type) {
         mActivity = activity;
         mType = type;
-        String valueString = App.sp.getString(mType.valueSpKey, null);
-        mValueList = StringUtils.parseToList(valueString);
+        String valueString = App.inst().sp.getString(mType.valueSpKey, null);
+        mValueList = ExtentionsKt.stringToList(valueString);
     }
 
     void add(String value) {
@@ -53,8 +54,8 @@ public class FilterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     private void save() {
-        SharedPreferences.Editor editor = App.sp.edit();
-        editor.putString(mType.valueSpKey, StringUtils.listToString(mValueList));
+        SharedPreferences.Editor editor = App.inst().sp.edit();
+        editor.putString(mType.valueSpKey, ExtentionsKt.listToString(mValueList));
         editor.apply();
     }
 
@@ -67,8 +68,11 @@ public class FilterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
         if (viewType == TYPE_SWITCH) {
-            SwitchItem switchItem = new SwitchItem(parent.getContext());
-            return new SwitchViewHolder(switchItem);
+            SwitchConfig config = new SwitchConfig("", mType.modeSpKey);
+            config.setDefaultValue(true);
+            config.setOnCheckedChangeListener((buttonView, isChecked) ->
+                    config.setTitle("过滤模式：" + (isChecked ? "黑名单" : "白名单")));
+            return new SwitchViewHolder(ExtentionsKt.buildView(config, mActivity));
         } else {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             View view = inflater.inflate(R.layout.filter_item, parent, false);
@@ -79,11 +83,7 @@ public class FilterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(@NotNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof SwitchViewHolder) {
-            SwitchItem switchItem = ((SwitchViewHolder) holder).mSwitchItem;
-            switchItem.setSpInfo(mType.modeSpKey, true);
-            switchItem.setOnCheckedChangeListener((buttonView, isChecked) ->
-                    switchItem.setTitle("过滤模式：" + (isChecked ? "黑名单" : "白名单")));
-            switchItem.onResume();
+            ((SwitchItemView) holder.itemView).onResume();
         } else if (holder instanceof ValueViewHolder) {
             int dataPosition = getDataPosition(position);
             if (mValueList == null || mValueList.size() <= dataPosition) {
@@ -121,12 +121,8 @@ public class FilterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     private static class SwitchViewHolder extends RecyclerView.ViewHolder {
-        SwitchItem mSwitchItem;
         SwitchViewHolder(View itemView) {
             super(itemView);
-            if (itemView instanceof SwitchItem) {
-                mSwitchItem = (SwitchItem) itemView;
-            }
         }
     }
 

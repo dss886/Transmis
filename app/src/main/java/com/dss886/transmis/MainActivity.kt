@@ -3,15 +3,15 @@ package com.dss886.transmis
 import android.content.Intent
 import android.net.Uri
 import com.dss886.transmis.base.BaseSwitchActivity
-import com.dss886.transmis.listen.call.CallActivity
-import com.dss886.transmis.listen.sms.SmsActivity
+import com.dss886.transmis.listen.CallActivity
+import com.dss886.transmis.listen.SmsActivity
 import com.dss886.transmis.plugin.PluginActivity
 import com.dss886.transmis.plugin.PluginManager
-import com.dss886.transmis.utils.Tags
-import com.dss886.transmis.viewnew.IConfig
-import com.dss886.transmis.viewnew.SectionConfig
-import com.dss886.transmis.viewnew.SwitchConfig
-import com.dss886.transmis.viewnew.TextButtonConfig
+import com.dss886.transmis.utils.Constants
+import com.dss886.transmis.view.IConfig
+import com.dss886.transmis.view.SectionConfig
+import com.dss886.transmis.view.SwitchConfig
+import com.dss886.transmis.view.TextButtonConfig
 
 class MainActivity : BaseSwitchActivity() {
 
@@ -25,7 +25,7 @@ class MainActivity : BaseSwitchActivity() {
 
     override fun getConfigs(): List<IConfig> {
         return mutableListOf<IConfig>().apply {
-            add(SwitchConfig("总开关", Tags.SP_GLOBAL_ENABLE))
+            add(SwitchConfig("总开关", Constants.SP_GLOBAL_ENABLE))
             add(SectionConfig("监听内容"))
             add(TextButtonConfig("短信", showRightArrow = true) {
                 startActivity(Intent(this@MainActivity, SmsActivity::class.java))
@@ -42,13 +42,13 @@ class MainActivity : BaseSwitchActivity() {
             }
             add(SectionConfig("关于"))
             add(TextButtonConfig("使用帮助") {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Tags.URL_README)))
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.URL_README)))
             })
             add(TextButtonConfig("检查更新", "当前版本 v" + BuildConfig.VERSION_NAME) {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Tags.URL_RELEASE)))
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.URL_RELEASE)))
             })
             add(TextButtonConfig("开源许可", "GNU v3.0") {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Tags.URL_LICENSE)))
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.URL_LICENSE)))
             })
         }
     }

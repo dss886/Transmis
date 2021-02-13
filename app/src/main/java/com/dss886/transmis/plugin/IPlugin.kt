@@ -1,6 +1,6 @@
 package com.dss886.transmis.plugin
 
-import com.dss886.transmis.viewnew.IConfig
+import com.dss886.transmis.view.IConfig
 import java.io.Serializable
 
 /**
@@ -13,10 +13,11 @@ interface IPlugin : Serializable {
     fun isEnable(): Boolean
 
     /**
+     * The unique identifier of a plugin, which must be in [a-z][A-Z][0-9].
      * To avoid the key conflict of sp,
-     * each plugin's spKey must have an independent prefix
+     * each config's spKey in this plugin must start with (key + "_")
      */
-    fun getSpKeyPrefix(): String
+    fun getKey(): String
 
     fun getConfigs(): List<IConfig>
 

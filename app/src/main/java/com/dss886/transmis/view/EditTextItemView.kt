@@ -1,17 +1,14 @@
-package com.dss886.transmis.viewnew
+package com.dss886.transmis.view
 
 import android.content.Context
 import android.text.InputType
-import android.text.TextUtils
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import com.dss886.transmis.R
-import com.dss886.transmis.base.App
 import com.dss886.transmis.base.BaseActivity
 import com.dss886.transmis.utils.DialogBuilder
-import com.dss886.transmis.view.BaseItemView
 
 /**
  * Created by dss886 on 2021/02/11.
@@ -39,23 +36,17 @@ class EditTextItemView(context: Context): BaseItemView(context), OnClickListener
     }
 
     override fun onClick(v: View?) {
-        val value = App.sp.getString(mConfig.spKey, null)
+        val value = mConfig.getSpValue(null)
         val activity = context as? BaseActivity
         val editTitle = "设置" + mConfig.title
         DialogBuilder.showEditTextDialog(activity, editTitle, value, mContentView.inputType) { content: String? ->
-            val editor = App.sp.edit()
-            if (TextUtils.isEmpty(content)) {
-                editor.remove(mConfig.spKey)
-            } else {
-                editor.putString(mConfig.spKey, content)
-            }
-            editor.apply()
+            mConfig.setSpValue(content)
             onResume()
         }
     }
 
     override fun onResume() {
-        mContentView?.text = App.sp.getString(mConfig.spKey, "未设置")
+        mContentView?.text = mConfig.getSpValue("未设置")
     }
 
 }

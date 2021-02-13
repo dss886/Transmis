@@ -4,7 +4,7 @@ package com.dss886.transmis.utils;
  * Created by dss886 on 2017/6/30.
  */
 
-public class Tags {
+public class Constants {
     public static final String URL_README = "https://github.com/dss886/Transmis/blob/master/README.md";
     public static final String URL_LICENSE = "https://github.com/dss886/Transmis/blob/master/LICENSE";
     public static final String URL_RELEASE = "https://github.com/dss886/Transmis/releases";
@@ -27,5 +27,4 @@ public class Tags {
     public static final String SP_FILTER_VALUE_SMS_SENDER = "filter_value_sms_sender";
     public static final String SP_FILTER_VALUE_SMS_KEYWORD = "filter_value_sms_keyword";
     public static final String SP_FILTER_VALUE_CALL_SENDER = "filter_value_call_sender";
-
 }

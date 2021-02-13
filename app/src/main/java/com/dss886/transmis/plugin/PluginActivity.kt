@@ -5,9 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import com.dss886.transmis.R
 import com.dss886.transmis.base.BaseSwitchActivity
-import com.dss886.transmis.viewnew.IConfig
-import com.dss886.transmis.viewnew.SectionConfig
-import com.dss886.transmis.viewnew.TextButtonConfig
+import com.dss886.transmis.view.IConfig
+import com.dss886.transmis.view.SectionConfig
+import com.dss886.transmis.view.TextButtonConfig
 
 /**
  * Created by dss886 on 2021/02/11.

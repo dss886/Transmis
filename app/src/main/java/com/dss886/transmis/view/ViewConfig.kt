@@ -1,4 +1,4 @@
-package com.dss886.transmis.viewnew
+package com.dss886.transmis.view
 
 import android.widget.CompoundButton
 import com.dss886.transmis.base.App
@@ -10,7 +10,7 @@ import java.io.Serializable
 
 interface IConfig: Serializable
 
-abstract class SpConfig<T>(val title: String, val spKey: String): IConfig {
+abstract class SpConfig<T>(var title: String, val spKey: String): IConfig {
     abstract fun setSpValue(value: T?)
 
     abstract fun getSpValue(defaultValue: T?): T?
@@ -18,25 +18,25 @@ abstract class SpConfig<T>(val title: String, val spKey: String): IConfig {
 
 abstract class StringSpConfig(title: String, spKey: String): SpConfig<String>(title, spKey) {
     override fun setSpValue(value: String?) {
-        App.sp.edit().putString(spKey, value).apply()
+        App.inst().sp.edit().putString(spKey, value).apply()
     }
 
     override fun getSpValue(defaultValue: String?): String? {
-        return App.sp.getString(spKey, defaultValue) ?: defaultValue
+        return App.inst().sp.getString(spKey, defaultValue) ?: defaultValue
     }
 }
 
 abstract class BooleanSpConfig(title: String, spKey: String): SpConfig<Boolean>(title, spKey) {
     override fun setSpValue(value: Boolean?) {
         if (value == null) {
-            App.sp.edit().remove(spKey).apply()
+            App.inst().sp.edit().remove(spKey).apply()
         } else {
-            App.sp.edit().putBoolean(spKey, value).apply()
+            App.inst().sp.edit().putBoolean(spKey, value).apply()
         }
     }
 
     override fun getSpValue(defaultValue: Boolean?): Boolean {
-        return App.sp.getBoolean(spKey, defaultValue ?: false)
+        return App.inst().sp.getBoolean(spKey, defaultValue ?: false)
     }
 }
 
@@ -57,4 +57,7 @@ class EditTextConfig(title: String, spKey: String) : StringSpConfig(title, spKey
 class SwitchConfig(title: String, spKey: String) : BooleanSpConfig(title, spKey) {
     var defaultValue: Boolean = false
     var onCheckedChangeListener: CompoundButton.OnCheckedChangeListener? = null
+    fun getSpValue(): Boolean {
+        return super.getSpValue(defaultValue)
+    }
 }

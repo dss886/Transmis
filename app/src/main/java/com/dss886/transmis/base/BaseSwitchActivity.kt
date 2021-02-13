@@ -6,8 +6,8 @@ import com.dss886.transmis.R
 import com.dss886.transmis.utils.buildView
 import com.dss886.transmis.utils.forEachChildren
 import com.dss886.transmis.view.BaseItemView
-import com.dss886.transmis.viewnew.IConfig
-import com.dss886.transmis.viewnew.SectionItemView
+import com.dss886.transmis.view.IConfig
+import com.dss886.transmis.view.SectionItemView
 
 /**
  * Created by duansishu on 2018/1/28.

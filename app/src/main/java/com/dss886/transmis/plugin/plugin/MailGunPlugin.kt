@@ -1,16 +1,15 @@
 package com.dss886.transmis.plugin.plugin
 
 import android.text.TextUtils
-import android.widget.Toast
-import com.dss886.transmis.base.App
 import com.dss886.transmis.plugin.IPlugin
 import com.dss886.transmis.utils.Logger
 import com.dss886.transmis.utils.OkHttp
 import com.dss886.transmis.utils.doAsync
-import com.dss886.transmis.viewnew.EditTextConfig
-import com.dss886.transmis.viewnew.IConfig
-import com.dss886.transmis.viewnew.SectionConfig
-import com.dss886.transmis.viewnew.SwitchConfig
+import com.dss886.transmis.utils.handleUnified
+import com.dss886.transmis.view.EditTextConfig
+import com.dss886.transmis.view.IConfig
+import com.dss886.transmis.view.SectionConfig
+import com.dss886.transmis.view.SwitchConfig
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Request
@@ -40,8 +39,8 @@ class MailGunPlugin: IPlugin {
         return mEnableConfig.getSpValue(false)
     }
 
-    override fun getSpKeyPrefix(): String {
-        return "mailgun_"
+    override fun getKey(): String {
+        return "mailgun"
     }
 
     override fun getConfigs(): List<IConfig> {
@@ -103,9 +102,7 @@ class MailGunPlugin: IPlugin {
                     Logger.d("MailGunPlugin", responseBody.string())
                 }
             } catch (e: Exception) {
-                App.mainHandler.post {
-                    Toast.makeText(App.me(), e.toString(), Toast.LENGTH_SHORT).show()
-                }
+                e.handleUnified()
             }
         }
     }

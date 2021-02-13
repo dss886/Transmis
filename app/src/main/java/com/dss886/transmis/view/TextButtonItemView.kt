@@ -1,10 +1,9 @@
-package com.dss886.transmis.viewnew
+package com.dss886.transmis.view
 
 import android.content.Context
 import android.widget.ImageView
 import android.widget.TextView
 import com.dss886.transmis.R
-import com.dss886.transmis.view.BaseItemView
 
 /**
  * Created by dss886 on 2021/02/11.
