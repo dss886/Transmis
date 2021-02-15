@@ -29,10 +29,6 @@ class EditTextItemView(context: Context): BaseItemView(context), OnClickListener
     fun bind(config: EditTextConfig): EditTextItemView {
         mConfig = config
         mTitleView.text = config.title
-        mContentView.inputType = InputType.TYPE_CLASS_TEXT
-        if (config.isPassword) {
-            mContentView.inputType = mContentView.inputType or EditorInfo.TYPE_TEXT_VARIATION_PASSWORD
-        }
         mRequireView.visibility = if (config.isRequired) VISIBLE else INVISIBLE
         setOnClickListener(this)
         return this
@@ -56,7 +52,14 @@ class EditTextItemView(context: Context): BaseItemView(context), OnClickListener
 
     override fun onResume() {
         val defaultContent = if (mConfig.isRequired) "未设置" else "默认"
-        mContentView.text = mConfig.getSpValue(defaultContent)
+        val content = mConfig.getSpValue(null)
+        if (mConfig.isPassword && !TextUtils.isEmpty(content)) {
+            mContentView.text = content ?: defaultContent
+            mContentView.inputType = InputType.TYPE_CLASS_TEXT or EditorInfo.TYPE_TEXT_VARIATION_PASSWORD
+        } else {
+            mContentView.text = content ?: defaultContent
+            mContentView.inputType = InputType.TYPE_CLASS_TEXT
+        }
     }
 
 }
