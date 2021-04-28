@@ -3,8 +3,8 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="horizontal"
-              android:paddingLeft="18dp"
-              android:paddingRight="18dp"
+              android:paddingLeft="22dp"
+              android:paddingRight="22dp"
               android:gravity="center_vertical">
 
     <EditText
@@ -12,6 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:singleLine="true"
+        android:layout_marginTop="8dp"
+        android:textSize="16sp"
         android:maxLines="1"/>
 
 </LinearLayout>

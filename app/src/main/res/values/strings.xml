@@ -2,10 +2,6 @@
     <string name="app_name">Transmis</string>
     <string name="sms_title">短信设置</string>
     <string name="call_title">未接电话设置</string>
-    <string name="mail_title">邮件提醒插件</string>
-    <string name="telegram_title">Telegram 提醒插件</string>
-    <string name="mailgum_title">MailGun 提醒插件</string>
-    <string name="ifttt_webhooks_title">IftttWebhooks 提醒插件</string>
     <string name="sender_title">发件人过滤</string>
     <string name="sender_call_title">来电过滤</string>
     <string name="keyword_title">关键词过滤</string>
@@ -17,6 +13,6 @@
     <string name="call_title_default">你的备用机有一个未接电话</string>
     <string name="call_content_default">电话：%1$s \n时间：%2$s \n响铃：%3$s 秒\n\n</string>
 
-    <string name="info_sms_content">模版中使用 "%s" 来表示号码和内容等变量</string>
-    <string name="info_call_content">模版中使用 "%s" 来表示号码、内容和响铃时间等变量</string>
+    <string name="info_sms_content">提醒内容中一共需要两个 "%s" 占位符：\n1. 第一个 "%s" 表示发送者号码\n2. 第二个 "%s" 表示短信内容</string>
+    <string name="info_call_content">提醒内容中一共需要三个 "%s" 占位符：\n1. 第一个 "%s" 表示来电号码\n2. 第二个 "%s" 表示内容\n3. 第三个 "%s" 表示响铃时间</string>
 </resources>

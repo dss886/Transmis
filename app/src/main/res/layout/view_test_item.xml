@@ -7,6 +7,7 @@
               android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/test_layout"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:orientation="horizontal"
@@ -23,18 +24,6 @@
             android:singleLine="true"
             tools:text="test title"
             android:textColor="@color/textColor" />
-        <TextView
-            android:id="@+id/require"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_weight="1"
-            android:textSize="16sp"
-            android:singleLine="true"
-            android:text="*"
-            android:visibility="invisible"
-            tools:visibility="visible"
-            android:textColor="@color/textColorRequire" />
 
         <TextView
             android:id="@+id/content"
@@ -49,16 +38,50 @@
             android:layout_marginRight="8dp"
             android:textColor="@color/textHintColor" />
 
-        <ImageView
-            android:id="@+id/right_arrow"
+        <ProgressBar
+            android:id="@+id/progress"
             android:layout_width="18dp"
             android:layout_height="18dp"
-            android:alpha="0.2"
+            android:indeterminate="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:visibility="gone"
             tools:visibility="visible"
-            android:src="@mipmap/arrow_right"/>
+            android:src="@drawable/ic_success"/>
 
     </LinearLayout>
+
+    <View
+        android:id="@+id/reason_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:background="@color/greyDark"/>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/reason"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            android:textSize="13sp"
+            android:visibility="gone"
+            android:scrollHorizontally="true"
+            tools:visibility="visible"
+            tools:text="java.lang.NullPointException"/>
+
+    </HorizontalScrollView>
 
     <View
         android:id="@+id/divider"

@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.RECEIVE_SMS"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_CALL_LOG"/>
 
     <application
         android:name=".base.App"
@@ -21,22 +22,19 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".listen.sms.SmsActivity"/>
-        <activity android:name=".nofity.MailActivity"/>
-        <activity android:name=".nofity.MailGunActivity"/>
-        <activity android:name=".nofity.TelegramActivity"/>
-        <activity android:name=".nofity.IftttWebhooksActivity"/>
-        <activity android:name=".listen.call.CallActivity"/>
+        <activity android:name=".listen.SmsActivity"/>
+        <activity android:name=".listen.CallActivity"/>
         <activity android:name=".filter.FilterActivity"/>
+        <activity android:name=".plugin.PluginActivity"/>
 
         <receiver
-            android:name=".listen.sms.SmsListener"
+            android:name=".listen.SmsBroadcastReceiver"
             android:permission="android.permission.BROADCAST_SMS">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
             </intent-filter>
         </receiver>
-        <receiver android:name=".listen.call.CallListener">
+        <receiver android:name=".listen.CallBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE"/>
             </intent-filter>
