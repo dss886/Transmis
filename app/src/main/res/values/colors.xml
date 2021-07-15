@@ -5,6 +5,7 @@
     <color name="colorAccent">#8D6E63</color>
 
     <color name="white">#FFF</color>
+    <color name="black">#000</color>
     <color name="textColor">#DF000000</color>
     <color name="textColorRequire">#F44336</color>
     <color name="textHintColor">#8A000000</color>

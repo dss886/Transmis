@@ -5,6 +5,7 @@ import android.text.TextUtils
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.dss886.transmis.base.App
 import com.dss886.transmis.view.*
 import java.lang.ref.WeakReference
@@ -43,6 +44,9 @@ val Int.sp: Float
 
 val Int.spInt: Int
     get() = this.toFloat().sp.toInt()
+
+val Int.toColor: Int
+    get() = ContextCompat.getColor(App.inst(), this)
 
 fun <T> T.weakRef(): WeakReference<T> = WeakReference(this)
 

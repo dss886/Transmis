@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="horizontal"
               android:paddingLeft="22dp"
-              android:paddingRight="22dp"
-              android:gravity="center_vertical">
+              android:paddingRight="22dp">
 
     <EditText
         android:id="@+id/edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:singleLine="true"
         android:layout_marginTop="8dp"
         android:textSize="16sp"
         android:maxLines="1"/>
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/eye"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_eye"
+        android:layout_alignRight="@+id/edit_text"
+        android:layout_alignTop="@+id/edit_text"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"/>
+
+</RelativeLayout>

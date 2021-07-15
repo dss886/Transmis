@@ -39,7 +39,8 @@ class EditTextItemView(context: Context): BaseItemView(context), OnClickListener
         val hint = if (mConfig.isRequired) "" else "默认"
         (context as? BaseActivity)?.let { activity ->
             val editTitle = "设置" + mConfig.title
-            DialogBuilder.showEditTextDialog(activity, editTitle, content, hint, inputType = mContentView.inputType) { content: String? ->
+            val inputType = if (mConfig.isPassword) InputType.TYPE_CLASS_TEXT or EditorInfo.TYPE_TEXT_VARIATION_PASSWORD else InputType.TYPE_CLASS_TEXT
+            DialogBuilder.showEditTextDialog(activity, editTitle, content, hint, inputType = inputType) { content: String? ->
                 if (TextUtils.isEmpty(content)) {
                     mConfig.setSpValue(null)
                 } else {
