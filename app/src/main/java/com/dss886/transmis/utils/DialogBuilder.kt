@@ -5,7 +5,6 @@ import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
-import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
@@ -27,29 +26,19 @@ object DialogBuilder {
                            onPositive: (String) -> Unit?) {
         val layout = LayoutInflater.from(activity).inflate(R.layout.view_dialog_edit_text, null)
         val input = layout.findViewById<EditText>(R.id.edit_text).apply {
-            setText(content)
-            setPadding(
-                paddingLeft,
-                paddingTop,
-                if (inputType == InputType.TYPE_CLASS_TEXT) paddingRight else 36.dpInt,
-                paddingBottom)
-            this.hint = hint
             this.inputType = inputType
+            setText(content)
+            setPadding(paddingLeft, paddingTop,
+                if (isPassword(inputType)) 36.dpInt else paddingRight, paddingBottom)
+            this.hint = hint
             setSelection(text.length)
             requestFocus()
         }
         layout.findViewById<ImageView>(R.id.eye).apply {
-            visibility = if (input.inputType == InputType.TYPE_CLASS_TEXT) View.GONE else View.VISIBLE
+            visibility = if (isPassword(input.inputType)) View.VISIBLE else View.GONE
             setOnClickListener {
-                if (input.inputType == InputType.TYPE_CLASS_TEXT) {
-                    input.inputType = InputType.TYPE_CLASS_TEXT or EditorInfo.TYPE_TEXT_VARIATION_PASSWORD
-                    this.setColorFilter(R.color.colorPrimary.toColor)
-                    input.setSelection(input.text.length)
-                } else {
-                    input.inputType = InputType.TYPE_CLASS_TEXT
-                    this.setColorFilter(R.color.greyDark.toColor)
-                    input.setSelection(input.text.length)
-                }
+                input.inputType = togglePasswordVisibility(input.inputType)
+                input.setSelection(input.text.length)
             }
         }
         AlertDialog.Builder(activity)
@@ -64,14 +53,56 @@ object DialogBuilder {
     }
 
     @JvmStatic
-    fun showAlertDialog(activity: BaseActivity, content: String?, onPositive: (() -> Unit?)?) {
+    fun showAlertDialog(activity: BaseActivity, title: String?, content: String?, onPositive: (() -> Unit?)?) {
         val dialog = AlertDialog.Builder(activity)
+                .setTitle(title)
                 .setMessage(content)
                 .setPositiveButton("确定") { _, _ -> onPositive?.invoke() }
         if (onPositive != null) {
             dialog.setNegativeButton("取消") { it, _ -> it.dismiss() }
         }
         dialog.show()
+    }
+
+    private fun isPassword(inputType: Int): Boolean {
+        return when(inputType and InputType.TYPE_MASK_CLASS) {
+            InputType.TYPE_CLASS_TEXT -> {
+                val variation = inputType and InputType.TYPE_MASK_VARIATION
+                arrayOf(InputType.TYPE_TEXT_VARIATION_PASSWORD,
+                    InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD,
+                    InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD).contains(variation)
+            }
+            InputType.TYPE_CLASS_NUMBER -> {
+                inputType and InputType.TYPE_MASK_VARIATION == InputType.TYPE_NUMBER_VARIATION_PASSWORD
+            }
+            InputType.TYPE_CLASS_PHONE,
+            InputType.TYPE_CLASS_DATETIME -> false
+            else -> false
+        }
+    }
+
+    private fun togglePasswordVisibility(inputType: Int): Int {
+        return when(inputType and InputType.TYPE_MASK_CLASS) {
+            InputType.TYPE_CLASS_TEXT -> {
+                when (inputType and InputType.TYPE_MASK_VARIATION) {
+                    InputType.TYPE_TEXT_VARIATION_PASSWORD -> InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                    InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD -> InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                    InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD -> InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                    else -> InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                }
+            }
+            InputType.TYPE_CLASS_NUMBER -> {
+                val variation = inputType and InputType.TYPE_MASK_VARIATION
+                if (variation == InputType.TYPE_NUMBER_VARIATION_PASSWORD) {
+                    InputType.TYPE_CLASS_NUMBER
+                } else {
+                    InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+                }
+            }
+            InputType.TYPE_CLASS_PHONE,
+            InputType.TYPE_CLASS_DATETIME -> inputType
+            else -> inputType
+        }
     }
 
 }

@@ -13,6 +13,7 @@
     <string name="call_title_default">你的备用机有一个未接电话</string>
     <string name="call_content_default">电话：%1$s \n时间：%2$s \n响铃：%3$s 秒\n\n</string>
 
-    <string name="info_sms_content">提醒内容中一共需要两个 "%s" 占位符：\n1. 第一个 "%s" 表示发送者号码\n2. 第二个 "%s" 表示短信内容</string>
-    <string name="info_call_content">提醒内容中一共需要三个 "%s" 占位符：\n1. 第一个 "%s" 表示来电号码\n2. 第二个 "%s" 表示内容\n3. 第三个 "%s" 表示响铃时间</string>
+    <string name="info_sms_merge_long">收到同一发信人的连续多条短信时将内容进行合并提醒</string>
+    <string name="info_sms_content">需要两个 "%s" 占位符，分别代表发送者号码和短信内容</string>
+    <string name="info_call_content">需要三个 "%s" 占位符，分别代表来电号码、时间和响铃时长</string>
 </resources>

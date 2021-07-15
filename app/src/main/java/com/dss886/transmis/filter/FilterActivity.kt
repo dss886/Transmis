@@ -69,7 +69,7 @@ class FilterActivity : BaseActivity() {
     }
 
     private fun tryToAddFilterValue() {
-        val inputType = if (mType === FilterType.SMS_KEYWORD) InputType.TYPE_CLASS_TEXT else InputType.TYPE_CLASS_NUMBER
+        val inputType = if (mType === FilterType.SMS_KEYWORD) InputType.TYPE_CLASS_TEXT else InputType.TYPE_CLASS_PHONE
         showEditTextDialog(this, "请添加过滤项", inputType = inputType) { content: String? ->
             mFilterAdapter?.add(content)
         }

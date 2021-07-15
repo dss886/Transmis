@@ -63,6 +63,7 @@ class TestConfig(val title: String,
 class EditTextConfig(title: String, spKey: String) : StringSpConfig(title, spKey) {
     var isRequired: Boolean = true // isRequired=false also means it has default value
     var isPassword: Boolean = false
+    var isMultiLine: Boolean = false
 }
 
 class SwitchConfig(title: String, spKey: String) : BooleanSpConfig(title, spKey) {

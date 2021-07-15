@@ -91,6 +91,10 @@ fun List<String>.listToString(): String {
     return sb.toString()
 }
 
+fun String.countOccurrences(ch: CharSequence): Int {
+    return (this.length - this.replace(ch.toString(), "").length) / ch.length
+}
+
 fun String?.stringToList(): List<String> {
     if (this == null || TextUtils.isEmpty(this)) {
         return emptyList()

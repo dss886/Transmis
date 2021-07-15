@@ -73,7 +73,7 @@ public class FilterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             String value = TransmisManager.INSTANCE.getFilters(mType).get(dataPosition);
             ((ValueViewHolder) holder).mTitle.setText(value);
             holder.itemView.setOnLongClickListener(v -> {
-                DialogBuilder.showAlertDialog(mActivity, "是否删除过滤项目？", () -> {
+                DialogBuilder.showAlertDialog(mActivity, null, "是否删除过滤项目？", () -> {
                     int nowPosition = holder.getAdapterPosition();
                     TransmisManager.INSTANCE.removeFilter(mType, getDataPosition(nowPosition));
                     notifyItemRemoved(nowPosition);

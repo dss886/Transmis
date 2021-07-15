@@ -43,7 +43,7 @@ class PluginActivity: BaseSwitchActivity() {
             add(0, SwitchConfig("插件开关", mPlugin.getKey().toEnableSpKey()).apply {
                 onCheckedChangeListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
                     if (isChecked && !checkConfigValid()) {
-                        DialogBuilder.showAlertDialog(this@PluginActivity, "请填写必填参数！", null)
+                        DialogBuilder.showAlertDialog(this@PluginActivity, null, "请填写必填参数！", null)
                         buttonView.postDelayed({
                             buttonView.isChecked = false
                         }, 180L)
@@ -68,7 +68,7 @@ class PluginActivity: BaseSwitchActivity() {
     private fun doTest(config: TestConfig) {
         if (!checkConfigValid()) {
             config.onReset?.invoke()
-            DialogBuilder.showAlertDialog(this@PluginActivity, "请填写必填参数！", null)
+            DialogBuilder.showAlertDialog(this, null, "请填写必填参数！", null)
             return
         }
         config.content = "测试中"
