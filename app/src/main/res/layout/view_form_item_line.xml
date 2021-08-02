@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/greyDark"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/text_key"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_weight="1"
+            android:textSize="13sp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:hint="Key"
+            android:textColorHint="@color/textHintColor"
+            android:textColor="@color/textColor"
+            tools:text="Key"/>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/greyDark"/>
+
+        <TextView
+            android:id="@+id/text_value"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_weight="1"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:hint="Value"
+            android:textSize="13sp"
+            android:textColor="@color/textColor"
+            android:textColorHint="@color/textHintColor"
+            tools:text="Value"/>
+
+        <ImageView
+            android:id="@+id/remove"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:padding="8dp"
+            android:layout_marginRight="8dp"
+            android:alpha="0.54"
+            android:src="@drawable/ic_close"/>
+
+    </LinearLayout>
+
+</LinearLayout>

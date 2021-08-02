@@ -29,7 +29,7 @@ class SwitchItemView(context: Context) : BaseItemView(context) {
     }
 
     override fun onResume() {
-        val isChecked = mConfig.getSpValue()
+        val isChecked = mConfig.getSpValue(mConfig.defaultValue)
         mConfig.onCheckedChangeListener?.onCheckedChanged(mSwitchView, isChecked)
         mSwitchView.isChecked = isChecked
         mTitleView.text = mConfig.title

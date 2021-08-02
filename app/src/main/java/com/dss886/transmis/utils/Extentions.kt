@@ -8,8 +8,15 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import com.dss886.transmis.base.App
 import com.dss886.transmis.view.*
+import okhttp3.Headers
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
 import java.lang.ref.WeakReference
 import java.util.concurrent.Executors
+
 
 /**
  * Created by dss886 on 2021/02/11.
@@ -106,6 +113,53 @@ fun String.toEnableSpKey(): String {
     return this + "_enable"
 }
 
+fun FormConfig.toUrlParams(): String {
+    this.getSpValue(emptyList())
+        ?.filter { it.first.isNotEmpty() || it.second.isNotEmpty() }
+        ?.joinToString(separator = "&") { "${it.first}=${it.second}" }
+        ?.let {
+            return it
+        }
+    return ""
+}
+
+fun FormConfig.toHeaders(): Headers? {
+    val values = this.getSpValue(emptyList())?.filter { it.first.isNotEmpty() || it.second.isNotEmpty() }
+    values?.takeIf { it.isNotEmpty() }?.let {
+        val builder = Headers.Builder()
+        values.forEach { pair ->
+            builder.add(pair.first, pair.second)
+        }
+        return builder.build()
+    }
+    return null
+}
+
+fun FormConfig.toFormDataBody(): RequestBody? {
+    val values = this.getSpValue(emptyList())?.filter { it.first.isNotEmpty() || it.second.isNotEmpty() }
+    values?.takeIf { it.isNotEmpty() }?.let {
+        val builder = MultipartBody.Builder().setType(MultipartBody.FORM)
+        this.getSpValue(emptyList())?.filter { it.first.isNotEmpty() || it.second.isNotEmpty() }?.forEach { pair ->
+            builder.addFormDataPart(pair.first, pair.second)
+        }
+        return builder.build()
+    }
+    return null
+}
+
+fun FormConfig.toJSONBody(): RequestBody? {
+    val values = this.getSpValue(emptyList())?.filter { it.first.isNotEmpty() || it.second.isNotEmpty() }
+    values?.takeIf { it.isNotEmpty() }?.let {
+        val json = JSONObject().also { json ->
+            this.getSpValue(emptyList())?.filter { it.first.isNotEmpty() || it.second.isNotEmpty() }?.forEach { pair ->
+                json.put(pair.first, pair.second)
+            }
+        }
+        return json.toString().toRequestBody("application/json; charset=utf-8".toMediaType())
+    }
+    return null
+}
+
 fun IConfig.buildView(context: Context): BaseItemView {
     when (this) {
         is SectionConfig -> return SectionItemView(context).bind(this)
@@ -114,6 +168,8 @@ fun IConfig.buildView(context: Context): BaseItemView {
         is TextConfig -> return TextItemView(context).bind(this)
         is SwitchConfig -> return SwitchItemView(context).bind(this)
         is TestConfig -> return TestItemView(context).bind(this)
+        is SpinnerConfig -> return SpinnerItemView(context).bind(this)
+        is FormConfig -> return FormItemView(context).bind(this)
     }
     throw IllegalStateException("Config ${this.javaClass.simpleName} does not specify a target View!")
 }

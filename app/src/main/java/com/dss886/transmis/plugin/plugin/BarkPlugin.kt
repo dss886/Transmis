@@ -54,7 +54,7 @@ class BarkPlugin: IPlugin {
 
         val host = mHostConfig.getSpValue(null) ?: Constants.URL_BARK
         val key = mDeviceKeyConfig.getSpValue(null)
-        val isPost = mPostConfig.getSpValue()
+        val isPost = mPostConfig.getSpValue(mPostConfig.defaultValue)
 
         doAsync {
             try {

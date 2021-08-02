@@ -2,6 +2,7 @@ package com.dss886.transmis.view
 
 import android.widget.CompoundButton
 import com.dss886.transmis.base.App
+import com.google.gson.reflect.TypeToken
 import java.io.Serializable
 
 /**
@@ -69,7 +70,25 @@ class EditTextConfig(title: String, spKey: String) : StringSpConfig(title, spKey
 class SwitchConfig(title: String, spKey: String) : BooleanSpConfig(title, spKey) {
     var defaultValue: Boolean = false
     var onCheckedChangeListener: CompoundButton.OnCheckedChangeListener? = null
-    fun getSpValue(): Boolean {
-        return super.getSpValue(defaultValue)
+}
+
+class SpinnerConfig(title: String,
+                    var textList: List<String>,
+                    var valueList: List<String>, spKey: String) : StringSpConfig(title, spKey) {
+    var isRequired: Boolean = true
+    var defaultValue: String? = null
+}
+
+class FormConfig(title: String,
+                 spKey: String,
+                 var keyName: String = "Key",
+                 var valueName: String = "Value") : SpConfig<List<Pair<String, String>>>(title, spKey) {
+    override fun setSpValue(value: List<Pair<String, String>>?) {
+        App.inst().sp.edit().putString(spKey, App.inst().gson.toJson(value)).apply()
+    }
+
+    override fun getSpValue(defaultValue: List<Pair<String, String>>?): List<Pair<String, String>>? {
+        val type = object : TypeToken<List<Pair<String, String>>>() {}.type
+        return App.inst().gson.fromJson(App.inst().sp.getString(spKey, ""), type)
     }
 }
