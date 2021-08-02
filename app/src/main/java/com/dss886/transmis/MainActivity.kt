@@ -2,7 +2,7 @@ package com.dss886.transmis
 
 import android.content.Intent
 import android.net.Uri
-import com.dss886.transmis.base.BaseSwitchActivity
+import com.dss886.transmis.base.BaseConfigActivity
 import com.dss886.transmis.listen.CallActivity
 import com.dss886.transmis.listen.SmsActivity
 import com.dss886.transmis.plugin.PluginActivity
@@ -14,7 +14,7 @@ import com.dss886.transmis.view.SectionConfig
 import com.dss886.transmis.view.SwitchConfig
 import com.dss886.transmis.view.TextConfig
 
-class MainActivity : BaseSwitchActivity() {
+class MainActivity : BaseConfigActivity() {
 
     override fun getToolbarTitle(): String {
         return getString(R.string.app_name)

@@ -2,7 +2,7 @@ package com.dss886.transmis.listen
 
 import com.dss886.transmis.R
 import com.dss886.transmis.base.App
-import com.dss886.transmis.base.BaseSwitchActivity
+import com.dss886.transmis.base.BaseConfigActivity
 import com.dss886.transmis.filter.FilterActivity
 import com.dss886.transmis.filter.FilterType
 import com.dss886.transmis.utils.Constants
@@ -12,7 +12,7 @@ import com.dss886.transmis.utils.countOccurrences
 import com.dss886.transmis.view.*
 import java.util.*
 
-class SmsActivity : BaseSwitchActivity() {
+class SmsActivity : BaseConfigActivity() {
 
     private lateinit var mTitleConfig: EditTextConfig
     private lateinit var mContentConfig: EditTextConfig

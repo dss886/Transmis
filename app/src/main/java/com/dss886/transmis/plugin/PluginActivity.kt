@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.CompoundButton
 import com.dss886.transmis.R
-import com.dss886.transmis.base.BaseSwitchActivity
+import com.dss886.transmis.base.BaseConfigActivity
 import com.dss886.transmis.utils.DialogBuilder
 import com.dss886.transmis.utils.toEnableSpKey
 import com.dss886.transmis.utils.weakRef
@@ -14,7 +14,7 @@ import com.dss886.transmis.view.*
 /**
  * Created by dss886 on 2021/02/11.
  */
-class PluginActivity: BaseSwitchActivity() {
+class PluginActivity: BaseConfigActivity() {
 
     companion object {
         @JvmStatic

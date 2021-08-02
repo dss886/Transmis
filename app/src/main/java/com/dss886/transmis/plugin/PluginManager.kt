@@ -50,22 +50,30 @@ object PluginManager {
             throw IllegalArgumentException("Plugin ${plugin.getName()} " +
                     "has illegal spKeyPrefix ${plugin.getKey()}")
         }
-        plugin.getConfigs().filterIsInstance<SpConfig<*>>().forEach { config ->
-            if (!config.spKey.startsWith(plugin.getKey() + "_")) {
-                throw IllegalArgumentException("Plugin ${plugin.getName()} " +
-                        "has an illegal config '${config.title}' which spKey(${config.spKey}) " +
-                        "does not match the prefix ${plugin.getKey()}.")
-            }
-            if (config.spKey == config.spKey.toEnableSpKey()) {
-                throw IllegalArgumentException("Plugin ${plugin.getName()} " +
-                        "has an illegal config '${config.title}' which spKey(${config.spKey}) " +
-                        "is not allowed!")
-            }
-            if (!mSpKeySet.add(config.spKey)) {
-                throw IllegalArgumentException("Plugin ${plugin.getName()} " +
-                        "has an illegal config '${config.title}' which spKey(${config.spKey}) " +
-                        "is duplicated.")
-            }
+        plugin.getConfigs()
+            .filterIsInstance<SpConfig<*>>()
+            .forEach { config ->
+                if (!config.spKey.startsWith(plugin.getKey() + "_")) {
+                    throw IllegalArgumentException(
+                        "Plugin ${plugin.getName()} " +
+                                "has an illegal config '${config.title}' which spKey(${config.spKey}) " +
+                                "does not match the prefix ${plugin.getKey()}."
+                    )
+                }
+                if (config.spKey == config.spKey.toEnableSpKey()) {
+                    throw IllegalArgumentException(
+                        "Plugin ${plugin.getName()} " +
+                                "has an illegal config '${config.title}' which spKey(${config.spKey}) " +
+                                "is not allowed!"
+                    )
+                }
+                if (!mSpKeySet.add(config.spKey)) {
+                    throw IllegalArgumentException(
+                        "Plugin ${plugin.getName()} " +
+                                "has an illegal config '${config.title}' which spKey(${config.spKey}) " +
+                                "is duplicated."
+                    )
+                }
         }
         return true
     }

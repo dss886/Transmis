@@ -12,7 +12,7 @@ import com.dss886.transmis.view.SectionItemView
 /**
  * Created by duansishu on 2018/1/28.
  */
-abstract class BaseSwitchActivity : BaseActivity() {
+abstract class BaseConfigActivity : BaseActivity() {
 
     private lateinit var mContainer: LinearLayout
 
