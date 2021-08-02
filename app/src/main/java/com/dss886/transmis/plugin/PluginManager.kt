@@ -23,6 +23,7 @@ object PluginManager {
         registerPlugin(MailGunPlugin())
         registerPlugin(TelegramPlugin())
         registerPlugin(IFTTTPlugin())
+        registerPlugin(WebHookPlugin())
     }
 
     private fun registerPlugin(plugin: IPlugin) {

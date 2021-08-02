@@ -113,51 +113,47 @@ fun String.toEnableSpKey(): String {
     return this + "_enable"
 }
 
-fun FormConfig.toUrlParams(): String {
-    this.getSpValue(emptyList())
-        ?.filter { it.first.isNotEmpty() || it.second.isNotEmpty() }
-        ?.joinToString(separator = "&") { "${it.first}=${it.second}" }
-        ?.let {
-            return it
-        }
-    return ""
+fun List<Pair<String, String>>.toUrlParams(): String {
+    return this
+        .filter { it.first.isNotEmpty() || it.second.isNotEmpty() }
+        .joinToString(separator = "&") { "${it.first}=${it.second}" }
 }
 
-fun FormConfig.toHeaders(): Headers? {
-    val values = this.getSpValue(emptyList())?.filter { it.first.isNotEmpty() || it.second.isNotEmpty() }
-    values?.takeIf { it.isNotEmpty() }?.let {
-        val builder = Headers.Builder()
+fun List<Pair<String, String>>.toHeaders(): Headers? {
+    val values = this.filter { it.first.isNotEmpty() || it.second.isNotEmpty() }
+    if (values.isEmpty()) {
+        return null
+    }
+    val builder = Headers.Builder()
+    values.forEach { pair ->
+        builder.add(pair.first, pair.second)
+    }
+    return builder.build()
+}
+
+fun List<Pair<String, String>>.toFormDataBody(): RequestBody? {
+    val values = this.filter { it.first.isNotEmpty() || it.second.isNotEmpty() }
+    if (values.isEmpty()) {
+        return null
+    }
+    val builder = MultipartBody.Builder().setType(MultipartBody.FORM)
+    values.forEach { pair ->
+        builder.addFormDataPart(pair.first, pair.second)
+    }
+    return builder.build()
+}
+
+fun List<Pair<String, String>>.toJSONBody(): RequestBody? {
+    val values = this.filter { it.first.isNotEmpty() || it.second.isNotEmpty() }
+    if (values.isEmpty()) {
+        return null
+    }
+    val json = JSONObject().also { json ->
         values.forEach { pair ->
-            builder.add(pair.first, pair.second)
+            json.put(pair.first, pair.second)
         }
-        return builder.build()
     }
-    return null
-}
-
-fun FormConfig.toFormDataBody(): RequestBody? {
-    val values = this.getSpValue(emptyList())?.filter { it.first.isNotEmpty() || it.second.isNotEmpty() }
-    values?.takeIf { it.isNotEmpty() }?.let {
-        val builder = MultipartBody.Builder().setType(MultipartBody.FORM)
-        this.getSpValue(emptyList())?.filter { it.first.isNotEmpty() || it.second.isNotEmpty() }?.forEach { pair ->
-            builder.addFormDataPart(pair.first, pair.second)
-        }
-        return builder.build()
-    }
-    return null
-}
-
-fun FormConfig.toJSONBody(): RequestBody? {
-    val values = this.getSpValue(emptyList())?.filter { it.first.isNotEmpty() || it.second.isNotEmpty() }
-    values?.takeIf { it.isNotEmpty() }?.let {
-        val json = JSONObject().also { json ->
-            this.getSpValue(emptyList())?.filter { it.first.isNotEmpty() || it.second.isNotEmpty() }?.forEach { pair ->
-                json.put(pair.first, pair.second)
-            }
-        }
-        return json.toString().toRequestBody("application/json; charset=utf-8".toMediaType())
-    }
-    return null
+    return json.toString().toRequestBody("application/json; charset=utf-8".toMediaType())
 }
 
 fun IConfig.buildView(context: Context): BaseItemView {
