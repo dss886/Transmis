@@ -2,11 +2,9 @@ package com.dss886.transmis.plugin.plugin
 
 import android.text.TextUtils
 import com.dss886.transmis.plugin.IPlugin
-import com.dss886.transmis.plugin.PluginTester
 import com.dss886.transmis.utils.Constants
-import com.dss886.transmis.utils.Logger
 import com.dss886.transmis.utils.OkHttp
-import com.dss886.transmis.utils.doAsync
+import com.dss886.transmis.utils.getBodyOrThrow
 import com.dss886.transmis.view.EditTextConfig
 import com.dss886.transmis.view.IConfig
 import com.dss886.transmis.view.SectionConfig
@@ -14,8 +12,6 @@ import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.Response
-import java.lang.ref.WeakReference
 
 /**
  * Created by dss886 on 2021/02/11.
@@ -51,9 +47,9 @@ class MailGunPlugin: IPlugin {
         )
     }
 
-    override fun doNotify(title: String, content: String, tester: WeakReference<PluginTester>?) {
+    override fun doNotify(title: String, content: String): String? {
         if (TextUtils.isEmpty(title) || TextUtils.isEmpty(content)) {
-            return
+            return null
         }
 
         val key = mKeyConfig.getSpValue(null)
@@ -62,44 +58,33 @@ class MailGunPlugin: IPlugin {
         val sendMail = mSendMailConfig.getSpValue(null)
         val toMail = mReceiveMailConfig.getSpValue(null)
 
-        doAsync {
-            try {
-                val url = "${Constants.URL_MAILGUN}$domain/messages"
-                var text = "--${Constants.BOUNDARY_WEBKIT}\n"
-                text += (
-                        "Content-Disposition: form-data; name=\"from\"\r\n\r\n" +
-                                sendName + "<" + sendMail + ">" + "\r\n" +
-                                "--" + Constants.BOUNDARY_WEBKIT + "\r\n" +
-                                "Content-Disposition: form-data; name=\"to\"\r\n\r\n" +
-                                toMail + "\r\n" +
-                                "--" + Constants.BOUNDARY_WEBKIT + "\r\n" +
-                                "Content-Disposition: form-data; name=\"subject\"\r\n\r\n" +
-                                title + "\r\n" +
-                                "--" + Constants.BOUNDARY_WEBKIT + "\r\n" +
-                                "Content-Disposition: form-data; name=\"text\"\r\n\r\n" +
-                                content + "\r\n" +
-                                "--" + Constants.BOUNDARY_WEBKIT + "--\r\n"
+        val url = "${Constants.URL_MAILGUN}$domain/messages"
+        var text = "--${Constants.BOUNDARY_WEBKIT}\n"
+        text += (
+                "Content-Disposition: form-data; name=\"from\"\r\n\r\n" +
+                        sendName + "<" + sendMail + ">" + "\r\n" +
+                        "--" + Constants.BOUNDARY_WEBKIT + "\r\n" +
+                        "Content-Disposition: form-data; name=\"to\"\r\n\r\n" +
+                        toMail + "\r\n" +
+                        "--" + Constants.BOUNDARY_WEBKIT + "\r\n" +
+                        "Content-Disposition: form-data; name=\"subject\"\r\n\r\n" +
+                        title + "\r\n" +
+                        "--" + Constants.BOUNDARY_WEBKIT + "\r\n" +
+                        "Content-Disposition: form-data; name=\"text\"\r\n\r\n" +
+                        content + "\r\n" +
+                        "--" + Constants.BOUNDARY_WEBKIT + "--\r\n"
                 )
-                val mediaType: MediaType = "multipart/form-data; boundary=${Constants.BOUNDARY_WEBKIT}".toMediaType()
-                val body = text.toRequestBody(mediaType)
-                val request = Request.Builder()
-                        .url(url)
-                        .post(body)
-                        .addHeader("content-type", "multipart/form-data; boundary=${Constants.BOUNDARY_WEBKIT}")
-                        .addHeader("authorization", "Basic $key")
-                        .addHeader("cache-control", "no-cache")
-                        .build()
-                val response: Response = OkHttp.client.newCall(request).execute()
-                val responseBody = response.body
-                if (responseBody != null) {
-                    Logger.d("MailGunPlugin", url)
-                    Logger.d("MailGunPlugin", responseBody.string())
-                }
-                tester?.get()?.success()
-            } catch (e: Exception) {
-                tester?.get()?.failure(e)
-            }
-        }
+        val mediaType: MediaType = "multipart/form-data; boundary=${Constants.BOUNDARY_WEBKIT}".toMediaType()
+        val body = text.toRequestBody(mediaType)
+        val request = Request.Builder()
+            .url(url)
+            .post(body)
+            .addHeader("content-type", "multipart/form-data; boundary=${Constants.BOUNDARY_WEBKIT}")
+            .addHeader("authorization", "Basic $key")
+            .addHeader("cache-control", "no-cache")
+            .build()
+
+        return OkHttp.client.newCall(request).execute().getBodyOrThrow()
     }
 
 }

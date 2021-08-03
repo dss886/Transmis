@@ -2,11 +2,10 @@ package com.dss886.transmis.plugin.plugin
 
 import android.text.TextUtils
 import com.dss886.transmis.plugin.IPlugin
-import com.dss886.transmis.plugin.PluginTester
 import com.dss886.transmis.utils.*
 import com.dss886.transmis.view.*
 import okhttp3.Request
-import java.lang.ref.WeakReference
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.util.*
 
 /**
@@ -48,9 +47,9 @@ class WebHookPlugin: IPlugin {
         )
     }
 
-    override fun doNotify(title: String, content: String, tester: WeakReference<PluginTester>?) {
+    override fun doNotify(title: String, content: String): String? {
         if (TextUtils.isEmpty(title) || TextUtils.isEmpty(content)) {
-            return
+            return null
         }
 
         val url = mUrlConfig.getSpValue("") ?: ""
@@ -65,22 +64,15 @@ class WebHookPlugin: IPlugin {
         val headers = (mHeadersConfig.getSpValue(null) ?: emptyList()).map(transform)
         val body = (mBodyConfig.getSpValue(null) ?: emptyList()).map(transform)
 
-        doAsync {
-            try {
-                val urlImpl = "${url}?${params.toUrlParams()}"
-                val requestBody = if (bodyType == "form") body.toFormDataBody() else body.toJSONBody()
-                val request = Request.Builder().url(urlImpl).method(method.toUpperCase(Locale.ROOT), requestBody)
-                headers.toHeaders()?.let { request.headers(it) }
-                val response = OkHttp.client.newCall(request.build()).execute()
-                val responseBody = response.body
-                if (responseBody != null) {
-                    Logger.d("WebHookPlugin", responseBody.string())
-                }
-                tester?.get()?.success()
-            } catch (e: Exception) {
-                tester?.get()?.failure(e)
-            }
+        val urlImpl = "${url}?${params.toUrlParams()}"
+        var requestBody = if (bodyType == "form") body.toFormDataBody() else body.toJSONBody()
+        if (method == "post" && requestBody == null) {
+            requestBody = "".toRequestBody()       // Okhttp要求Post请求一定要有一个Body，什么鬼
         }
+        val request = Request.Builder().url(urlImpl).method(method.toUpperCase(Locale.ROOT), requestBody)
+        headers.toHeaders()?.let { request.headers(it) }
+
+        return OkHttp.client.newCall(request.build()).execute().getBodyOrThrow()
     }
 
 }

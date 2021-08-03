@@ -8,10 +8,7 @@ import android.text.TextUtils
 import com.dss886.transmis.R
 import com.dss886.transmis.base.App
 import com.dss886.transmis.plugin.PluginManager
-import com.dss886.transmis.utils.Constants
-import com.dss886.transmis.utils.Logger
-import com.dss886.transmis.utils.TransmisManager
-import com.dss886.transmis.utils.stringToList
+import com.dss886.transmis.utils.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -84,7 +81,9 @@ class CallBroadcastReceiver : BroadcastReceiver() {
                             "enableCount=${this.size}: ${this.joinToString { it.getName() }}")
                 }
                 .forEach { plugin ->
-                    plugin.doNotify(title, content)
+                    doAsync {
+                        try { plugin.doNotify(title, content) } catch (ignore : Throwable) {}
+                    }
                 }
     }
 

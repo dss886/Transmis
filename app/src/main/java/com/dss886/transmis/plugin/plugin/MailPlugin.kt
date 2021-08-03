@@ -2,13 +2,10 @@ package com.dss886.transmis.plugin.plugin
 
 import android.text.TextUtils
 import com.dss886.transmis.plugin.IPlugin
-import com.dss886.transmis.plugin.PluginTester
-import com.dss886.transmis.utils.doAsync
 import com.dss886.transmis.view.EditTextConfig
 import com.dss886.transmis.view.IConfig
 import com.dss886.transmis.view.SectionConfig
 import com.sun.mail.util.MailSSLSocketFactory
-import java.lang.ref.WeakReference
 import java.util.*
 import javax.mail.Address
 import javax.mail.Message
@@ -55,9 +52,9 @@ class MailPlugin: IPlugin {
         )
     }
 
-    override fun doNotify(title: String, content: String, tester: WeakReference<PluginTester>?) {
+    override fun doNotify(title: String, content: String): String? {
         if (TextUtils.isEmpty(title) || TextUtils.isEmpty(content)) {
-            return
+            return null
         }
 
         val host = mHostConfig.getSpValue(null)
@@ -67,34 +64,29 @@ class MailPlugin: IPlugin {
         val password = mPasswordConfig.getSpValue(null)
         val receiver = mReceiverConfig.getSpValue(null)
 
-        doAsync {
-            try {
-                val props = Properties().apply {
-                    put("mail.transport.protocol", "smtp")
-                    put("mail.host", host)
-                    put("mail.smtp.auth", "true")
-                    put("mail.smtp.port", port)
-                    put("mail.smtp.socketFactory.port", port)
-                    put("mail.smtp.ssl.enable", "true")
-                    put("mail.smtp.ssl.socketFactory", MailSSLSocketFactory().apply {
-                        isTrustAllHosts = true
-                    })
-                }
-                val session = Session.getDefaultInstance(props, null)
-                val msg: Message = MimeMessage(session).apply {
-                    subject = title
-                    setText(content)
-                    setFrom(InternetAddress(email, name))
-                }
-                val transport: Transport = session.transport
-                transport.connect(host, email, password)
-                transport.sendMessage(msg, arrayOf<Address>(InternetAddress(receiver)))
-                transport.close()
-                tester?.get()?.success()
-            } catch (e: Throwable) {
-                tester?.get()?.failure(e)
-            }
+        val props = Properties().apply {
+            put("mail.transport.protocol", "smtp")
+            put("mail.host", host)
+            put("mail.smtp.auth", "true")
+            put("mail.smtp.port", port)
+            put("mail.smtp.socketFactory.port", port)
+            put("mail.smtp.ssl.enable", "true")
+            put("mail.smtp.ssl.socketFactory", MailSSLSocketFactory().apply {
+                isTrustAllHosts = true
+            })
         }
+        val session = Session.getDefaultInstance(props, null)
+        val msg: Message = MimeMessage(session).apply {
+            subject = title
+            setText(content)
+            setFrom(InternetAddress(email, name))
+        }
+        val transport: Transport = session.transport
+        transport.connect(host, email, password)
+        transport.sendMessage(msg, arrayOf<Address>(InternetAddress(receiver)))
+        transport.close()
+
+        return null
     }
 
 }

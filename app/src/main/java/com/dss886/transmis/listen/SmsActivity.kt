@@ -5,10 +5,7 @@ import com.dss886.transmis.base.App
 import com.dss886.transmis.base.BaseConfigActivity
 import com.dss886.transmis.filter.FilterActivity
 import com.dss886.transmis.filter.FilterType
-import com.dss886.transmis.utils.Constants
-import com.dss886.transmis.utils.DialogBuilder
-import com.dss886.transmis.utils.TransmisManager
-import com.dss886.transmis.utils.countOccurrences
+import com.dss886.transmis.utils.*
 import com.dss886.transmis.view.*
 import java.util.*
 
@@ -76,15 +73,14 @@ class SmsActivity : BaseConfigActivity() {
         var contentTemplate = mContentConfig.getSpValue(null)
         if (contentTemplate != null && contentTemplate.countOccurrences("%s") != 2) {
             config.content = "测试失败"
-            config.reason = IllegalArgumentException("提醒内容参数有误")
-            config.onFailure?.invoke()
+            config.onFailure?.invoke(IllegalArgumentException("提醒内容参数有误"))
             return
         }
         contentTemplate = contentTemplate ?: App.inst().getString(R.string.sms_content_default)
         val content = String.format(Locale.CHINA, contentTemplate, "123456789", "smsContent")
         DialogBuilder.showAlertDialog(this, title, content.trim(), null)
         config.content = "测试成功"
-        config.onSuccess?.invoke()
+        config.onSuccess?.invoke(null)
     }
 
 }

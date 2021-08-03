@@ -53,12 +53,11 @@ class TextConfig(val title: String,
 }
 
 class TestConfig(val title: String,
-                 var content: String? = null,
-                 var reason: Throwable? = null) : IConfig {
+                 var content: String? = null) : IConfig {
     var onTest: (() -> Unit)? = null
     var onReset: (() -> Unit)? = null
-    var onSuccess: (() -> Unit)? = null
-    var onFailure: (() -> Unit)? = null
+    var onSuccess: ((String?) -> Unit)? = null
+    var onFailure: ((Throwable?) -> Unit)? = null
 }
 
 class EditTextConfig(title: String, spKey: String) : StringSpConfig(title, spKey) {

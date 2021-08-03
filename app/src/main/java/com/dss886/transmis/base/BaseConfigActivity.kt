@@ -2,6 +2,7 @@ package com.dss886.transmis.base
 
 import android.os.Bundle
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import com.dss886.transmis.R
 import com.dss886.transmis.utils.buildView
 import com.dss886.transmis.utils.forEachChildren
@@ -14,10 +15,12 @@ import com.dss886.transmis.view.SectionItemView
  */
 abstract class BaseConfigActivity : BaseActivity() {
 
+    protected lateinit var mScrollView: ScrollView
     private lateinit var mContainer: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mScrollView = findViewById(R.id.scroll)
         mContainer = findViewById(R.id.container)
         buildView(getConfigs())
     }

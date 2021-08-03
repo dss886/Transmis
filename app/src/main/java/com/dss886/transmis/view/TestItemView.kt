@@ -5,6 +5,8 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.dss886.transmis.R
+import org.json.JSONException
+import org.json.JSONObject
 
 /**
  * Created by dss886 on 2021/02/11.
@@ -49,19 +51,29 @@ class TestItemView(context: Context) : BaseItemView(context) {
             mReasonDividerView.visibility = View.GONE
             mProgressView.visibility = View.GONE
         }
-        mConfig.onSuccess = {
+        mConfig.onSuccess = { result ->
             mIsLoading = false
             mContentView.text = config.content
             mIconView.setImageResource(R.drawable.ic_success)
             mIconView.visibility = View.VISIBLE
-            mReasonView.visibility = View.GONE
-            mReasonDividerView.visibility = View.GONE
+            if (result != null) {
+                mReasonView.text = try {
+                    JSONObject(result).toString(4)
+                } catch (e: JSONException) {
+                    result
+                }
+                mReasonView.visibility = View.VISIBLE
+                mReasonDividerView.visibility = View.VISIBLE
+            } else {
+                mReasonView.visibility = View.GONE
+                mReasonDividerView.visibility = View.GONE
+            }
             mProgressView.visibility = View.GONE
         }
-        mConfig.onFailure = {
+        mConfig.onFailure = { tr ->
             mIsLoading = false
             mContentView.text = config.content
-            mReasonView.text = config.reason?.stackTraceToString() ?: ""
+            mReasonView.text = tr?.stackTraceToString() ?: ""
             mIconView.setImageResource(R.drawable.ic_error)
             mIconView.visibility = View.VISIBLE
             mReasonView.visibility = View.VISIBLE
@@ -73,10 +85,6 @@ class TestItemView(context: Context) : BaseItemView(context) {
 
     override fun onResume() {
         // do noting
-    }
-
-    private fun getDisplayReason(reason: Throwable?): String {
-        return reason?.stackTraceToString() ?: ""
     }
 
 }

@@ -5,6 +5,7 @@ import android.text.TextUtils
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ScrollView
 import androidx.core.content.ContextCompat
 import com.dss886.transmis.base.App
 import com.dss886.transmis.view.*
@@ -13,6 +14,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
 import org.json.JSONObject
 import java.lang.ref.WeakReference
 import java.util.concurrent.Executors
@@ -111,6 +113,22 @@ fun String?.stringToList(): List<String> {
 
 fun String.toEnableSpKey(): String {
     return this + "_enable"
+}
+
+fun Response.getBodyOrThrow(): String {
+    if (isSuccessful && body != null) {
+        return body!!.string()
+    }
+    throw IllegalStateException("请求失败，code=${code}")
+}
+
+fun ScrollView.postScrollToTestItem() {
+    val offset = 48.dpInt
+    post {
+        (getChildAt(0) as? ViewGroup)?.let { container ->
+            smoothScrollTo(0, container.getChildAt(container.childCount - 2).top + offset)
+        }
+    }
 }
 
 fun List<Pair<String, String>>.toUrlParams(): String {
