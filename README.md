@@ -71,6 +71,12 @@
 1. 创建 ifttt webhooks 应用，并设定 event ，拿到 key。
 2. 输入 event 和 key。
 
+#### WebHook 插件
+
+1. 输入指定的请求地址，请勿包含?符号
+2. 按需配置Url Params、Headers和Body的参数即可
+3. 在参数的value中使用 $title 和 $content 作为标题和内容的占位符
+
 ### 插件开发
 
 本程序支持简单易用的插件化开发，仅需两步即可实现一个提醒插件：
