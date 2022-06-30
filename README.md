@@ -51,7 +51,7 @@
 #### Bark插件
 
 1. 下载iOS的Bark App，注册设备，将Device Key填写在插件设置中
-2. 由于默认的BarkServer以一种非标准的方式传递参数，如果你使用了自定义的BarkServer，开启「使用兼容的Post请求」选项将以完全的JSON格式来发起Post请求
+2. 本插件是直接通过Apple的APNS服务器发送通知，在某些网络条件下存在无法访问的可能性，如想使用Bark官方提供的服务器中转，请使用Webhook插件
 
 #### MailGun插件
 

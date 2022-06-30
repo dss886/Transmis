@@ -3,29 +3,21 @@ package com.dss886.transmis.plugin.plugin
 import android.text.TextUtils
 import com.dss886.transmis.plugin.IPlugin
 import com.dss886.transmis.utils.Constants
-import com.dss886.transmis.utils.OkHttp
-import com.dss886.transmis.utils.getBodyOrThrow
 import com.dss886.transmis.view.EditTextConfig
 import com.dss886.transmis.view.IConfig
 import com.dss886.transmis.view.SectionConfig
-import com.dss886.transmis.view.SwitchConfig
-import okhttp3.MediaType
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.Request
-import okhttp3.RequestBody.Companion.toRequestBody
-import org.json.JSONObject
-
+import com.eatthepath.pushy.apns.ApnsClientBuilder
+import com.eatthepath.pushy.apns.auth.ApnsSigningKey
+import com.eatthepath.pushy.apns.util.SimpleApnsPayloadBuilder
+import com.eatthepath.pushy.apns.util.SimpleApnsPushNotification
+import java.nio.charset.StandardCharsets
 
 /**
  * Created by dss886 on 2021/02/14.
  */
 class BarkPlugin: IPlugin {
 
-    private val mHostConfig = EditTextConfig("Bark服务域名", "bark_host").apply {
-        isRequired = false
-    }
     private val mDeviceKeyConfig = EditTextConfig("Device Key", "bark_device_key")
-    private val mPostConfig = SwitchConfig("使用兼容的Post请求", "bark_is_post")
 
     override fun getName(): String {
         return "Bark插件"
@@ -38,9 +30,7 @@ class BarkPlugin: IPlugin {
     override fun getConfigs(): List<IConfig> {
         return listOf(
                 SectionConfig("参数设置"),
-                mHostConfig,
                 mDeviceKeyConfig,
-                mPostConfig,
         )
     }
 
@@ -49,25 +39,24 @@ class BarkPlugin: IPlugin {
             return null
         }
 
-        val host = mHostConfig.getSpValue(null) ?: Constants.URL_BARK
-        val key = mDeviceKeyConfig.getSpValue(null)
-        val isPost = mPostConfig.getSpValue(mPostConfig.defaultValue)
-
-        val request = if (isPost) {
-            val message = JSONObject().apply {
-                put("key", key)
-                put("title", title)
-                put("body", content)
-            }
-            val mediaType: MediaType = "application/json; charset=utf-8".toMediaType()
-            val body = message.toString().toRequestBody(mediaType)
-            Request.Builder().url(host).post(body).build()
+        val certInputStream = Constants.BARK_CERT.byteInputStream(StandardCharsets.UTF_8)
+        val apnsClient = ApnsClientBuilder()
+            .setApnsServer(ApnsClientBuilder.PRODUCTION_APNS_HOST)
+            .setSigningKey(ApnsSigningKey.loadFromInputStream(certInputStream, Constants.BARK_TEAM_ID, Constants.BARK_APN_KEY))
+            .build()
+        val deviceToken = mDeviceKeyConfig.getSpValue("")
+        val payload = SimpleApnsPayloadBuilder().setSound("1107")
+            .setCategoryName("myNotificationCategory")
+            .setAlertTitle(title)
+            .setAlertBody(content)
+            .setMutableContent(true).build()
+        val notification = SimpleApnsPushNotification(deviceToken, "me.fin.bark", payload)
+        val response = apnsClient.sendNotification(notification).get()
+        return if (response.isAccepted) {
+            "Notification accepted by the APNs gateway."
         } else {
-            val url = "$host$key/$title/$content"
-            Request.Builder().url(url).get().build()
+            "Notification rejected by the APNs gateway: " + response.rejectionReason
         }
-
-        return OkHttp.client.newCall(request).execute().getBodyOrThrow()
     }
 
 }

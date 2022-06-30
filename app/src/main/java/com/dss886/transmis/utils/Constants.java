@@ -15,6 +15,18 @@ public class Constants {
 
     public static final String BOUNDARY_WEBKIT = "----WebKitFormBoundary7MA4YWxkTrZu0gW";
 
+    /**
+     * Cert info from: https://github.com/Finb/bark-server/blob/master/deploy/AuthKey_LH4T9V5U4R_5U8LBRXG3A.p8
+     */
+    public static final String BARK_APN_KEY = "LH4T9V5U4R";
+    public static final String BARK_TEAM_ID = "5U8LBRXG3A";
+    public static final String BARK_CERT = "-----BEGIN PRIVATE KEY-----\n" +
+            "MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQg4vtC3g5L5HgKGJ2+\n" +
+            "T1eA0tOivREvEAY2g+juRXJkYL2gCgYIKoZIzj0DAQehRANCAASmOs3JkSyoGEWZ\n" +
+            "sUGxFs/4pw1rIlSV2IC19M8u3G5kq36upOwyFWj9Gi3Ejc9d3sC7+SHRqXrEAJow\n" +
+            "8/7tRpV+\n" +
+            "-----END PRIVATE KEY-----";
+
     public static final String SP_GLOBAL_ENABLE = "global_enable";
     public static final String SP_SMS_ENABLE = "sms_enable";
     public static final String SP_MISSED_CALL_ENABLE = "missed_call_enable";
